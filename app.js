@@ -1,8 +1,7 @@
 new Vue({
-  el: '#vue-app',
-  data: {
-    last-updated:'today',
-    author:'jake',
+  el:"#vue-app",
+  data:{
+    name:'jake',
     meals:[
       {
         name: 'Sushi',
@@ -20,11 +19,5 @@ new Vue({
         ingredients: ['pizza dough', 'tomato sauce', 'ham','mushrooms']
       }
     ]
-  },
-  methods: {
-
-  },
-  computed: {
-
   }
 });
