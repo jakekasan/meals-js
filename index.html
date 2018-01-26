@@ -7,15 +7,29 @@
     <link href="style.css" rel="stylesheet" />
   </head>
   <body>
-    <div id="vue-app">
+    <div id="vue-app" class="viewer">
       <div v-for="item in meals">
         <div class="card">
-          <div class="inner-card">
-            <h4><b>{{ item.name }}</b></h4>
-            <ul>
-              <li v-for="ingredient in item.ingredients"> {{ ingredient }}</li>
-            </ul>
-          </div>
+            <div class="card-title">
+              <div class="card-title-text">
+                {{ item.name }}
+              </div>
+
+            </div>
+            <div class="card-section">
+              <div>Ingredients:</div>
+              <div class="card-section-item" v-for="ingredient in item.ingredients"> &copy {{ ingredient }}</li>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div>
+                Cook Time: 2h 30m
+              </div>
+              <div>
+                Cost per meal: £2
+              </div>
+            </div>
+
         </div>
       </div>
     </div>
