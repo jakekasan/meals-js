@@ -52,12 +52,28 @@
                                 <li class="collection-item"><%= item.name %> : <%= item.quantity %></li>
                             <% } %>
                         </ul>
+                        <table class="striped highlight">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (let item of data.groceries){ %>
+                                <tr>
+                                    <th><%= item.name %></th>
+                                    <th><%= item.quantity %></th>
+                                </tr>
+                                
+                                <% } %>
+                            </tbody>
+                        </table>
                     </div>
                     <div class="card-action">
                         <a href="#!">Download</a>
                         <a href="#!">Modify</a>
                     </div>
-                    
                 </div>
             </div>
         </div>
