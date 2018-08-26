@@ -12,22 +12,23 @@
     <div class="container">
         <div class="row">
             <%  let daysOfWeek = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-                for(let key in data){
-                    if (data.hasOwnProperty(key)){ %>
+                for(let item of data.mealPlan){
+                     %>
             <div class="col s12 m6 l4 xl3">
-                <div class="card">
+                <div class="card small">
                     <div class="card-content">
                         <div class="card-title">
-                            <%= key %>
+                            <% let day = item.day %>
+                            <%= (day[0].toUpperCase())+day.substring(1) %>
                         </div>
-                        <%= JSON.stringify(data[key]) %>
+                        <%= item.recipe.name %>
                     </div>
                     <div class="card-action">
                         <a href="#!">Remove</a>
                     </div>
                 </div>
             </div>
-            <% }} %>
+            <% } %>
             
         </div>
     </div>
@@ -35,7 +36,6 @@
         <div class="row right">
             <button class="btn waves-effect waves-light">Submit</button>
         </div>
-        <%= JSON.stringify(data) %>
         <br>
         <br>
     </div>
@@ -47,10 +47,9 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="card-title">Your shopping list: </div>
-                        <% let ingredients = ["Bread","Pasta","Beef","Onion"]; %>
                         <ul class="collection">
-                            <% for (let item of ingredients){ %>
-                                <li class="collection-item"><%= item %></li>
+                            <% for (let item of data.groceries){ %>
+                                <li class="collection-item"><%= item.name %> : <%= item.quantity %></li>
                             <% } %>
                         </ul>
                     </div>
