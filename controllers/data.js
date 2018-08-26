@@ -157,6 +157,70 @@ recipes = [
                 quantity:100
             }
         ]
+    },
+    {
+        name:"Mac N' Cheese",
+        ingredients:[
+            {
+                name:"Cheese",
+                quantity:200
+            },
+            {
+                name:"Butter",
+                quantity:100
+            },
+            {
+                name:"Pasta",
+                quantity:200
+            }
+        ]
+    },
+    {
+        name:"Mince and Potatoes",
+        ingredients:[
+            {
+                name:"Beef Mince",
+                quantity:250
+            },
+            {
+                name:"Potato",
+                quantity:500
+            },
+            {
+                name:"Onion",
+                quantity:100
+            }
+        ]
+    },
+    {
+        name:"Chicken Quasedia (prolly misspelled)",
+        ingredients:[
+            {
+                name:"Chicken Breast",
+                quantity:300
+            },
+            {
+                name:"Wrap",
+                quantity:200
+            },
+            {
+                name:"Cheese",
+                quantity:300
+            }
+        ]
+    },
+    {
+        name:"Buttery Chicken",
+        ingredients:[
+            {
+                name:"Chicken Breast",
+                quantity:300
+            },
+            {
+                name:"Butter",
+                quantity:100
+            }
+        ]
     }
 ]
 
