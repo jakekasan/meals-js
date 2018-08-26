@@ -8,7 +8,37 @@ module.exports = (app,address) => {
         fetch(url)
             .then(result => result.json())
             .then(result => {
-                res.render("home",{data:result});
+                // first, we seperate the data
+                
+                let ingredients = ((Object.keys(result)).map(key => result[key])).map(item => item.ingredients).reduce((acc,ele) => {
+                    acc = acc.concat(ele);
+                    return acc
+                },[]);
+                
+                let groceries = ingredients.reduce((acc,ele) => {
+                    acc[ele.name] = ((acc[ele.name]) ? acc[ele.name] : 0) + ele.quantity;
+                    return acc
+                },{});
+
+                groceries = Object.keys(groceries).map(key => {
+                    return {
+                        name:key,
+                        quantity:groceries[key]
+                    }
+                });
+
+                let mealPlan = (Object.keys(result)).map(item => {
+                    return {
+                        day:item,
+                        recipe:result[item]
+                    }
+                });
+                
+                let responseObject = {
+                    mealPlan:mealPlan,
+                    groceries:groceries
+                }
+                res.render("home",{data:responseObject});
             });
     });
 
@@ -60,7 +90,7 @@ module.exports = (app,address) => {
                     console.log("Promises resolved");
                     console.log(values);
                     for (let value of values){
-                        filledDays[value.day] = value;
+                        filledDays[value.day] = value.data;
                     }
 
                     res.json(filledDays);
