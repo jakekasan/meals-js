@@ -17,7 +17,7 @@ module.exports = (app,address) => {
     app.get("/api/data",(req,res) => {
         console.log("/api/data");
         console.log(req.query);
-        let dow = ["monday","tuesday","wednesday","thrusday","friday","saturday","sunday"];
+        let dow = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
         let filledDays = req.query;
         let required = dow.filter(item => {
             return !(Object.keys(filledDays)).includes(item)
@@ -36,21 +36,21 @@ module.exports = (app,address) => {
             console.log(chosenRecipe);
             includedRecipes.push(chosenRecipe);
             filledDays[day] = chosenRecipe;
-            let url = new URL(address+"/api/data/recipe");
+            let url = new URL(address+"/api/data/recipe/fill");
             url.search = new URLSearchParams({
                 name:chosenRecipe
-            })
+            });
             let promise = fetch(url)
-                                .then(data => {
-                                    data.json();
-                                })
+                                .then(data => data.json())
                                 .then(data => {
                                     console.log("Data for",day);
                                     console.log(data);
-                                    return {
+                                    let responseObject = {
                                         day:day,
                                         data:data
                                     }
+                                    console.log(responseObject);
+                                    return responseObject
                                 });
             promises.push(promise);
         }
@@ -59,11 +59,11 @@ module.exports = (app,address) => {
                 .then(values => {
                     console.log("Promises resolved");
                     console.log(values);
-                    for (let value in values){
-                        filledDays[value.day] = value.data;
+                    for (let value of values){
+                        filledDays[value.day] = value;
                     }
 
-                    res.send(filledDays);
+                    res.json(filledDays);
                 })
 
 
@@ -83,12 +83,13 @@ module.exports = (app,address) => {
             fetch(url)
                 .then(data => data.json())
                 .then(data => {
-                    res.send(data);
+                    res.json(data);
                 });
         } else if (req.query.q){
             // search for results to recipe
             // still to do...
             console.log("Got req.query.q")
+            res.json({});
         } else if (req.query.name){
             // search for direct name, return first match
             let result = database.recipes.filter(item => {
@@ -97,15 +98,20 @@ module.exports = (app,address) => {
 
             let url = new URL(address+"/api/data/recipe/fill");
 
-            url.search = new URLSearchParams(result);
+            url.search = new URLSearchParams({
+                name:result.name
+            });
+            console.log("/api/data/recipe/fill - getting recipe filled");
             fetch(url)
                 .then(data => data.json())
                 .then(data => {
-                    res.send(data);
+                    console.log("/api/data/recipe/fill - Response");
+                    console.log(data);
+                    res.json(data);
                 });
         } else {
             console.log("Sending empty string");
-            res.send(JSON.stringify([]));
+            res.json({});
         }
     });
 
@@ -126,12 +132,21 @@ module.exports = (app,address) => {
                 name:item.name,
                 quantity:item.quantity
             });
-            return fetch(url).then(data => JSON.stringify(data.json()))
+            return fetch(url).then(data => data.json())
         });
+
+        console.log("/api/data/recipe/fill solving all Promises");
 
         Promise.all(ingredientsPromises)
                             .then(values => {
-                                res.send(JSON.stringify(values));
+                                console.log("/api/data/recipe/fill ingredientsPromises")
+                                //console.log(values);
+                                let responseObject = {
+                                    name: recipe.name,
+                                    ingredients:values
+                                };
+                                console.log(responseObject);
+                                res.json(responseObject);
                             })
                             .catch(e => {
                                 console.log(e);
@@ -141,9 +156,11 @@ module.exports = (app,address) => {
     })
 
     app.get("/api/data/ingredient",(req,res) => {
+        console.log("/api/data/ingredient");
         console.log(req.query);
         if (!(req.query.name)){
-            res.send(JSON.stringify([]));
+            console.log("/api/data/ingredient - query name not given")
+            res.json({});
             return
         }
 
@@ -155,19 +172,23 @@ module.exports = (app,address) => {
         let ingredient = database.ingredients.filter(item => (item.name == query.name)).pop();
 
         if (!ingredient){
-            res.send(JSON.stringify([]));
+            console.log("/api/data/ingredient - no such ingredient");
+            res.json({});
             return
         }
 
         if (!query.quantity){
-            res.send(JSON.stringify(ingredient));
+            console.log("/api/data/ingredient - no quantity specified, returning ingredient");
+            res.json({});
         }
 
         let requiredAmount = (Math.ceil(query.quantity / ingredient.quantity)) * ingredient.quantity;
 
-        res.send(JSON.stringify({
+        console.log("/api/data/ingredient - found ingredient and sending required amount");
+        let response = {
             name:query.name,
             quantity:requiredAmount
-        }));
+        };
+        res.json(response);
     });
 }

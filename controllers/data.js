@@ -128,7 +128,7 @@ recipes = [
                 quantity:300
             },
             {
-                name:"Onions",
+                name:"Onion",
                 quantity:100
             },
             {
@@ -161,6 +161,14 @@ recipes = [
 ]
 
 ingredients = [
+    {
+        name:"Garlic",
+        quantity:50
+    },
+    {
+        name:"Butter",
+        quantity:400
+    },
     {
         name:"Beef Mince",
         quantity:750
@@ -208,6 +216,10 @@ ingredients = [
     {
         name:"Chopped Tomatoes",
         quantity:440
+    },
+    {
+        name:"Peppers",
+        quantity:350
     }
 ]
 
