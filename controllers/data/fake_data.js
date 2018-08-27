@@ -224,70 +224,100 @@ recipes = [
     }
 ]
 
-ingredients = [
+foodProducts = [
     {
         name:"Garlic",
-        quantity:50
+        quantity:50,
+        vendor:"Tesco",
+        cost:50
     },
     {
         name:"Butter",
-        quantity:400
+        quantity:400,
+        vendor:"Tesco",
+        cost:150
     },
     {
         name:"Beef Mince",
-        quantity:750
+        quantity:750,
+        vendor:"Tesco",
+        cost:400
     },
     {
         name:"Chicken Breast",
-        quantity:600
+        quantity:600,
+        vendor:"Tesco",
+        cost:350
     },
     {
         name:"Egg",
-        quantity:400
+        quantity:400,
+        vendor:"Tesco",
+        cost:180
     },
     {
         name:"Onion",
-        quantity:80
+        quantity:80,
+        vendor:"Tesco",
+        cost:50
     },
     {
         name:"Carrot",
-        quantity:60
+        quantity:60,
+        vendor:"Tesco",
+        cost:50
     },
     {
         name:"Potato",
-        quantity:1000
+        quantity:1000,
+        vendor:"Tesco",
+        cost:80
     },
     {
         name:"Pasta",
-        quantity:500
+        quantity:500,
+        vendor:"Tesco",
+        cost:150
     },
     {
         name:"Mushroom",
-        quantity:220
+        quantity:220,
+        vendor:"Tesco",
+        cost:60
     },
     {
         name:"Cheese",
-        quantity:300
+        quantity:300,
+        vendor:"Tesco",
+        cost:230
     },
     {
         name:"Wrap",
-        quantity:400
+        quantity:400,
+        vendor:"Tesco",
+        cost:110
     },
     {
         name:"Chili",
-        quantity:80
+        quantity:80,
+        vendor:"Tesco",
+        cost:50
     },
     {
         name:"Chopped Tomatoes",
-        quantity:440
+        quantity:440,
+        vendor:"Tesco",
+        cost:65
     },
     {
         name:"Peppers",
-        quantity:350
+        quantity:350,
+        vendor:"Tesco",
+        cost:150
     }
 ]
 
 module.exports = {
     recipes,
-    ingredients
+    foodProducts
 }
