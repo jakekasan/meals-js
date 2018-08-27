@@ -4,13 +4,32 @@ const daysOfWeek = ["monday","tuesday","wednesday","thursday","friday","saturday
 // mealplan
 
 function fillMealPlan(mealPlan){
+    /*
+        Takes a mealplan, validates it, and fills remaining days
+
+        mealPlan = an object with day of the week key values
+    */
+
     if(!isValidMealPlan(mealPlan)){
         return false
     }
+
+    while (Object.keys(mealPlan).length < 7){
+        mealPlan = fillMealPlanDay(mealPlan);
+    }
+
+    return mealPlan
 }
 
 function fillMealPlanDay(mealPlan){
-    
+    /*
+        Takes a mealPlan object and fills one day (if unfilled)
+    */
+
+    //check if it's really unfilled
+    if (Object.keys(mealPlan).length == 7){
+        return mealPlan
+    }
 }
 
 // fill recipes and ingredients
