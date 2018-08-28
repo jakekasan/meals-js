@@ -1,7 +1,10 @@
 const express = require("express");
 const app = express();
+const cookieParser = require("cookie-parser");
 
 const routes = require("./controllers/routes.js");
+
+app.use(cookieParser());
 
 // globals
 
