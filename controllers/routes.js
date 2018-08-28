@@ -1,8 +1,37 @@
-const database = require("./data");
+const database = require("./data/fake_data");
+
 const fetch = require("node-fetch");
 
 module.exports = (app,address) => {
     app.get("/",(req,res) => {
+
+        res.render("home",{data:{
+            mealPlan:[
+                {
+                    day:"monday"
+                },
+                {
+                    day:"tuesday"
+                },
+                {
+                    day:"wednesday"
+                },
+                {
+                    day:"thursday"
+                },
+                {
+                    day:"friday"
+                },
+                {
+                    day:"saturday"
+                },
+                {
+                    day:"sunday"
+                }
+            ],
+            groceries:[]
+        }});
+        /*
         let url = new URL(address+"/api/data");
         url.search = new URLSearchParams(req.query);
         fetch(url)
@@ -43,6 +72,7 @@ module.exports = (app,address) => {
 
                 res.render("home",{data:responseObject});
             });
+        */
     });
 
     // data API
