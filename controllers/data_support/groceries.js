@@ -1,6 +1,69 @@
 const mongoose = require("mongoose");
 const daysOfWeek = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
 
+// main data blueprint
+/*
+
+    data: {
+        recipes:{
+            monday:{
+
+            },
+            tuesday:{
+
+            },
+            wednesday:{
+
+            },
+            thursday:{
+
+            },
+            friday:{
+
+            },
+            saturday:{
+
+            },
+            sunday:{
+
+            }
+        },
+        groceries:[
+            {
+                name:"",
+                quantityToBuy:0,
+                quantityRequired:0
+            }
+        ]
+    }
+
+*/
+
+// ----------------
+// routing funtions
+// ----------------
+
+// cookie functions
+
+function getUserSession(cookie,userSessions){
+    // to be finished
+    if (cookie) {
+        return userSessions.getSession(cookie.id);
+    }
+}
+
+function processQuery(query){
+    let days = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
+
+    for(let key in Object.keys(query)){
+        if (days.includes(key)){
+
+        }
+    }
+}
+
+//
+
 // mealplan
 
 function fillMealPlan(mealPlan){
