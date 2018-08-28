@@ -11,25 +11,9 @@
     </div>
     <div class="container">
         <div class="row">
-            <%  let daysOfWeek = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-                for(let item of data.mealPlan){
-                     %>
-            <div class="col s12 m6 l4 xl3">
-                <div class="card small">
-                    <div class="card-content">
-                        <div class="card-title">
-                            <% let day = item.day %>
-                            <%= (day[0].toUpperCase())+day.substring(1) %>
-                        </div>
-                        <%= item.recipe.name %>
-                    </div>
-                    <div class="card-action">
-                        <a href="#!">Remove</a>
-                    </div>
-                </div>
-            </div>
+            <%  for(let item of data.mealPlan){ %>
+                <%- include('card',{item:item}); -%>
             <% } %>
-            
         </div>
     </div>
     <div class="container">
@@ -79,5 +63,45 @@
         </div>
     </div>
 </body>
+
+
+<script>
+    document.onload = function(){
+        console.log("ready");
+    }
+
+    function addButton(day){
+        // to-do: Load a modal and add the code at the bottom to the "on submit" button
+
+        console.log(day);
+
+        let recipe = "Scrambled Eggs";
+        let url = new URL("http://localhost:8000");
+        //let mealPlan = <%= data.mealPlan %>;
+
+        let mealPlan = [];
+
+        console.log(mealPlan);
+        
+        let query = mealPlan.reduce((acc,elem) => {
+            if (elem.day == day){
+                acc[elem.day] = recipe;
+                return acc
+            } else if (elem.recipe){
+                acc[elem.day] = elem.recipe;
+                return acc
+            } else {
+                return acc   
+            }
+            
+        },{});
+
+        
+        url.search = new URLSearchParams(query)
+
+        window.location = url.href;
+    }
+</script>
+
 
 <% include footer %>
