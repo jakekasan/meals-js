@@ -23,6 +23,7 @@
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "mongoose": "^5.2.9",
-    "node-fetch": "^2.2.0"
+    "node-fetch": "^2.2.0",
+    "sqlite3": "^4.0.2"
   }
 }
