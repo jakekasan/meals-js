@@ -1,0 +1,31 @@
+<!--
+
+    card template
+
+-->
+
+<div class="col s12 m6 l4 xl3">
+    <div class="card small">
+        <div class="card-content">
+            <div class="card-title">
+                <% let day = item.day %>
+                <%= (day[0].toUpperCase())+day.substring(1) %>
+            </div>
+            <% if (item.recipe) { %>
+            <%= item.recipe.name %>
+            <% } else { %>
+            <div class="section center">
+                <div class="col s12 l12">
+                    <a class="btn-floating btn-large waves-effect waves-light red" onclick="addButton(<%= JSON.stringify(item.day) %>)"><i class="material-icons">add</i></a>
+                </div>
+            </div>
+            <% } %>
+        </div>
+        <div class="card-action">
+            <a href="#!"></a>
+            <a href="#!">Remove</a>
+        </div>
+    </div>
+</div>
+
+
