@@ -4,11 +4,28 @@ const Imports = require("../imports");
 
 console.log("Running test on cookies.js");
 
-console.log("Testing 'loadDatabase()'...");
+
 
 function test_loadDatabase(){
-    Imports.Cookies.loadDatabase();
 
-    console.log("End of test...");
+    console.log("Testing 'loadDatabase()'...");
+
+    Imports.Cookies.loadDatabase(undefined,undefined);
+
+    console.log("Finished testing 'loadDatabase()'...");
+
+    return
 }
+
+function test_createUserSession(){
+
+    console.log("Testing 'createUserSession()'...");
+
+    Imports.Cookies.createUserSession();
+
+    console.log("Finished testing 'createUserSession()'...")
+}
+
+test_loadDatabase();
+test_createUserSession();
 
