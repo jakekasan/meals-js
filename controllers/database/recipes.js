@@ -6,4 +6,15 @@
 
 */
 
+function getMealPlan(req,res,userSession){
+    userSession.mealplan = Object.keys(userSession.mealPlan).map(key => {
+        let data = userSession.mealPlan[key];
+        if (data){
+            return fillMealDay(data)
+        } else {
+            return data
+        }
+    })
+}
+
 module.exports = "Nothing yet...";
