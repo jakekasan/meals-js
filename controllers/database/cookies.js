@@ -12,6 +12,9 @@
 
 // placeholder stuff
 
+const Imports = require("../imports");
+const Processor = require("../processor");
+
 const sqlite3 = require("sqlite3");
 
 function initDatabase(){
@@ -48,6 +51,7 @@ function initDatabase(){
 }
 
 function loadDatabase(){
+    
     let db = new sqlite3.Database("./db/userSessions.db",(err) => {
         if (err){
             console.log(err);
@@ -69,14 +73,23 @@ function loadDatabase(){
         sunday text
     );`
 
-    db.run(sql);
+    db.run(sql,[],(err,row) => {
+        if (err){
+            console.log(err);
+            return
+        }
+        console.log(row);
+        return
+    });
 
     console.log(db);
 
-    return db
+    db.close();
+
+    return
 }
 
-function getUserSession(cookieID){
+function getUserSession(req,res){
     /*
 
         Takes a cookie object from req.query and returns a user session object (if it exists)
@@ -88,39 +101,75 @@ function getUserSession(cookieID){
     let db = loadDatabase();
 
     let sql =   `SELECT * FROM user_sessions
-                 WHERE cookieID == ?`
+                 WHERE cookieID == ?`;
+
 
     db.get(sql,[cookieID],(err,row) => {
         if (err) {
             return console.error(err.message)
         }
-        console.log(row);
+        // if cookie did not exist, row should be empty
+
+        // if row is empty, create user session
+        if (!row){
+            createUserSession(req,res);
+        } else {
+            callBack(req,res,row);
+        }
+
+        // if user session exists, make the object and return it
+        callBack(req,res,row);
         return
     });
 
     db.close();
+
+    return {userSession,cookie};
 }
 
-function createUserSession(userName){
+function createUserSession(req,res){
     /*
         Return a new cookieID
     */
 
-    // to be completed...
-    let cookieID = 0;
+    // first, get the current cookie ID + 1
 
-    let sql = `INSERT INTO user_sessions(cookieID,userName) VALUES (?,?)`;
+    let sql = `SELECT MAX(cookieID)+1 FROM user_sessions WHERE EXISTS(SELECT * FROM user_sessions)`
 
     let db = loadDatabase();
 
-    db.run(sql,[cookieID,"jeff"],(err) => {
-        if (err) {
+    db.run(sql,[],(err,row) => {
+        if (err){
             console.log(err);
+            return
         }
-        console.log(`Added ${this.changes} rows`);
+        console.log(row);
+        return
     });
+    return
 
-    db.close();
+    // let sql = `INSERT INTO user_sessions(cookieID) VALUES (?,?)`;
+
+    // let db = loadDatabase();
+
+    // db.run(sql,[cookieID,"jeff"],(err) => {
+    //     if (err) {
+    //         console.log(err);
+    //     }
+    //     console.log(`Added ${this.changes} rows`);
+
+
+    // });
+
+    // db.close();
+}
+
+function generateNewCoookie(){
+    let sql = `SELECT MAX(cookieID) FROM user_sessions`;
+
+    let db = loadDatabase();
+
+    db.run(sql);
 }
 
 
