@@ -46,3 +46,6 @@ function main(req,res,userSession){
     res.render("home",{data:userSession});
 }
 
+module.exports = {
+    main
+}
