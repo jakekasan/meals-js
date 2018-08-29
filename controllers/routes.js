@@ -1,36 +1,57 @@
-const database = require("./data/fake_data");
+/*
+
+    routes.js
+
+    - handles routing for the app
+
+*/
+
+// imports
+
+const database = require("./database/fake_data");
+const imports = require("./imports");
+
+const Cookies = imports.Cookies;
+const Recipes = imports.Recipes;
+const Processor = require("./processor");
+
 
 const fetch = require("node-fetch");
+
 
 module.exports = (app,address) => {
     app.get("/",(req,res) => {
 
-        res.render("home",{data:{
-            mealPlan:[
-                {
-                    day:"monday"
-                },
-                {
-                    day:"tuesday"
-                },
-                {
-                    day:"wednesday"
-                },
-                {
-                    day:"thursday"
-                },
-                {
-                    day:"friday"
-                },
-                {
-                    day:"saturday"
-                },
-                {
-                    day:"sunday"
-                }
-            ],
-            groceries:[]
-        }});
+        // get userSession
+
+        Processor(req,res);
+
+        // res.render("home",{data:{
+        //     mealPlan:[
+        //         {
+        //             day:"monday"
+        //         },
+        //         {
+        //             day:"tuesday"
+        //         },
+        //         {
+        //             day:"wednesday"
+        //         },
+        //         {
+        //             day:"thursday"
+        //         },
+        //         {
+        //             day:"friday"
+        //         },
+        //         {
+        //             day:"saturday"
+        //         },
+        //         {
+        //             day:"sunday"
+        //         }
+        //     ],
+        //     groceries:[]
+        // }});
         /*
         let url = new URL(address+"/api/data");
         url.search = new URLSearchParams(req.query);
