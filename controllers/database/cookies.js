@@ -50,14 +50,15 @@ function initDatabase(){
     db.close();
 }
 
-function loadDatabase(){
-    
-    let db = new sqlite3.Database("./db/userSessions.db",(err) => {
+function loadDatabase(callback){
+
+    let db = new sqlite3.Database(":memory:",(err) => {
         if (err){
             console.log(err);
             return false
         }
         console.log("Connected to SQLite");
+        return
     });
 
     let sql = `CREATE TABLE IF NOT EXISTS user_session(
@@ -73,20 +74,14 @@ function loadDatabase(){
         sunday text
     );`
 
-    db.run(sql,[],(err,row) => {
+    db.run(sql,[],(err) => {
         if (err){
             console.log(err);
             return
         }
-        console.log(row);
-        return
+        console.log(this);
+        callback(db);
     });
-
-    console.log(db);
-
-    db.close();
-
-    return
 }
 
 function getUserSession(req,res){
@@ -98,31 +93,58 @@ function getUserSession(req,res){
 
     */
 
-    let db = loadDatabase();
+    // callback to be run if successfull connected to database
 
-    let sql =   `SELECT * FROM user_sessions
-                 WHERE cookieID == ?`;
+    let userSessionCallback = function(db){
+        let sql =   `SELECT * FROM user_sessions
+        WHERE cookieID == ?`;
+
+        db.get(sql,[cookieID],(err,row) => {
+            if (err) {
+                return console.error(err.message)
+            }
+            // if cookie did not exist, row should be empty
+
+            console.log(row);
+    
+            // if row is empty, create user session
+            if (!row){
+                createUserSession(req,res);
+            } else {
+                // assemble userSession object
+                let userSession = {
+                    cookie: row.cookieID,
+                    mealPlan:{
+                        monday:row.monday,
+                        tuesday:row.tuesday,
+                        wednesday:row.wednesday,
+                        thursday:row.thursday,
+                        friday:row.friday,
+                        saturday:row.saturday,
+                        sunday:row.saturday
+                    }
+                }
+                Processor.main(req,res,userSession);
+            }
+    
+            // if user session exists, make the object and return it
+            
+            return
+        });
+    
+        db.close();
+
+        
+    }
+
+    
+
+    
+    
+    
 
 
-    db.get(sql,[cookieID],(err,row) => {
-        if (err) {
-            return console.error(err.message)
-        }
-        // if cookie did not exist, row should be empty
-
-        // if row is empty, create user session
-        if (!row){
-            createUserSession(req,res);
-        } else {
-            callBack(req,res,row);
-        }
-
-        // if user session exists, make the object and return it
-        callBack(req,res,row);
-        return
-    });
-
-    db.close();
+    
 
     return {userSession,cookie};
 }
@@ -138,7 +160,7 @@ function createUserSession(req,res){
 
     let db = loadDatabase();
 
-    db.run(sql,[],(err,row) => {
+    db.get(sql,[],(err,row) => {
         if (err){
             console.log(err);
             return
