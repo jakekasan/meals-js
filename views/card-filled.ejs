@@ -11,8 +11,8 @@
             </div>
             <p> <%= data.recipe.name %> </p>
             <ul class="collection">
-                <%      for (let ingredient in data.recipe.ingredients){ %>
-                            <li class="collection-item"> <%= ingredient %> </li>
+                <%      for (let ingredient of data.recipe.ingredients){ %>
+                            <li class="collection-item"> <%= ingredient.name %> </li>
                 <%      } %>
             </ul>
         </div>
