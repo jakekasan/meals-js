@@ -13,7 +13,7 @@ const imports = require("./imports");
 
 const Cookies = imports.Cookies;
 const Recipes = imports.Recipes;
-const Processor = require("./processor");
+const Processor = imports.Processor;
 
 
 const fetch = require("node-fetch");
@@ -323,5 +323,11 @@ module.exports = (app,address) => {
         } else if (req.query.name){
             imports.Ingredients
         }
+    });
+
+    app.post("/api/user",(req,res) => {
+        console.log(req.body);
+        res.sendStatus(200);
+        //imports.Processor.updateUserSession(req,res);
     });
 }
