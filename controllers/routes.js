@@ -22,9 +22,34 @@ const fetch = require("node-fetch");
 module.exports = (app,address) => {
     app.get("/",(req,res) => {
 
-        // get userSession
+        // let's just try to load an empty page
 
-        Processor(req,res);
+        res.cookie = {id:0}
+        res.render("home",{data:{
+            userSession:0,
+            mealPlan:{
+                monday:{
+                    name:"Scrambled Eggs",
+                    ingredients:[
+                        {
+                            name:"Egg",
+                            quantity:200
+                        },
+                        {
+                            name:"Butter",
+                            quantity:50
+                        },
+                        {
+                            name:"Cheese",
+                            quantity:50
+                        }
+                    ]
+                }
+            },
+            groceries:[]
+        }});
+
+        // Processor(req,res);
 
         // res.render("home",{data:{
         //     mealPlan:[
