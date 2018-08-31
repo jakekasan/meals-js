@@ -24,7 +24,12 @@ module.exports = (app,address) => {
 
         // let's just try to load an empty page
 
-        res.cookie = {id:0}
+        console.log(req.cookies);
+        
+        if (!req.cookies._id){
+            res.cookie("_id",0);
+        }
+
         res.render("home",{data:{
             userSession:0,
             mealPlan:{
@@ -326,7 +331,8 @@ module.exports = (app,address) => {
     });
 
     app.post("/api/user",(req,res) => {
-        console.log(req.body);
+        
+        console.log(`Cookie ID: ${JSON.stringify(req.cookies)}\nData: ${JSON.stringify(req.body)}`)
         res.sendStatus(200);
         //imports.Processor.updateUserSession(req,res);
     });

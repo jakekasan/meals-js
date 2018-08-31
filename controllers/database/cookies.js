@@ -195,6 +195,39 @@ function generateNewCoookie(){
     db.run(sql);
 }
 
+// new middleware
+
+
+function cookieMiddleware(req,res,next){
+    if (!req.cookies._id){
+        // no cookie ID, grab new cookie ID
+    }
+}
+
+function noCookie(req,res,next){
+    // put new user session in the database, and on completion pass the request and response down
+
+    let noCookieCallback = function(db){
+        // callback to be finished...
+    }
+}
+
+function yesCookie(req,res,next){
+    /*
+        Check if the cookieID exists in the database.
+        If yes, add the session to the request object
+        If not, run noCookie.
+    */
+
+    let yesCookieCallback = function(db){
+        let sql = `SELECT * FROM user_sessions WHERE cookieID == (?)`;
+        db.get(sql,[req.cookies._id],(err,row) => {
+            if (err) {
+                // for now, just log error and create new cookie
+            }
+        })
+    }
+}
 
 module.exports = {
     loadDatabase,
