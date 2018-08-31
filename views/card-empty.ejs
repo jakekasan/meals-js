@@ -18,28 +18,60 @@
     function selectNewRecipe(element){
         let theDay = element.value;
 
-        // load modal
+        // get a list of all recipes from server and render them into modal
+
+        fetch("http://localhost:8000/api/recipes")
+            .then(data => data.json())
+            .then(data => {
+                let ul = document.createElement("ul");
+                ul.className = "collection";
+                for (let item of data){
+                    let li = document.createElement("li");
+                    li.className = "collection-item";
+                    li.innerText = item.name;
+                    
+                    // add event listener
+                    li.addEventListener("click",() => {
+                        console.log(item.name);
+                        document.querySelectorAll(".modal").forEach(element => (M.Modal.getInstance(element).close()));
+                    })
+
+                    ul.appendChild(li);
+                }
+                loadModal(ul);
+            })
+
+
+    }
+
+    function loadModal(content){
+
+        // overall container
+
         let modal = document.createElement("div");
         modal.className = "modal";
 
-        let modalContent = document.createElement("div");
-        modalContent.className = "modal-content";
-
-        modalContent.innerText = "Modal!!!";
+        // modal footer
 
         let modalFooter = document.createElement("div");
         modalFooter.className = "modal-footer";
+
+        // and the a tag
 
         let modalFooterA = document.createElement("a");
         modalFooterA.className = "modal-close waves-effect waves-green btn-flat";
         modalFooterA.innerText = "close";
 
+        // append A tag to footer
         modalFooter.appendChild(modalFooterA);
 
-        modal.appendChild(modalContent)
-        modal.appendChild(modalFooter);
-
+        // select the body to append everything to
         let body = document.getElementsByTagName("body")[0];
+
+        // append all children
+        
+        modal.appendChild(content)
+        modal.appendChild(modalFooter);
         body.appendChild(modal);
 
         var elems = document.querySelectorAll(".modal");
@@ -49,7 +81,7 @@
                 body.removeChild(modal);
             }
         });
-        instances[0].open();
+        instances[0].open();  
     }
 
 </script>
