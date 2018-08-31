@@ -277,4 +277,26 @@ module.exports = (app,address) => {
         };
         res.json(response);
     });
+
+    // rewriting api... (again)
+
+    app.get("/api/recipes",(req,res) => {
+        if ((Object.keys(req.query)).length < 1){
+            // get all
+            imports.Recipes.getAllRecipes(res);
+            return
+        } else if (req.query.name){
+            imports.Recipes.getAllRecipes(req.query.name,res);
+        }
+    });
+
+    app.get("/api/ingredients",(req,res) => {
+        if ((Object.keys(req.query)).length < 1){
+            // get all
+            imports.Ingredients.getAllRecipes(res);
+            return
+        } else if (req.query.name){
+            imports.Ingredients
+        }
+    });
 }
