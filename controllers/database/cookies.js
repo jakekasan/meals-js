@@ -17,38 +17,38 @@ const Processor = require("../processor");
 
 const sqlite3 = require("sqlite3");
 
-function initDatabase(){
-    /* 
-        Check if database exists
-        If not, create it
-    */
+// function initDatabase(){
+//     /* 
+//         Check if database exists
+//         If not, create it
+//     */
 
-    let sql =   `CREATE TABLE user_sessions(
-                    userID number,
-                    userName text,
-                    cookieID number,
-                    monday text,
-                    tuesday text
-                    wednesday text,
-                    thursday text,
-                    friday text,
-                    saturday text,
-                    sunday text
-                );`
+//     let sql =   `CREATE TABLE user_sessions(
+//                     userID number,
+//                     userName text,
+//                     cookieID number,
+//                     monday text,
+//                     tuesday text
+//                     wednesday text,
+//                     thursday text,
+//                     friday text,
+//                     saturday text,
+//                     sunday text
+//                 );`
 
-    let db = loadDatabase();
+//     let db = loadDatabase();
 
-    db.run(sql,[],(err) => {
-        if (err){
-            console.log(err);
-            db.close();
-            return
-        }
-        console.log("User session database created")
-    });
+//     db.run(sql,[],(err) => {
+//         if (err){
+//             console.log(err);
+//             db.close();
+//             return
+//         }
+//         console.log("User session database created")
+//     });
 
-    db.close();
-}
+//     db.close();
+// }
 
 function loadDatabase(callback){
 
@@ -121,18 +121,21 @@ function getUserSession(req,res){
                         thursday:row.thursday,
                         friday:row.friday,
                         saturday:row.saturday,
-                        sunday:row.saturday
+                        sunday:row.sunday
                     }
                 }
                 Processor.main(req,res,userSession);
             }
+            db.close();
     
             // if user session exists, make the object and return it
             
             return
         });
+
+
     
-        db.close();
+        
 
         
     }
@@ -154,36 +157,34 @@ function createUserSession(req,res){
         Return a new cookieID
     */
 
+    // construct callback
+
+    function createUserSessionCallback(db){
+        let sql = `SELECT MAX(cookieID)+1 FROM user_sessions WHERE EXISTS(SELECT * FROM user_sessions)`;
+
+        db.get(sql,[],(err,cookieID) => {
+            if (err){
+                console.log(err);
+                return
+            }
+            // we've got the max cookieID (if it exists)
+            console.log(cookieID);
+
+            let sql = `INSERT INTO user_sessions VALUES((?));`
+
+            db.run(sql,[cookieID],(err) => {
+                if (err) throw err;
+                db.close();
+            });
+        });
+        return
+
+    }
     // first, get the current cookie ID + 1
 
-    let sql = `SELECT MAX(cookieID)+1 FROM user_sessions WHERE EXISTS(SELECT * FROM user_sessions)`
+    
 
-    let db = loadDatabase();
-
-    db.get(sql,[],(err,row) => {
-        if (err){
-            console.log(err);
-            return
-        }
-        console.log(row);
-        return
-    });
-    return
-
-    // let sql = `INSERT INTO user_sessions(cookieID) VALUES (?,?)`;
-
-    // let db = loadDatabase();
-
-    // db.run(sql,[cookieID,"jeff"],(err) => {
-    //     if (err) {
-    //         console.log(err);
-    //     }
-    //     console.log(`Added ${this.changes} rows`);
-
-
-    // });
-
-    // db.close();
+    loadDatabase(createUserSessionCallback);
 }
 
 function generateNewCoookie(){
@@ -196,7 +197,6 @@ function generateNewCoookie(){
 
 
 module.exports = {
-    initDatabase,
     loadDatabase,
     getUserSession,
     createUserSession
