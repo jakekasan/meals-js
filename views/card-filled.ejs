@@ -9,12 +9,16 @@
             <div class="card-title">
                 <%= data.day %>
             </div>
-            <p> <%= data.recipe.name %> </p>
+            <p> <%= data.recipe.name %> : </p>
             <ul class="collection">
                 <%      for (let ingredient of data.recipe.ingredients){ %>
                             <li class="collection-item"> <%= ingredient.name %> </li>
                 <%      } %>
             </ul>
+            <div class="card-action">
+                <a value=<%= data.day%> href="#!" onclick="selectRecipe(this)"></a>
+            </div>
+
         </div>
     </div>
 </div>
