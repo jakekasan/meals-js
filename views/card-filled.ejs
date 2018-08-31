@@ -3,16 +3,18 @@
     Template for card that has data
 
 -->
-
-<div class="card" id=(<%= JSON.stringify(data.day) %>)>
-    <div class="card-content">
-        <div class="card-title">
-            <%= data.recipe.name %>
+<div class="col s12 m6 l4">
+    <div class="card small" id=<%=data.day%>>
+        <div class="card-content">
+            <div class="card-title">
+                <%= data.day %>
+            </div>
+            <p> <%= data.recipe.name %> </p>
+            <ul class="collection">
+                <%      for (let ingredient in data.recipe.ingredients){ %>
+                            <li class="collection-item"> <%= ingredient %> </li>
+                <%      } %>
+            </ul>
         </div>
-        <ul class="collection">
-            <%      for (let ingredient in data.recipe.ingredients){ %>
-                        <li class="collection-item"> <%= ingredient %> </li>
-            <%      } %>
-        </ul>
     </div>
 </div>
