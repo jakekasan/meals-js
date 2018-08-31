@@ -3,12 +3,53 @@
     empty card
 
 -->
-
-<div class="card">
-    <div class="card-content">
-        <div class="card-title">
-            <%= JSON.stringify(data.day) %>
+<div class="col s12 m6 l4">
+    <div class="card small">
+        <div class="card-content">
+            <div class="card-title">
+                <%= data.day %>
+            </div>
+            <button onclick="selectNewRecipe(this)" value=<%= data.day %>>Click me!</button>
         </div>
-        <h1>Empty card!</h1>
     </div>
 </div>
+
+<script>
+    function selectNewRecipe(element){
+        let theDay = element.value;
+
+        // load modal
+        let modal = document.createElement("div");
+        modal.className = "modal";
+
+        let modalContent = document.createElement("div");
+        modalContent.className = "modal-content";
+
+        modalContent.innerText = "Modal!!!";
+
+        let modalFooter = document.createElement("div");
+        modalFooter.className = "modal-footer";
+
+        let modalFooterA = document.createElement("a");
+        modalFooterA.className = "modal-close waves-effect waves-green btn-flat";
+        modalFooterA.innerText = "close";
+
+        modalFooter.appendChild(modalFooterA);
+
+        modal.appendChild(modalContent)
+        modal.appendChild(modalFooter);
+
+        let body = document.getElementsByTagName("body")[0];
+        body.appendChild(modal);
+
+        var elems = document.querySelectorAll(".modal");
+        console.log(elems);
+        var instances = M.Modal.init(elems,{
+            onCloseEnd:() => {
+                body.removeChild(modal);
+            }
+        });
+        instances[0].open();
+    }
+
+</script>
