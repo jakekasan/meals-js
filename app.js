@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 
 const routes = require("./controllers/routes.js");
 
@@ -13,6 +14,8 @@ const address = "http://localhost:8000"
 app.set("view engine","ejs");
 
 app.use(express.static("public"));
+
+app.use(bodyParser.json());
 
 routes(app,address);
 
