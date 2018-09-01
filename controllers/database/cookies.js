@@ -225,6 +225,10 @@ function noCookie(req,res,next){
 
             req.cookies._id = maxCookieID+1;
             res.cookie("_id",maxCookieID+1);
+            res.userSession = {
+                mealPlan:{},
+                groceries:[]
+            }
             next();
         });
     }
@@ -247,27 +251,33 @@ function yesCookie(req,res,next){
             if (err) {
                 // for now, just log error and create new blank user session
                 req.userSession = {
-                    mealPlan = {},
-                    groceries = []
+                    mealPlan: {},
+                    groceries: []
                 }
-                
             }
             req.userSession = assembleUserSession(row);
+            next();
         });
     }
+
+    loadDatabase(yesCookieCallback);
 }
 
 function assembleUserSession(row){
+    if (Object.values(row).pop() == null){
+        return {
+            mealPlan: {},
+            groceries: []
+        }
+    }
+    let mealPlan = {};
+    for (let key in row){
+        if (typeof row[key] == String){
+            mealPlan[key] = row[key];
+        }
+    }
     return {
-        mealPlan: {
-            monday:row.monday,
-            tuesday:row.tuesday,
-            wednesday:row.wednesday,
-            thursday:row.thursday,
-            friday:row.friday,
-            saturday:row.saturday,
-            sunday:row.sunday
-        },
+        mealPlan: mealPlan,
         groceries: []
     }
 }
