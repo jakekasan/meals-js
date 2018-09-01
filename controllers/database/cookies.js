@@ -54,14 +54,15 @@ function loadDatabase(callback){
 
     let db = new sqlite3.Database(":memory:",(err) => {
         if (err){
+            console.log("Connection to SQLite unsuccessful")
             console.log(err);
-            return false
+            return
         }
-        console.log("Connected to SQLite");
+        console.log("Connection to SQLite successful");
         return
     });
 
-    let sql = `CREATE TABLE IF NOT EXISTS user_session(
+    let sql = `CREATE TABLE IF NOT EXISTS user_sessions(
         userID number,
         userName text,
         cookieID number,
@@ -79,7 +80,7 @@ function loadDatabase(callback){
             console.log(err);
             return
         }
-        console.log(this);
+        console.log();
         callback(db);
     });
 }
@@ -205,11 +206,29 @@ function cookieMiddleware(req,res,next){
 }
 
 function noCookie(req,res,next){
+    console.log("noCookie called");
     // put new user session in the database, and on completion pass the request and response down
 
     let noCookieCallback = function(db){
+        console.log("Running noCookie callback...")
         // callback to be finished...
+        let sql = `SELECT MAX(cookieID) FROM user_sessions`;
+        db.get(sql,[],(err,row) => {
+            if (err){
+                console.log(err);
+                return
+            }
+            let maxCookieID = Object.values(row).pop();
+
+            req.cookies._id = maxCookieID+1;
+            res.cookie("_id",maxCookieID+1);
+            next();
+        });
     }
+
+    loadDatabase(noCookieCallback);
+
+
 }
 
 function yesCookie(req,res,next){
@@ -225,12 +244,15 @@ function yesCookie(req,res,next){
             if (err) {
                 // for now, just log error and create new cookie
             }
-        })
+        });
     }
 }
 
 module.exports = {
     loadDatabase,
     getUserSession,
-    createUserSession
+    createUserSession,
+    cookieMiddleware,
+    noCookie,
+    yesCookie
 }
