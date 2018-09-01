@@ -200,8 +200,11 @@ function generateNewCoookie(){
 
 
 function cookieMiddleware(req,res,next){
+    // if the cookie has an _id attribute, pass it to get checked
     if (!req.cookies._id){
-        // no cookie ID, grab new cookie ID
+        noCookie(req,res,next);
+    } else {
+        yesCookie(req,res,next);
     }
 }
 
@@ -242,9 +245,30 @@ function yesCookie(req,res,next){
         let sql = `SELECT * FROM user_sessions WHERE cookieID == (?)`;
         db.get(sql,[req.cookies._id],(err,row) => {
             if (err) {
-                // for now, just log error and create new cookie
+                // for now, just log error and create new blank user session
+                req.userSession = {
+                    mealPlan = {},
+                    groceries = []
+                }
+                
             }
+            req.userSession = assembleUserSession(row);
         });
+    }
+}
+
+function assembleUserSession(row){
+    return {
+        mealPlan: {
+            monday:row.monday,
+            tuesday:row.tuesday,
+            wednesday:row.wednesday,
+            thursday:row.thursday,
+            friday:row.friday,
+            saturday:row.saturday,
+            sunday:row.sunday
+        },
+        groceries: []
     }
 }
 
