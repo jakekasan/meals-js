@@ -1,11 +1,11 @@
 const Cookies = require("./../controllers/imports").Cookies;
 
 function test_noCookie(){
-    test_req = {
+    let test_req = {
         cookies:{}
     }
-    test_res = {
-        cookie = function(key,value){
+    let test_res = {
+        cookie: function(key,value){
             this[key] = value;
             console.log(`test_res object : ${key} set to ${value}`)
         }
@@ -15,12 +15,8 @@ function test_noCookie(){
         console.log(test_req);
         console.log(test_res);
     }
-    function test_next(){
-        // print res and req
-        console.log(req);
-        console.log(res);
-    }
-    Cookies.noCookie(req,res,next);
+    
+    Cookies.noCookie(test_req,test_res,test_next);
 }
 
-test_noCookie(1,2,3);
+test_noCookie();
