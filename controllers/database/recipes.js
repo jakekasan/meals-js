@@ -23,9 +23,11 @@ function getRecipeByName(name){
 }
 
 function recipesMiddleware(req,res,next){
+    // first mealPlan
+    let mealPlan = fillMealPlan(req.userSession.mealPlan);
     let rawGroceries = [];
     
-    
+
     // now concatenate groceries, add them to the userSession object
     rawGroceries = rawGroceries.reduce((acc,item) => {
         if ((Object.keys(acc)).includes(item.name)){
@@ -58,6 +60,30 @@ function fillRecipe(recipeName){
     let recipe = getRecipeByName(recipeName);
     //let ingredients = recipe.ingredients    //getGroceries(recipe);
     return recipe
+}
+
+function getRawGroceries(mealPlan){
+    let result = (Object.keys(mealPlan))
+            .map(key => mealPlan[key])
+            .map(item => item.ingredients)
+            .reduce((ingredients,item) => {
+                return ingredients.concat(item)
+            },[])
+            .reduce((rawGroceries,item) => {
+                if(rawGroceries[item.name]){
+                    rawGroceries[item.name] += item.quantity;
+                } else {
+                    rawGroceries[item.name] = item.quantity;
+                }
+                return rawGroceries
+            },{});
+    return (Object.keys(result))
+                .map(key => {
+                    return {
+                        name: key,
+                        quantity: result[key]
+                    }
+                });
 }
 
 function getGroceries(rawGroceries){
@@ -125,5 +151,6 @@ module.exports = {
     recipesMiddleware,
     fillRecipe,
     getGroceries,
-    fillGrocery
+    fillGrocery,
+    getRawGroceries
 };
