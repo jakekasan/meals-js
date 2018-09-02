@@ -25,17 +25,8 @@ function getRecipeByName(name){
 function recipesMiddleware(req,res,next){
     // first mealPlan
     let mealPlan = fillMealPlan(req.userSession.mealPlan);
-    let rawGroceries = [];
     
-
-    // now concatenate groceries, add them to the userSession object
-    rawGroceries = rawGroceries.reduce((acc,item) => {
-        if ((Object.keys(acc)).includes(item.name)){
-            acc[item.name] += item.quantity;
-        } else {
-            acc[item.name] = item.quantity;
-        }
-    },{});
+    let rawGroceries = getRawGroceries(mealPlan);
 
     // TO-DO: fill groceries from using vendors
 
@@ -89,14 +80,11 @@ function getRawGroceries(mealPlan){
 function getGroceries(rawGroceries){
     let filledGroceries = [];
 
-    for (let key in rawGroceries){
-        if (rawGroceries.hasOwnProperty){
-            filledGroceries.push(fillGrocery({
-                name:key,
-                quantity:rawGroceries[key]
-            }));
-        }
+    for (let item of rawGroceries){
+        filledGroceries.push(fillGrocery(item));
     }
+
+    filledGroceries = filledGroceries.filter(item => { return (item) });
 
     return filledGroceries
 }
