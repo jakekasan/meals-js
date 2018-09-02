@@ -6,14 +6,14 @@
 
 */
 
-// imports
+// Imports
 
 const database = require("./database/fake_data");
-const imports = require("./imports");
+const Imports = require("./Imports");
 
-const Cookies = imports.Cookies;
-const Recipes = imports.Recipes;
-const Processor = imports.Processor;
+const Cookies = Imports.Cookies;
+const Recipes = Imports.Recipes;
+const Processor = Imports.Processor;
 
 
 const fetch = require("node-fetch");
@@ -287,20 +287,20 @@ module.exports = (app,address) => {
         console.log(req.query);
         if ((Object.keys(req.query)).length < 1){
             // get all
-            imports.Recipes.getAllRecipes(res);
+            Imports.Recipes.getAllRecipes(res);
             return
         } else if (req.query.name){
-            imports.Recipes.getAllRecipes(req.query.name,res);
+            Imports.Recipes.getAllRecipes(req.query.name,res);
         }
     });
 
     app.get("/api/ingredients",(req,res) => {
         if ((Object.keys(req.query)).length < 1){
             // get all
-            imports.Ingredients.getAllRecipes(res);
+            Imports.Ingredients.getAllRecipes(res);
             return
         } else if (req.query.name){
-            imports.Ingredients
+            Imports.Ingredients
         }
     });
 
@@ -308,6 +308,8 @@ module.exports = (app,address) => {
         
         console.log(`Cookie ID: ${JSON.stringify(req.cookies)}\nData: ${JSON.stringify(req.body)}`)
         res.sendStatus(200);
-        //imports.Processor.updateUserSession(req,res);
+        //Imports.Processor.updateUserSession(req,res);
+
+        Imports.Cookies.updateUserSession(req,res);
     });
 }
