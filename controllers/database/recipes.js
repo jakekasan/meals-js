@@ -96,7 +96,7 @@ function fillGrocery(rawGrocery){
 
     if (!grocery){
         // if the product was not found, return undefined
-        return
+        return undefined
     }
 
     let amount = Math.ceil(rawGrocery.quantity / grocery.quantity)*grocery.quantity
