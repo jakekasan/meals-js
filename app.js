@@ -26,4 +26,6 @@ routes(app,address);
 
 app.listen(8000,() => {
     console.log("Meals up and running.\nListening at 8000");
+
+    //Imports.Cookies.printAllRecords();
 });
