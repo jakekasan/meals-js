@@ -40,18 +40,27 @@ function fillMealPlan(mealPlan){
         return {}
     }
     for (let key in mealPlan){
-        let recipeName = mealPlan[key].name;
-        
-        // get recipe and groceries
-        let recipe = fillRecipe(recipeName);
+        if (mealPlan.hasOwnProperty(key)){
+            let recipeName = mealPlan[key];
 
-        mealPlan[key] = recipe;
+            if ((recipeName == undefined) || (recipeName == null)){
+            // do nothing
+            console.log(`${recipeName} is undefined or null`)
+            } else {
+                // get recipe and groceries
+                let recipe = fillRecipe(recipeName);
+
+                mealPlan[key] = recipe;
+           }
+        }
     }
     return mealPlan
 }
 
 function fillRecipe(recipeName){
     let recipe = getRecipeByName(recipeName);
+    console.log("Filling recipe...");
+    console.log(recipe);
     //let ingredients = recipe.ingredients    //getGroceries(recipe);
     return recipe
 }
@@ -60,6 +69,8 @@ function getRawGroceries(mealPlan){
     if (mealPlan == {}){
         return []
     }
+    console.log("Getting groceries from meal plan...")
+    console.log(mealPlan);
     let result = (Object.keys(mealPlan))
             .map(key => mealPlan[key])
             .map(item => item.ingredients)
@@ -67,6 +78,7 @@ function getRawGroceries(mealPlan){
                 return ingredients.concat(item)
             },[])
             .reduce((rawGroceries,item) => {
+                console.log(item);
                 if(rawGroceries[item.name]){
                     rawGroceries[item.name] += item.quantity;
                 } else {
