@@ -65,7 +65,7 @@ function loadDatabase(callback){
     let sql = `CREATE TABLE IF NOT EXISTS user_sessions(
         cookieID number,
         monday text,
-        tuesday text
+        tuesday text,
         wednesday text,
         thursday text,
         friday text,
@@ -180,8 +180,12 @@ function noCookie(req,res,next){
                 console.log(err);
                 return
             }
-            let cookieID = Object.values(row).pop() + 1;
-
+            var cookieID;
+            if (row["MAX(cookieID"] == null){
+                cookieID = 0;
+            } else {
+                cookieID = Object.values(row).pop() + 1;
+            }
             
             setCookieInDatabase(cookieID,req,res,next);
         });
@@ -211,6 +215,7 @@ function setCookieInDatabase(cookieID,req,res,next){
                 res.cookie("_id",cookieID);
                 res.userSession = userSession;
             }
+            db.close();
             next();
         })
     }
@@ -253,15 +258,16 @@ function assembleUserSession(row){
     console.log("Assembling user session...")
     console.log(row);
     if (!row){
+        console.log("Row is null, returning empty userSession")
         return {
             mealPlan: {},
             groceries: []
         }
     }
     let mealPlan = {};
-    for (let key in row){
-        if (typeof row[key] == String){
-            mealPlan[key] = row[key];
+    for (let day of ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]){
+        if (row[day] != null){
+            mealPlan[day] = row[day];
         }
     }
     return {
@@ -301,6 +307,7 @@ function updateUserSession(req,res){
             } else {
                 console.log("DB successfully updated")
                 // res.send("hi!");
+                db.close();
             }
         });
     }
@@ -308,13 +315,32 @@ function updateUserSession(req,res){
     loadDatabase(updateUserSessionCallback);
 }
 
+// for debugging
+
+function printAllRecords(){
+    function printAllRecordsCallback(db){
+        let sql = `SELECT * FROM user_sessions`
+        db.all(sql,[],(err,rows) => {
+            if (err){
+                console.log(err);
+                return
+            }
+            rows.forEach(record => {
+                console.log(record);
+            });
+        })
+    }
+
+    loadDatabase(printAllRecordsCallback);
+}
+
 
 module.exports = {
     loadDatabase,
     getUserSession,
-    createUserSession,
     cookieMiddleware,
     noCookie,
     yesCookie,
-    updateUserSession
+    updateUserSession,
+    printAllRecords
 }
