@@ -24,6 +24,8 @@ module.exports = (app,address) => {
 
         // let's just try to load an empty page
 
+        console.log(req.userSession);
+
         res.render("home",{data:req.userSession});
 
         // Processor(req,res);
