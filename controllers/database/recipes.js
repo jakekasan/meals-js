@@ -28,7 +28,7 @@ function recipesMiddleware(req,res,next){
         let recipeName = req.userSession.mealPlan[key].name;
         
         // get recipe and groceries
-        let {recipe, groceries} = fillRecipe(recipeName);
+        let recipe = fillRecipe(recipeName);
 
         req.userSession.mealPlan[key] = recipe;
         rawGroceries.concat(recipe.ingredients);
@@ -40,7 +40,7 @@ function recipesMiddleware(req,res,next){
         } else {
             acc[item.name] = item.quantity;
         }
-    });
+    },{});
 
     // TO-DO: fill groceries from using vendors
 
