@@ -41,13 +41,17 @@ function fillRecipe(recipeName){
 
 function getRecipeByName(recipeName){
     // find recipe by name... maybe async?
+    return fakeData.recipes.filter(item => item.name == recipeName).pop();
 }
 
 function getGroceries(recipe){
-    let ingredients = recipe.ingredients.map(item => fillGrocery(item));
-    
+    return ingredients = recipe.ingredients.map(item => fillGrocery(item));
 }
 
+function fillGrocery(grocery){
+    // look up similar goods being sold. Return minimum amount to satisfy 
+    return fakeData.foodProducts.filter(item => item.name == grocery).pop();
+}
 
 // function getMealPlan(req,res,userSession){
 //     userSession.mealPlan
