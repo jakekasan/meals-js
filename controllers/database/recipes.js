@@ -16,7 +16,7 @@ function getAllRecipes(res){
     res.json(fakeData.recipes);
 }
 
-function getRecipeByName(name,res){
+function getRecipeByName(name){
     return fakeData.recipes
         .filter(item => (item.name == name))
         .pop();
@@ -27,7 +27,24 @@ function recipesMiddleware(req,res,next){
     for (let key in req.userSession.mealPlan){
         let recipeName = req.userSession.mealPlan[key].name;
         
+        // get recipe and groceries
+        let {recipe, groceries} = fillRecipe(recipeName);
+
+        req.userSession.mealPlan[key] = recipe;
+        rawGroceries.concat(groceries);
     }
+    // now concatenate groceries, add them to the userSession object
+    rawGroceries = rawGroceries.reduce((acc,item) => {
+        if ((Object.keys(acc)).includes(item.name)){
+            acc[item.name] += item.quantity;
+        } else {
+            acc[item.name] = item.quantity;
+        }
+    });
+
+    // TO-DO: fill groceries from using vendors
+
+    next();
 }
 
 function fillRecipe(recipeName){
@@ -39,10 +56,10 @@ function fillRecipe(recipeName){
     }
 }
 
-function getRecipeByName(recipeName){
-    // find recipe by name... maybe async?
-    return fakeData.recipes.filter(item => item.name == recipeName).pop();
-}
+// function getRecipeByName(recipeName){
+//     // find recipe by name... maybe async?
+//     return fakeData.recipes.filter(item => item.name == recipeName).pop();
+// }
 
 function getGroceries(recipe){
     return ingredients = recipe.ingredients.map(item => fillGrocery(item));
@@ -80,5 +97,9 @@ function fillGrocery(grocery){
 
 module.exports = {
     getAllRecipes,
-    getRecipeByName
+    getRecipeByName,
+    recipesMiddleware,
+    fillRecipe,
+    getGroceries,
+    fillGrocery
 };
