@@ -44,7 +44,7 @@ function recipesMiddleware(req,res,next){
 
     // TO-DO: fill groceries from using vendors
 
-
+    req.userSession.groceries = getGroceries(rawGroceries);
 
     next();
 }
@@ -58,7 +58,7 @@ function fillRecipe(recipeName){
 function getGroceries(rawGroceries){
     let filledGroceries = [];
 
-    for (let key of rawGroceries){
+    for (let key in rawGroceries){
         if (rawGroceries.hasOwnProperty){
             filledGroceries.push(fillGrocery({
                 name:key,
@@ -66,12 +66,21 @@ function getGroceries(rawGroceries){
             }));
         }
     }
+
+    return filledGroceries
 }
 
 function fillGrocery(rawGrocery){
     // look up similar goods being sold. Return minimum amount to satisfy 
 
-    let amount = Math.ceil(ingredient.quantity / grocery.quantity)*grocery.quantity
+    let grocery = fakeData.foodProducts.filter(item => (item.name == rawGrocery.name)).pop();
+
+    if (!grocery){
+        // if the product was not found, return undefined
+        return
+    }
+
+    let amount = Math.ceil(rawGrocery.quantity / grocery.quantity)*grocery.quantity
 
     return {
         name: grocery.name,
