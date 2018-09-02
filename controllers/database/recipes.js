@@ -31,7 +31,7 @@ function recipesMiddleware(req,res,next){
         let {recipe, groceries} = fillRecipe(recipeName);
 
         req.userSession.mealPlan[key] = recipe;
-        rawGroceries.concat(groceries);
+        rawGroceries.concat(recipe.ingredients);
     }
     // now concatenate groceries, add them to the userSession object
     rawGroceries = rawGroceries.reduce((acc,item) => {
@@ -44,30 +44,40 @@ function recipesMiddleware(req,res,next){
 
     // TO-DO: fill groceries from using vendors
 
+
+
     next();
 }
 
 function fillRecipe(recipeName){
     let recipe = getRecipeByName(recipeName);
-    let groceries = getGroceries(recipe);
-    return {
-        recipe,
-        groceries
+    //let ingredients = recipe.ingredients    //getGroceries(recipe);
+    return recipe
+}
+
+function getGroceries(rawGroceries){
+    let filledGroceries = [];
+
+    for (let key of rawGroceries){
+        if (rawGroceries.hasOwnProperty){
+            filledGroceries.push(fillGrocery({
+                name:key,
+                quantity:rawGroceries[key]
+            }));
+        }
     }
 }
 
-// function getRecipeByName(recipeName){
-//     // find recipe by name... maybe async?
-//     return fakeData.recipes.filter(item => item.name == recipeName).pop();
-// }
-
-function getGroceries(recipe){
-    return ingredients = recipe.ingredients.map(item => fillGrocery(item));
-}
-
-function fillGrocery(grocery){
+function fillGrocery(rawGrocery){
     // look up similar goods being sold. Return minimum amount to satisfy 
-    return fakeData.foodProducts.filter(item => item.name == grocery).pop();
+
+    let amount = Math.ceil(ingredient.quantity / grocery.quantity)*grocery.quantity
+
+    return {
+        name: grocery.name,
+        amount: amount
+    }
+
 }
 
 // function getMealPlan(req,res,userSession){
