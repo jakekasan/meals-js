@@ -24,35 +24,7 @@ module.exports = (app,address) => {
 
         // let's just try to load an empty page
 
-        console.log(req.cookies);
-        
-        if (!req.cookies._id){
-            res.cookie("_id",0);
-        }
-
-        res.render("home",{data:{
-            userSession:0,
-            mealPlan:{
-                monday:{
-                    name:"Scrambled Eggs",
-                    ingredients:[
-                        {
-                            name:"Egg",
-                            quantity:200
-                        },
-                        {
-                            name:"Butter",
-                            quantity:50
-                        },
-                        {
-                            name:"Cheese",
-                            quantity:50
-                        }
-                    ]
-                }
-            },
-            groceries:[]
-        }});
+        res.render("home",{data:req.userSession});
 
         // Processor(req,res);
 
@@ -311,6 +283,8 @@ module.exports = (app,address) => {
     // rewriting api... (again)
 
     app.get("/api/recipes",(req,res) => {
+        console.log("API recipes");
+        console.log(req.query);
         if ((Object.keys(req.query)).length < 1){
             // get all
             imports.Recipes.getAllRecipes(res);
