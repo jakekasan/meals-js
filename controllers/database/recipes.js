@@ -36,6 +36,9 @@ function recipesMiddleware(req,res,next){
 }
 
 function fillMealPlan(mealPlan){
+    if (!mealPlan){
+        return {}
+    }
     for (let key in mealPlan){
         let recipeName = mealPlan[key].name;
         
@@ -54,6 +57,9 @@ function fillRecipe(recipeName){
 }
 
 function getRawGroceries(mealPlan){
+    if (mealPlan == {}){
+        return []
+    }
     let result = (Object.keys(mealPlan))
             .map(key => mealPlan[key])
             .map(item => item.ingredients)
