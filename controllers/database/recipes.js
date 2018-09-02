@@ -22,6 +22,31 @@ function getRecipeByName(name,res){
         .pop();
 }
 
+function recipesMiddleware(req,res,next){
+    let rawGroceries = [];
+    for (let key in req.userSession.mealPlan){
+        let recipeName = req.userSession.mealPlan[key].name;
+        
+    }
+}
+
+function fillRecipe(recipeName){
+    let recipe = getRecipeByName(recipeName);
+    let groceries = getGroceries(recipe);
+    return {
+        recipe,
+        groceries
+    }
+}
+
+function getRecipeByName(recipeName){
+    // find recipe by name... maybe async?
+}
+
+function getGroceries(recipe){
+    let ingredients = recipe.ingredients.map(item => fillGrocery(item));
+    
+}
 
 
 // function getMealPlan(req,res,userSession){
