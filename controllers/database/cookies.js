@@ -52,7 +52,7 @@ const sqlite3 = require("sqlite3");
 
 function loadDatabase(callback){
 
-    let db = new sqlite3.Database(":memory:",(err) => {
+    let db = new sqlite3.Database("./user_sessions.db",(err) => {
         if (err){
             console.log("Connection to SQLite unsuccessful")
             console.log(err);
@@ -63,8 +63,6 @@ function loadDatabase(callback){
     });
 
     let sql = `CREATE TABLE IF NOT EXISTS user_sessions(
-        userID number,
-        userName text,
         cookieID number,
         monday text,
         tuesday text
@@ -153,50 +151,11 @@ function getUserSession(req,res){
     return {userSession,cookie};
 }
 
-function createUserSession(req,res){
-    /*
-        Return a new cookieID
-    */
+/*
 
-    // construct callback
+        MIDDLEWARE
 
-    function createUserSessionCallback(db){
-        let sql = `SELECT MAX(cookieID)+1 FROM user_sessions WHERE EXISTS(SELECT * FROM user_sessions)`;
-
-        db.get(sql,[],(err,cookieID) => {
-            if (err){
-                console.log(err);
-                return
-            }
-            // we've got the max cookieID (if it exists)
-            console.log(cookieID);
-
-            let sql = `INSERT INTO user_sessions VALUES((?));`
-
-            db.run(sql,[cookieID],(err) => {
-                if (err) throw err;
-                db.close();
-            });
-        });
-        return
-
-    }
-    // first, get the current cookie ID + 1
-
-    
-
-    loadDatabase(createUserSessionCallback);
-}
-
-function generateNewCoookie(){
-    let sql = `SELECT MAX(cookieID) FROM user_sessions`;
-
-    let db = loadDatabase();
-
-    db.run(sql);
-}
-
-// new middleware
+*/
 
 
 function cookieMiddleware(req,res,next){
@@ -221,23 +180,42 @@ function noCookie(req,res,next){
                 console.log(err);
                 return
             }
-            let maxCookieID = Object.values(row).pop();
+            let cookieID = Object.values(row).pop() + 1;
 
-            let userSession = {
-                mealPlan:{},
-                groceries:[]
-            };
-            req.cookies._id = maxCookieID+1;
-            req.userSession = userSession;
-            res.cookie("_id",maxCookieID+1);
-            res.userSession = userSession;
-            next();
+            
+            setCookieInDatabase(cookieID,req,res,next);
         });
     }
 
     loadDatabase(noCookieCallback);
+}
 
+function setCookieInDatabase(cookieID,req,res,next){
+    
 
+    function setCookieInDatabaseCallback(db){
+        let sql = `INSERT INTO user_sessions(cookieID) VALUES(?)`;
+
+        db.run(sql,[cookieID],(err) => {
+            if (err){
+                console.log(err.message);
+            } else {
+                console.log(`cookieID ${cookieID} successfully added`);
+                console.log("Setting cookieID to",cookieID);
+                let userSession = {
+                    mealPlan:{},
+                    groceries:[]
+                };
+                req.cookies._id = cookieID;
+                req.userSession = userSession;
+                res.cookie("_id",cookieID);
+                res.userSession = userSession;
+            }
+            next();
+        })
+    }
+
+    loadDatabase(setCookieInDatabaseCallback);
 }
 
 function yesCookie(req,res,next){
@@ -248,15 +226,19 @@ function yesCookie(req,res,next){
     */
 
     let yesCookieCallback = function(db){
-        let sql = `SELECT * FROM user_sessions WHERE cookieID == (?)`;
+        let sql = `SELECT * FROM user_sessions WHERE cookieID = ?`;
+        console.log(`Attempting to get cookie id ${req.cookies._id} from table...`)
         db.get(sql,[req.cookies._id],(err,row) => {
+            
             if (err) {
                 // for now, just log error and create new blank user session
+                console.log("Error trying to find cookie...")
                 req.userSession = {
                     mealPlan: {},
                     groceries: []
                 }
             } else {
+                console.log(row);
                 req.userSession = assembleUserSession(row);
             }
             
@@ -292,27 +274,35 @@ function updateUserSession(req,res){
     // update user session
     // pull relevant row from DB and update it
 
+    console.log("Updating User Session with data...")
+    
     let data = req.body;
 
+    console.log(data);
+
     if (data == {}){
-        res.send("Wrong!");
+        res.send(400);
         return
     }
 
     function updateUserSessionCallback(db){
-        let sql = `UPDATE user_sessions SET (?) = (?) WHERE cookieID == (?)`;
+        let sql = `UPDATE user_sessions SET ${data.day} = ? WHERE cookieID = ?`;
 
-        let day = (Object.keys(data)).pop();
-        let recipe = data[day];
-        db.run(sql,[day,recipe,req.cookie._id],(err) => {
+        let day = data.day;
+        let recipe = data.recipe;
+
+        console.log(`Attempting to update record ${req.cookies._id} with ${recipe} for ${day} `)
+
+        db.run(sql,[recipe,req.cookies._id],(err) => {
             if (err){
-                console.log(err);
-                res.send();
+                console.log("Cannot update user session...");
+                console.log(err.message);
+                return
             } else {
                 console.log("DB successfully updated")
-                res.send();
+                // res.send("hi!");
             }
-        })
+        });
     }
 
     loadDatabase(updateUserSessionCallback);
@@ -325,5 +315,6 @@ module.exports = {
     createUserSession,
     cookieMiddleware,
     noCookie,
-    yesCookie
+    yesCookie,
+    updateUserSession
 }
