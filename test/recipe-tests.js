@@ -6,7 +6,7 @@
 
 const Recipes = require("./../controllers/imports").Recipes;
 
-function test_recipesMiddleware(req,res,next){
+function test_recipesMiddleware(){
     let test_req = {
         userSession:{
             mealPlan:{
@@ -31,4 +31,48 @@ function test_recipesMiddleware(req,res,next){
     Recipes.recipesMiddleware(test_req,test_res,test_next);
 }
 
-test_recipesMiddleware();
+function test_getRawGroceries(){
+    let mealPlan = {
+        monday:{
+            name:"Bolognese",
+            ingredients:[
+                {
+                    name:"Beef",
+                    quantity:200
+                },
+                {
+                    name:"Chopped Tomatoes",
+                    quantity:400
+                },
+                {
+                    name:"Pasta",
+                    quantity:300
+                }
+            ]
+        },
+        tuesday:{
+            name:"Bolognese",
+            ingredients:[
+                {
+                    name:"Beef",
+                    quantity:200
+                },
+                {
+                    name:"Chopped Tomatoes",
+                    quantity:400
+                },
+                {
+                    name:"Pasta",
+                    quantity:300
+                }
+            ]
+        }
+    };
+
+    console.log(Recipes.getRawGroceries(mealPlan));
+
+}
+
+//test_recipesMiddleware();
+
+test_getRawGroceries();
