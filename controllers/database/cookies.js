@@ -223,12 +223,14 @@ function noCookie(req,res,next){
             }
             let maxCookieID = Object.values(row).pop();
 
-            req.cookies._id = maxCookieID+1;
-            res.cookie("_id",maxCookieID+1);
-            res.userSession = {
+            let userSession = {
                 mealPlan:{},
                 groceries:[]
-            }
+            };
+            req.cookies._id = maxCookieID+1;
+            req.userSession = userSession;
+            res.cookie("_id",maxCookieID+1);
+            res.userSession = userSession;
             next();
         });
     }
@@ -254,8 +256,10 @@ function yesCookie(req,res,next){
                     mealPlan: {},
                     groceries: []
                 }
+            } else {
+                req.userSession = assembleUserSession(row);
             }
-            req.userSession = assembleUserSession(row);
+            
             next();
         });
     }
@@ -264,7 +268,9 @@ function yesCookie(req,res,next){
 }
 
 function assembleUserSession(row){
-    if (Object.values(row).pop() == null){
+    console.log("Assembling user session...")
+    console.log(row);
+    if (!row){
         return {
             mealPlan: {},
             groceries: []
@@ -281,6 +287,37 @@ function assembleUserSession(row){
         groceries: []
     }
 }
+
+function updateUserSession(req,res){
+    // update user session
+    // pull relevant row from DB and update it
+
+    let data = req.body;
+
+    if (data == {}){
+        res.send("Wrong!");
+        return
+    }
+
+    function updateUserSessionCallback(db){
+        let sql = `UPDATE user_sessions SET (?) = (?) WHERE cookieID == (?)`;
+
+        let day = (Object.keys(data)).pop();
+        let recipe = data[day];
+        db.run(sql,[day,recipe,req.cookie._id],(err) => {
+            if (err){
+                console.log(err);
+                res.send();
+            } else {
+                console.log("DB successfully updated")
+                res.send();
+            }
+        })
+    }
+
+    loadDatabase(updateUserSessionCallback);
+}
+
 
 module.exports = {
     loadDatabase,
