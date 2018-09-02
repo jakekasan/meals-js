@@ -24,15 +24,8 @@ function getRecipeByName(name){
 
 function recipesMiddleware(req,res,next){
     let rawGroceries = [];
-    for (let key in req.userSession.mealPlan){
-        let recipeName = req.userSession.mealPlan[key].name;
-        
-        // get recipe and groceries
-        let recipe = fillRecipe(recipeName);
-
-        req.userSession.mealPlan[key] = recipe;
-        rawGroceries.concat(recipe.ingredients);
-    }
+    
+    
     // now concatenate groceries, add them to the userSession object
     rawGroceries = rawGroceries.reduce((acc,item) => {
         if ((Object.keys(acc)).includes(item.name)){
@@ -47,6 +40,18 @@ function recipesMiddleware(req,res,next){
     req.userSession.groceries = getGroceries(rawGroceries);
 
     next();
+}
+
+function fillMealPlan(mealPlan){
+    for (let key in mealPlan){
+        let recipeName = mealPlan[key].name;
+        
+        // get recipe and groceries
+        let recipe = fillRecipe(recipeName);
+
+        mealPlan[key] = recipe;
+    }
+    return mealPlan
 }
 
 function fillRecipe(recipeName){
