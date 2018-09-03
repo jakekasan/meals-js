@@ -1,0 +1,45 @@
+<!-- 
+
+    groceries.ejs
+
+    A template for displaying the 
+
+ -->
+
+ <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-title">Your shopping list: </div>
+                        <ul class="collection">
+                            <% for (let item of groceries){ %>
+                                <li class="collection-item"><%= item.name %> : <%= item.quantity %></li>
+                            <% } %>
+                        </ul>
+                        <table class="highlight">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (let item of groceries){ %>
+                                <tr>
+                                    <th><%= item.name %></th>
+                                    <th><%= item.quantity %></th>
+                                </tr>
+                                
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-action">
+                        <a href="#!">Download</a>
+                        <a href="#!">Modify</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
