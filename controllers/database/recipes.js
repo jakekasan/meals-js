@@ -102,6 +102,8 @@ function getGroceries(rawGroceries){
         filledGroceries.push(fillGrocery(item));
     }
 
+    // filledGroceries = Imports.Groceries.chooseGroceryVendor
+
     filledGroceries = filledGroceries.filter(item => { return (item) });
 
     return filledGroceries
@@ -117,11 +119,20 @@ function fillGrocery(rawGrocery){
         return undefined
     }
 
-    let amount = Math.ceil(rawGrocery.quantity / grocery.quantity)*grocery.quantity
+    let amountToBuy = Math.ceil(rawGrocery.quantity / grocery.quantity)*grocery.quantity
+
+    let foodOver = amountToBuy - rawGrocery.quantity;
+    
+    let cost = (amountToBuy/grocery.quantity) * grocery.cost;
+
+    let costOver = ((amountToBuy - grocery.quantity) / amountToBuy) * cost;
 
     return {
         name: grocery.name,
-        amount: amount
+        amount: amountToBuy,
+        foodOver: foodOver,
+        cost: cost,
+        costOver: costOver
     }
 
 }
