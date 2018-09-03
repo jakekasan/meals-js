@@ -15,10 +15,10 @@
                             <li class="collection-item"> <%= ingredient.name %> </li>
                 <%      } %>
             </ul>
-            <div class="card-action">
-                <a value=<%= data.day%> href="#!" onclick="selectRecipe(this)"></a>
+            <div class="card-action" data.day=<%= data.day%>>
+                <button class="btn waves-effect waves-light" onclick="selectNewRecipe(this)" value=<%=data.day%>>Select New Recipe</button>
+                <button class="btn waves-effect waves-light" onclick="clearRecipe(this)" value=<%=data.day%>>Clear Recipe</button>
             </div>
-
         </div>
     </div>
 </div>
