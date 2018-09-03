@@ -295,7 +295,7 @@ function updateUserSession(req,res){
         let sql = `UPDATE user_sessions SET ${data.day} = ? WHERE cookieID = ?`;
 
         let day = data.day;
-        let recipe = data.recipe;
+        let recipe = (data.recipe == "") ? null : data.recipe;
 
         console.log(`Attempting to update record ${req.cookies._id} with ${recipe} for ${day} `)
 
@@ -314,6 +314,10 @@ function updateUserSession(req,res){
 
     loadDatabase(updateUserSessionCallback);
 }
+
+// function clearUserSession(){
+
+// }
 
 // for debugging
 
