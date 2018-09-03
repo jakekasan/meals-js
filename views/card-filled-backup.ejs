@@ -1,0 +1,34 @@
+<!--
+
+    Template for card that has data
+
+-->
+<div class="col s12 m6 l4">
+    <p> <%=data.day %></p>
+    <div class="card medium" id=<%=data.day%>>
+        <div class="card-image">
+            <img class="responsive-img activator" src="/img/bolognese.jpeg">
+            
+        </div>
+        <div class="card-content">
+            <span class="card-title">
+                    <%= data.recipe.name %>
+            </span>
+            <div style="overflow:scroll;">
+                <ul class="collection" style="overflow:scroll">
+                    <%      for (let ingredient of data.recipe.ingredients){ %>
+                                <li class="collection-item"> <%= ingredient.name %> </li>
+                    <%      } %>
+                </ul>
+            </div>
+        </div>
+        <div class="card-action centered white" data.day=<%= data.day%>>
+            <button class="btn waves-effect waves-light red col s6" onclick="selectNewRecipe(this)" value=<%=data.day%>>Select New Recipe</button>
+            <button class="btn waves-effect waves-light red col s6" onclick="clearRecipe(this)" value=<%=data.day%>>Clear Recipe</button>
+        </div>
+        <div class="card-reveal">
+            <span class="card-title grey-text text-darken-3"><%= data.recipe.name %></span>
+            <p>Description of recipe...</p>
+        </div>
+    </div>
+</div>
