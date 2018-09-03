@@ -12,26 +12,50 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="card-title">Your shopping list: </div>
-                        <ul class="collection">
-                            <% for (let item of groceries){ %>
-                                <li class="collection-item"><%= item.name %> : <%= item.quantity %></li>
-                            <% } %>
-                        </ul>
                         <table class="highlight">
                             <thead>
                                 <tr>
                                     <th>Item</th>
                                     <th>Quantity</th>
+                                    <th>Cost</th>
+                                    <th>Food waste</th>
+                                    <th>Financial waste</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <% for (let item of groceries){ %>
                                 <tr>
                                     <th><%= item.name %></th>
-                                    <th><%= item.quantity %></th>
+                                    <th><%= item.amount %></th>
+                                    <th><%= item.cost %></th>
+                                    <th><%= item.foodOver %></th>
+                                    <th><%= item.costOver %></th>
                                 </tr>
                                 
+                                
                                 <% } %>
+
+                            </tbody>
+                        </table>
+                        <br>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Cost</th>
+                                    <th>Food waste</th>
+                                    <th>Money Waste</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Totals :</th>
+                                    <th></th>
+                                    <th><%= groceries.map(item => item.cost).reduce((acc,ele) => (acc+ele),0) %></th>
+                                    <th><%= groceries.map(item => item.foodOver).reduce((acc,ele) => (acc+ele),0) %></th>
+                                    <th><%= groceries.map(item => item.costOver).reduce((acc,ele) => (acc+ele),0) %></th>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
