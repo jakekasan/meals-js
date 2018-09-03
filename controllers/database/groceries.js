@@ -155,3 +155,25 @@ function isValidIngredient(ingredientObj){
     }
     return true
 }
+
+/*
+
+    new version on groceries.js
+
+*/
+
+function chooseGroceryVendor(rawGroceries){
+    /*
+    
+        TO-DO:
+
+        This function will take the rawGroceries assembled from the mealPlan
+        and fill each one using each vendor.
+
+        Until I find a new API, this will stay Tesco only...
+
+        There will be a seperate function which will put together a final grocery
+        list that will include how much food and money overrun there is
+
+    */
+}
