@@ -40,6 +40,16 @@ module.exports = (app,address) => {
 
     /*
 
+        For testing
+
+    */
+
+    app.get("/test",(req,res) => {
+        res.render("upper-home",{});
+    })
+
+    /*
+
         Routes for the back-end
 
     */
