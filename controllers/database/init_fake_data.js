@@ -19,7 +19,7 @@ const RecipeSchema = mySchema.Recipe;
 const FoodProductSchema = mySchema.FoodProduct;
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://jake:password1@ds235302.mlab.com:35302/sqrt4",{
+mongoose.connect("mongodb://<test>:<password1>@ds245512.mlab.com:45512/meals",{
     useNewUrlParser: true
 });
 
