@@ -38,13 +38,27 @@ module.exports = (app,address) => {
        
     });
 
+    // recipes
+
     app.get("/recipes",(req,res) => {
+        // if the request has a confirmation link, find the relevant job
         res.render("recipes/main",{});
     });
 
     app.post("/recipes",(req,res) => {
         console.log(req.body);
-        res.render("recipes/main");
+        res.render("recipes/main",{});
+    });
+
+    // ingredients
+
+    app.get("/ingredients",(req,res) => {
+        res.render("ingredients/main",{});
+    });
+
+    app.post("/ingredients",(req,res) => {
+        console.log(req.body);
+        res.render("ingredients/main",{});
     })
 
     /*
