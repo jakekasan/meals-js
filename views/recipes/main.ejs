@@ -1,0 +1,60 @@
+<% include ../header %>
+
+<div class="container">
+    <div class="section">
+        <div class="row">
+            <form action="" method="POST">
+                <div class="row">
+                    <div id="nameInputDiv" class="section col s12 l4 input-field">
+                        <textarea id="nameInput" class="materialize-textarea"></textarea>
+                        <label for="nameInput">Name</label>
+                    </div>
+
+                    <div id="descriptionInputDiv" class="section col s12 l12 input-field">
+                        <textarea id="descriptionInput" class="materialize-textarea"></textarea>
+                        <label for="descriptionInput">Description</label>
+                    </div>
+                </div>
+
+                <script>
+                    document.addEventListener("load",() => {
+                        for (let element of document.querySelectorAll(".materialize-textarea")){
+                            M.textareaAutoResize(element);
+                        }
+                    });
+                </script>
+
+                <div id="ingredientsInputDiv" class="section">
+                    <ul class="collection" id="ingredients" style="display:none;">
+                    </ul>
+                    <label for="ingredients">Ingredients</label>
+                    <br><br>
+                    <div class="row">
+                        <div class="col s4 l4">
+                            Name of ingredient:
+                        </div>
+                        <div class="col s4 l4">
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 l4">
+                            Amount of ingredient:
+                        </div>
+                        <div class="col s4 l4">
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+
+                
+
+                <br>
+
+                
+            </form>
+        </div>
+    </div>
+</div>
+
+<% include ../footer %>
