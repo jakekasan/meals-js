@@ -103,8 +103,6 @@ function getUserSession(req,res){
                 return console.error(err.message)
             }
             // if cookie did not exist, row should be empty
-
-            console.log(row);
     
             // if row is empty, create user session
             if (!row){
@@ -168,11 +166,9 @@ function cookieMiddleware(req,res,next){
 }
 
 function noCookie(req,res,next){
-    console.log("noCookie called");
     // put new user session in the database, and on completion pass the request and response down
 
     let noCookieCallback = function(db){
-        console.log("Running noCookie callback...")
         // callback to be finished...
         let sql = `SELECT MAX(cookieID) FROM user_sessions`;
         db.get(sql,[],(err,row) => {
@@ -204,8 +200,8 @@ function setCookieInDatabase(cookieID,req,res,next){
             if (err){
                 console.log(err.message);
             } else {
-                console.log(`cookieID ${cookieID} successfully added`);
-                console.log("Setting cookieID to",cookieID);
+                //console.log(`cookieID ${cookieID} successfully added`);
+                //console.log("Setting cookieID to",cookieID);
                 let userSession = {
                     mealPlan:{},
                     groceries:[]
@@ -232,7 +228,7 @@ function yesCookie(req,res,next){
 
     let yesCookieCallback = function(db){
         let sql = `SELECT * FROM user_sessions WHERE cookieID = ?`;
-        console.log(`Attempting to get cookie id ${req.cookies._id} from table...`)
+        //console.log(`Attempting to get cookie id ${req.cookies._id} from table...`)
         db.get(sql,[req.cookies._id],(err,row) => {
             
             if (err) {
@@ -243,7 +239,6 @@ function yesCookie(req,res,next){
                     groceries: []
                 }
             } else {
-                console.log(row);
                 req.userSession = assembleUserSession(row);
             }
             
@@ -255,8 +250,6 @@ function yesCookie(req,res,next){
 }
 
 function assembleUserSession(row){
-    console.log("Assembling user session...")
-    console.log(row);
     if (!row){
         console.log("Row is null, returning empty userSession")
         return {
@@ -279,12 +272,8 @@ function assembleUserSession(row){
 function updateUserSession(req,res){
     // update user session
     // pull relevant row from DB and update it
-
-    console.log("Updating User Session with data...")
     
     let data = req.body;
-
-    console.log(data);
 
     if (data == {}){
         res.send(400);
@@ -297,7 +286,7 @@ function updateUserSession(req,res){
         let day = data.day;
         let recipe = (data.recipe == "") ? null : data.recipe;
 
-        console.log(`Attempting to update record ${req.cookies._id} with ${recipe} for ${day} `)
+        //console.log(`Attempting to update record ${req.cookies._id} with ${recipe} for ${day} `)
 
         db.run(sql,[recipe,req.cookies._id],(err) => {
             if (err){
@@ -305,7 +294,6 @@ function updateUserSession(req,res){
                 console.log(err.message);
                 return
             } else {
-                console.log("DB successfully updated")
                 // res.send("hi!");
                 db.close();
             }
