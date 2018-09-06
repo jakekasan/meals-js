@@ -38,6 +38,10 @@ module.exports = (app,address) => {
        
     });
 
+    app.get("/recipes",(req,res) => {
+        res.render("recipes/main",{});
+    });
+
     /*
 
         For testing
