@@ -42,6 +42,11 @@ module.exports = (app,address) => {
         res.render("recipes/main",{});
     });
 
+    app.post("/recipes",(req,res) => {
+        console.log(req.body);
+        res.render("/recipes");
+    })
+
     /*
 
         For testing
