@@ -67,7 +67,14 @@ function addJob(req,res,jobType,jobName){
     });
 }
 
-function checkJob(req,res,jobID){
+// middleware
+
+function checkJob(req,res,next){
+    if (!req.query.confirmation){
+        next();
+        return
+    }
+
     let db = sqlite3.Database("./database/sql/databaseJobs.db",(err) => {
         if (err) {
             throw err
@@ -84,16 +91,24 @@ function checkJob(req,res,jobID){
         ) IF NOT EXISTS (SELECT * FROM jobs)`,(err) => {
             if (err) throw err;
 
-            // now insert the job
+            // now check the job status
             let sql = `SELECT (type,name,done) FROM jobs WHERE id = ?`;
 
-            let values = [jobID];
+            let values = [req.query.confirmation];
 
             db.run(sql,values,(err,row) => {
                 if (err) throw err;
                 if (row.done == 0){
                     // on second thought, i'll turn this into middleware
-                    res.render();
+                    next();
+                    return
+                } else {
+                    req.confirmation = {
+                        name:row.name,
+                        type:row.type
+                    }
+                    next();
+                    return
                 }
             });
 
