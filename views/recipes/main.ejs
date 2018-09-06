@@ -4,54 +4,57 @@
     <div class="section">
         <div class="row">
             <form action="" method="POST">
-                <div class="row">
+                <div class="row section">
                     <div id="nameInputDiv" class="section col s12 l4 input-field">
-                        <textarea id="nameInput" class="materialize-textarea"></textarea>
+                        <textarea id="nameInput" class="materialize-textarea" name="name" required></textarea>
                         <label for="nameInput">Name</label>
                     </div>
 
                     <div id="descriptionInputDiv" class="section col s12 l12 input-field">
-                        <textarea id="descriptionInput" class="materialize-textarea"></textarea>
+                        <textarea id="descriptionInput" class="materialize-textarea" name="description" required></textarea>
                         <label for="descriptionInput">Description</label>
                     </div>
                 </div>
 
                 <script>
                     document.addEventListener("load",() => {
-                        for (let element of document.querySelectorAll(".materialize-textarea")){
-                            M.textareaAutoResize(element);
-                        }
+                        
                     });
                 </script>
 
-                <div id="ingredientsInputDiv" class="section">
-                    <ul class="collection" id="ingredients" style="display:none;">
-                    </ul>
-                    <label for="ingredients">Ingredients</label>
-                    <br><br>
-                    <div class="row">
-                        <div class="col s4 l4">
-                            Name of ingredient:
-                        </div>
-                        <div class="col s4 l4">
-                            <input type="text">
+                <div id="ingredientsDiv" class="row section">
+                    <div id="ingredientsListDiv" class="col s12 l12">
+                        <ul class="collection" id="ingredientsList">
+                        </ul>
+                        <label for="ingredientsList">Ingredients</label>
+                    </div>
+                    <div id="ingredientsInputDiv" class="col s12 l12">
+                        <div id="ingredientsInput" class="row section container">
+                            <div class="col s12 l4">
+                                <input id="ingredientName" type="text">
+                                <label for="ingredientName">Name of ingredient:</label>
+                            </div>
+                            <div class="col s12 l4">
+                                <input id="ingredientAmount" type="text">
+                                <label for="ingredientAmount">Amount of ingredient:</label>
+                            </div>
+                            <div class="col s12 l4">
+                                <a id="addIngredient" class="btn">Add Ingredient</a>
+                                <!-- <label for="addIngredient">Click to add</label> -->
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col s4 l4">
-                            Amount of ingredient:
-                        </div>
-                        <div class="col s4 l4">
-                            <input type="text">
-                        </div>
-                    </div>
+
+                    <script src="/js/recipes.js"></script>
                 </div>
 
-                
-
-                <br>
-
-                
+                <div id="submitDiv" class="section row">
+                    <div class="col s12 l12">
+                        <p>Check over all the details and hit the submit button!</p>
+                    </div>
+                    <button class="btn col s12 l12">Click to Submit!</button>                    
+                </div>
+               
             </form>
         </div>
     </div>
