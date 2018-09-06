@@ -44,7 +44,7 @@ module.exports = (app,address) => {
 
     app.post("/recipes",(req,res) => {
         console.log(req.body);
-        res.render("/recipes");
+        res.render("recipes/main");
     })
 
     /*
