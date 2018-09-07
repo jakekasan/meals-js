@@ -31,7 +31,7 @@ function initDatabase(){
     db.close();
 }
 
-function addJob(req,res,jobType){
+function addJob(req,res,jobType,callback){
 
     // connect to the database
 
@@ -60,12 +60,15 @@ function addJob(req,res,jobType){
             let values = [jobType,jobName,0,0];
 
             db.run(sql,values,(err) => {
-                if (err) throw err;
+                if (err) {
+
+                }
                 let jobID = this.lastID;
+                callback(jobID);
+
                 res.redirect(`/${jobType}?confirmation=${jobID}`);
                 db.close();
             });
-
         });
     });
 }
@@ -119,7 +122,42 @@ function checkJob(req,res,next){
     });
 }
 
+function jobSuccess(jobID){
+    let db = sqlite3.Database("./database/sql/databaseJobs.db",(err) => {
+        if (err) throw err;
+
+        let sql = `UPDATE jobs SET done = 1 WHERE jobID = ?`;
+
+        db.run(sql,[jobID],(err) => {
+            if (err) throw err;
+            db.close();
+        });
+    });
+}
+
+function jobFailure(jobID){
+    
+    let db = sqlite3.Database("./database/sql/databaseJobs.db",(err) => {
+        if (err) {
+            throw err;
+        }
+
+        
+
+        let sql = `UPDATE jobs SET failure = 1 WHERE jobID = ?`;
+
+        db.run(sql,[jobID],(err) => {
+            if (err) throw err;
+            db.close();
+        });
+    });
+
+    return
+}
+
 module.exports = {
     addJob,
-    checkJob
+    checkJob,
+    jobSuccess,
+    jobFailure
 }
