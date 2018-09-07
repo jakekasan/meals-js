@@ -9,17 +9,28 @@
 
 const Imports = require("./imports");
 const sqlite3 = require("sqlite3");
+const Path = require("path");
 
-let db = sqlite3.Database("./database/sql/databaseJobs.db",(err) => {
-    if (err) {
-        throw err
-    }
-    // connected!
-});
+const dbPath = Path.resolve(__dirname,"jobs.db");
+
+const boilerPlateSQL = `CREATE TABLE IF NOT EXISTS jobs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    type TEXT,
+    name TEXT,
+    done INTEGER,
+    failed INTEGER
+);`
+
+// let db = sqlite3.Database("./database/sql/databaseJobs.db",(err) => {
+//     if (err) {
+//         throw err
+//     }
+//     // connected!
+// });
 
 function initDatabase(){
     // run just once
-    let db = sqlite3.Database("./database/sql/databaseJobs.db",(err) => {
+    let db = new sqlite3.Database(dbPath,(err) => {
         if (err) {
             throw err
         }
@@ -35,7 +46,7 @@ function addJob(req,res,jobType,callback){
 
     // connect to the database
 
-    let db = sqlite3.Database("./database/sql/databaseJobs.db",(err) => {
+    let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,(err) => {
         if (err) {
             throw err
         }
@@ -43,14 +54,13 @@ function addJob(req,res,jobType,callback){
         
         // if the table doesnt exist, create it
 
-        db.run(`CREATE TABLE jobs(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            type TEXT,
-            name TEXT,
-            done INTEGER,
-            failed INTEGER
-        ) IF NOT EXISTS (SELECT * FROM jobs)`,(err) => {
-            if (err) throw err;
+        
+
+        db.run(boilerPlateSQL,[],(err) => {
+            if (err) {
+                console.log(err.message);
+                return
+            }
 
             // now insert the job
             let sql = `INSERT INTO jobs (type, name, done,failed) VALUES (?,?,?,?)`;
@@ -61,13 +71,20 @@ function addJob(req,res,jobType,callback){
 
             db.run(sql,values,(err) => {
                 if (err) {
-
+                    throw err;
                 }
                 let jobID = this.lastID;
-                callback(jobID);
 
-                res.redirect(`/${jobType}?confirmation=${jobID}`);
+                console.log("Logging this");
+
+                console.log(this);
+
+                console.log(`LastID: ${this.lastID}, Changes: ${this.changes} `)
+
+                callback(jobID);
                 db.close();
+                res.redirect(`/${jobType}?confirmation=${jobID}`);
+                
             });
         });
     });
@@ -81,7 +98,7 @@ function checkJob(req,res,next){
         return
     }
 
-    let db = sqlite3.Database("./database/sql/databaseJobs.db",(err) => {
+    let db = new sqlite3.Database(dbPath,(err) => {
         if (err) {
             throw err
         }
@@ -89,22 +106,23 @@ function checkJob(req,res,next){
         
         // if the table doesnt exist, create it
 
-        db.run(`CREATE TABLE jobs(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            type TEXT,
-            name TEXT,
-            done INTEGER
-        ) IF NOT EXISTS (SELECT * FROM jobs)`,(err) => {
+        db.run(boilerPlateSQL,(err) => {
             if (err) throw err;
 
             // now check the job status
-            let sql = `SELECT (type,name,done,failed) FROM jobs WHERE id = ?`;
+            let sql = `SELECT type type, name name, done done, failed failed FROM jobs WHERE id = ?`;
 
             let values = [req.query.confirmation];
 
-            db.run(sql,values,(err,row) => {
+            db.get(sql,values,(err,row) => {
                 if (err) throw err;
+                if (!row) {
+                    db.close();
+                    next();
+                    return
+                }
                 if (row.done == 0){
+                    db.close();
                     next();
                     return
                 } else {
@@ -113,38 +131,42 @@ function checkJob(req,res,next){
                         type:row.type,
                         failed: (row.failed == 1) ? true : false
                     }
+                    db.close();
                     next();
                     return
                 }
             });
-
         });
     });
 }
 
 function jobSuccess(jobID){
-    let db = sqlite3.Database("./database/sql/databaseJobs.db",(err) => {
-        if (err) throw err;
+    let db = new sqlite3.Database(dbPath,(err) => {
+        if (err) {
+            throw err
+        }
 
-        let sql = `UPDATE jobs SET done = 1 WHERE jobID = ?`;
-
-        db.run(sql,[jobID],(err) => {
+        db.run(boilerPlateSQL,(err) => {
             if (err) throw err;
-            db.close();
+
+            let sql = `UPDATE jobs SET done = 1 WHERE id = ?`;
+
+            db.run(sql,[jobID],(err) => {
+                if (err) throw err;
+                db.close();
+            });
         });
     });
 }
 
 function jobFailure(jobID){
     
-    let db = sqlite3.Database("./database/sql/databaseJobs.db",(err) => {
+    let db = new sqlite3.Database(dbPath,(err) => {
         if (err) {
             throw err;
         }
 
-        
-
-        let sql = `UPDATE jobs SET failure = 1 WHERE jobID = ?`;
+        let sql = `UPDATE jobs SET failed = 1 WHERE id = ?`;
 
         db.run(sql,[jobID],(err) => {
             if (err) throw err;
@@ -160,4 +182,4 @@ module.exports = {
     checkJob,
     jobSuccess,
     jobFailure
-}
+};
