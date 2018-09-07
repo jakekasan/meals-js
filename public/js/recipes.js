@@ -41,10 +41,12 @@ function addIngredientToList(){
 
     let liInput = document.createElement("input");
     liInput.name = "ingredients[]";
+
     liInput.value = JSON.stringify({
         name:ingredientName,
         amount:ingredientAmount
     });
+
     liInput.type = "hidden";
 
     li.appendChild(liInput);
