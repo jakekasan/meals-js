@@ -19,5 +19,6 @@ module.exports = {
     Cookies,
     Recipes,
     Ingredients,
-    Data
+    Data,
+    Processor
 }
