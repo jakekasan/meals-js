@@ -57,7 +57,8 @@ module.exports = (app,address) => {
 
     app.post("/ingredients",(req,res) => {
         console.log(req.body);
-        res.render("ingredients/main",{});
+        Imports.Mongo.addIngredient(req,res);
+        //res.render("ingredients/main",{});
     })
 
     /*
