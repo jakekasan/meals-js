@@ -12,6 +12,7 @@ const Recipes = require("./database/recipes");
 const Data = require("./database/fake_data");
 const Ingredients = require("./database/ingredients");
 const Processor = require("./processor");
+const Mongo = require("./database/mongo");
 
 
 module.exports = {
@@ -20,5 +21,6 @@ module.exports = {
     Recipes,
     Ingredients,
     Data,
-    Processor
+    Processor,
+    Mongo
 }
