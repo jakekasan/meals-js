@@ -13,6 +13,15 @@ var FoodProduct = new Schema({
 var Ingredient = new Schema({
     id:Schema.Types.ObjectId,
     name:String,
+    description:String,
+    nutrition:{
+        protein:Number,
+        fats:Number,
+        carbohydrates:Number,
+        calories:Number,
+        grams:Boolean
+    },
+    cost:Number,
     quantity:Number
 });
 
