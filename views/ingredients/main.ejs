@@ -1,5 +1,7 @@
 <% include ../header %>
 
+<script src="/js/ingredients.js"></script>
+
 <div class="container">
     <div class="section">
         <div class="row">
@@ -15,21 +17,52 @@
                         <label for="descriptionInput">Description</label>
                     </div>
                     <div class="row">
-                        <div class="col s6 l3">
+                        <div class="col s5 l2">
                             <p>Protein:</p>
                         </div>
-                        <div class="col s6 l3">
-                            
+                        <div class="col s5 l2 ">
+                            <input type="text" id="protein" name="protein" required>
                         </div>
-                        <div class="col s6 l3">
+                        <div class="col s5 l2 offset-l4">
                             <p>Fat:</p>
                         </div>
-                        <div class="col s6 l3">
-
+                        <div class="col s5 l2 ">
+                            <input type="text" id="fat" name="fat" required>
                         </div>
-                        <div class="col s6 l3">
-                            <p>Carbohydrates</p>
+                        <div class="col s5 l2">
+                            <p>Carbohydrates:</p>
                         </div>
+                        <div class="col s5 l2">
+                            <input type="text" id="carbohydrates" name="carbohydrates" required>
+                        </div>
+                        <div class="col s5 l2 offset-l4">
+                            <p>Calories:</p>
+                        </div>
+                        <div class="col s5 l2 ">
+                            <input type="text" id="calories" name="calories" required>
+                        </div>
+                        <div class="col s5 l2">
+                            <p>Cost:</p>
+                        </div>
+                        <div class="col s5 l2">
+                            <input type="text" id="cost" name="cost" required>
+                        </div>
+                        <div class="col s5 l2 offset-l4">
+                            <p>Measured By:</p>
+                        </div>
+                        <div class="col s5 l2">
+                            <div class="input-field">
+                                <select name="measured">
+                                    <option value="grams">Grams</option>
+                                    <option value="pieces">Pieces</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section">
+                    <div class="header center">
+                        <button class="btn">Submit Ingredient!</button>
                     </div>
                 </div>
             </form>
