@@ -15,7 +15,7 @@ var Ingredient = new Schema({
     name:String,
     description:String,
     nutrition:{
-        protein:Number,
+        proteins:Number,
         fats:Number,
         carbohydrates:Number,
         calories:Number,
