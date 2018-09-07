@@ -31,7 +31,7 @@ function initDatabase(){
     db.close();
 }
 
-function addJob(req,res,jobType,jobName){
+function addJob(req,res,jobType){
 
     // connect to the database
 
@@ -47,14 +47,17 @@ function addJob(req,res,jobType,jobName){
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             type TEXT,
             name TEXT,
-            done INTEGER
+            done INTEGER,
+            failed INTEGER
         ) IF NOT EXISTS (SELECT * FROM jobs)`,(err) => {
             if (err) throw err;
 
             // now insert the job
-            let sql = `INSERT INTO jobs (type, name, done) VALUES (?,?,?)`;
+            let sql = `INSERT INTO jobs (type, name, done,failed) VALUES (?,?,?,?)`;
 
-            let values = [jobType,jobName,0];
+            let jobName = req.body.name;
+
+            let values = [jobType,jobName,0,0];
 
             db.run(sql,values,(err) => {
                 if (err) throw err;
@@ -92,20 +95,20 @@ function checkJob(req,res,next){
             if (err) throw err;
 
             // now check the job status
-            let sql = `SELECT (type,name,done) FROM jobs WHERE id = ?`;
+            let sql = `SELECT (type,name,done,failed) FROM jobs WHERE id = ?`;
 
             let values = [req.query.confirmation];
 
             db.run(sql,values,(err,row) => {
                 if (err) throw err;
                 if (row.done == 0){
-                    // on second thought, i'll turn this into middleware
                     next();
                     return
                 } else {
                     req.confirmation = {
                         name:row.name,
-                        type:row.type
+                        type:row.type,
+                        failed: (row.failed == 1) ? true : false
                     }
                     next();
                     return
@@ -114,4 +117,9 @@ function checkJob(req,res,next){
 
         });
     });
+}
+
+module.exports = {
+    addJob,
+    checkJob
 }
