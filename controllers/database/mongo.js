@@ -67,10 +67,10 @@ function addIngredient(req,res){
         name: req.body.name,
         description: req.body.description,
         nutrition:{
-            proteins:req.body.protein,
+            proteins:req.body.proteins,
             fats:req.body.fats,
             carbohydrates:req.body.carbohydrates,
-            grams:req.body.grams
+            grams:(req.body.grams == "true") ? true : false
         },
         cost:req.body.cost,
         quantity:1
