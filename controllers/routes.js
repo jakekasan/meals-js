@@ -79,6 +79,7 @@ module.exports = (app,address) => {
 
     app.get("/api/recipes",(req,res) => {
         
+        
         if ((Object.keys(req.query)).length < 1){
             // get all
             Imports.Recipes.getAllRecipes(res);
@@ -89,13 +90,14 @@ module.exports = (app,address) => {
     });
 
     app.get("/api/ingredients",(req,res) => {
-        if ((Object.keys(req.query)).length < 1){
-            // get all
-            Imports.Ingredients.getAllRecipes(res);
-            return
-        } else if (req.query.name){
-            Imports.Ingredients
-        }
+        Imports.Mongo.getAllIngredients(req,res);
+        // if ((Object.keys(req.query)).length < 1){
+        //     // get all
+        //     Imports.Ingredients.getAllRecipes(res);
+        //     return
+        // } else if (req.query.name){
+        //     //Imports.Ingredients
+        // }
     });
 
     app.post("/api/user",(req,res) => {
