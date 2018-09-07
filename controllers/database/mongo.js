@@ -30,11 +30,11 @@ function addRecipe(req,res){
             // model failed to save, ammend job entry
             //Processor.jobFailure(jobID);
             console.log(err);
-            console.log("recipe not saved");
+            // console.log("recipe not saved");
             res.redirect("/recipes");
             return
         }
-        console.log(`recipe saved`);
+        // console.log(`recipe saved`);
         res.redirect("/recipes");
         return
     });
@@ -61,8 +61,34 @@ function addRecipe(req,res){
     // Processor.addJob(req,res,"recipes",addRecipeCallback);
 }
 
-function addIngredient(ingredient){
+function addIngredient(req,res){
     // check ingredient
+    let ingredient = {
+        name: req.body.name,
+        description: req.body.description,
+        nutrition:{
+            proteins:req.body.protein,
+            fats:req.body.fats,
+            carbohydrates:req.body.carbohydrates,
+            grams:req.body.grams
+        },
+        cost:req.body.cost,
+        quantity:1
+    }
+
+    let newIngredient = new IngredientsModel(ingredient);
+
+    newIngredient.save((err) => {
+        if (err) {
+            console.log("Ingredient failed to save");
+            res.redirect("/ingredients");
+            throw err;
+        }
+        console.log("Ingredient saved");
+        res.redirect("/ingredients");
+        return
+    });
+    return
 }
 
 module.exports = {
