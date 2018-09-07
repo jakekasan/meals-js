@@ -46,9 +46,7 @@ module.exports = (app,address) => {
     });
 
     app.post("/recipes",(req,res) => {
-        console.log(req.body);
-        Imports.Processor.addJob(req,res,"recipes")
-        //res.render("recipes/main",{});
+        Imports.Mongo.addRecipe(req,res);
     });
 
     // ingredients
