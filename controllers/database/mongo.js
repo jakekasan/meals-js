@@ -91,7 +91,16 @@ function addIngredient(req,res){
     return
 }
 
+// getters
+
+function getAllIngredients(req,res){
+    IngredientsModel.find((err,ingredients) => {
+        res.json(ingredients);
+    })
+}
+
 module.exports = {
     addRecipe,
-    addIngredient
+    addIngredient,
+    getAllIngredients
 }
