@@ -25,6 +25,8 @@ app.use(Imports.Cookies.cookieMiddleware);
 
 app.use(Imports.Recipes.recipesMiddleware);
 
+app.use(Imports.Processor.checkJob);
+
 routes(app,address);
 
 app.listen(8000,() => {
