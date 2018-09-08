@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded",() => {
     const submitIngredientClass = submitIngredient.className;
     submitIngredient.className = submitIngredient.className + " disabled";
 
-    
     // ingredients
 
     fetch("http://localhost:8000/api/ingredients")
@@ -36,10 +35,6 @@ document.addEventListener("DOMContentLoaded",() => {
             let autocompleteInstance = M.Autocomplete.getInstance(ingredientNameInput);
             autocompleteInstance.updateData(autocomplete);
             
-            
-
-            
-
             submitIngredient.addEventListener("click",() => {
                 let name = (document.getElementById("ingredientName")).value;
                 if (name == "") return
@@ -55,36 +50,11 @@ document.addEventListener("DOMContentLoaded",() => {
 
                 if ((data.map(item => item.name)).includes(value)){
                     submitIngredient.className = submitIngredientClass;
-
                 } else {
                     submitIngredient.className = submitIngredientClass + " disabled";
                 }
-
-                // regardless what happend, check if ingredients UL has children and if so, make it appear
-                // let ingredientsList = document.getElementById("ingredientsList");
-                // if ( (ingredientsList.children).length > 0 ){
-                //     ingredientsList.style.display = "grid";
-                // } else {
-                //     ingredientsList.style.display = "none";
-                // }
-
             });
         })
-
-    
-
-    // on keyup of the name typing 
-
-    // let ingredientNameInput = document.getElementById("ingredientName");
-    // ingredientNameInput.addEventListener("keyup",() => {
-
-    // })
-    
-    // let addIngredientButton = document.getElementById("addIngredient");
-
-    // addIngredientButton.addEventListener("click",() => {
-    //     addIngredientToList();
-    // });
 });
 
 function addIngredientToList(selected){
