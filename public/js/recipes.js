@@ -1,9 +1,19 @@
-window.addEventListener("load",() => {
+document.addEventListener("DOMContentLoaded",() => {
     console.log("Page loaded...")
     // init text areas
     for (let element of document.querySelectorAll(".materialize-textarea")){
         M.textareaAutoResize(element);
     }
+
+    M.Autocomplete.init((document.querySelectorAll(".autocomplete")),{
+        data:{
+            "Egg":null,
+            "Beef":null
+        }
+    });
+
+    //console.log(document.querySelectorAll(".dropdown-content"));
+
 
     const submitIngredient = document.getElementById("addIngredient");
     const submitIngredientClass = submitIngredient.className;
@@ -15,22 +25,28 @@ window.addEventListener("load",() => {
     fetch("http://localhost:8000/api/ingredients")
         .then(data => data.json())
         .then(data => {
-            // initialize the materialize element
+            // autocomplete data to cycle through
+            let autocomplete = data.reduce((acc,elem) => {
+                acc[elem.name] = null;
+                //acc[JSON.stringify(elem.name)] = null;
+                return acc
+            },{});
+
             let ingredientNameInput = document.getElementById("ingredientName");
-            let instance = M.Autocomplete.init([ingredientNameInput],{
-                data:data.reduce((acc,elem) => {
-                    acc[elem.name] = null;
-                    return acc
-                },{})
-            });
+            let autocompleteInstance = M.Autocomplete.getInstance(ingredientNameInput);
+            autocompleteInstance.updateData(autocomplete);
+            
+            
 
             
 
             submitIngredient.addEventListener("click",() => {
-                console.log("CLICK");
-                let selected = data.filter(item => (item.name == (document.getElementById("ingredientName")).value )).pop();
-                addIngredientToList(selected);
+                let name = (document.getElementById("ingredientName")).value;
+                if (name == "") return
 
+                let selected = data.filter(item => (item.name == name)).pop();
+                
+                addIngredientToList(selected);
             });
 
             ingredientNameInput.addEventListener("keyup",() => {
@@ -43,10 +59,16 @@ window.addEventListener("load",() => {
                 } else {
                     submitIngredient.className = submitIngredientClass + " disabled";
                 }
+
+                // regardless what happend, check if ingredients UL has children and if so, make it appear
+                // let ingredientsList = document.getElementById("ingredientsList");
+                // if ( (ingredientsList.children).length > 0 ){
+                //     ingredientsList.style.display = "grid";
+                // } else {
+                //     ingredientsList.style.display = "none";
+                // }
+
             });
-
-
-
         })
 
     
