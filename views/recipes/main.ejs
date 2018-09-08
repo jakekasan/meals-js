@@ -16,12 +16,6 @@
                     </div>
                 </div>
 
-                <script>
-                    document.addEventListener("load",() => {
-                        
-                    });
-                </script>
-
                 <div id="ingredientsDiv" class="row section">
                     <div id="ingredientsListDiv" class="col s12 l12">
                         <ul class="collection" id="ingredientsList">
@@ -29,16 +23,17 @@
                         <label for="ingredientsList">Ingredients</label>
                     </div>
                     <div id="ingredientsInputDiv" class="col s12 l12">
-                        <div id="ingredientsInput" class="row section container">
-                            <div class="col s12 l4">
-                                <input id="ingredientName" type="text">
+                        <div id="ingredientsInput" class="row section">
+                            <div class="col s12 l3 input-field">
+                                <input id="ingredientName" type="text" class="autocomplete">
                                 <label for="ingredientName">Name of ingredient:</label>
                             </div>
-                            <div class="col s12 l4">
+                            <div class="col s12 l3 input-field">
                                 <input id="ingredientAmount" type="text">
                                 <label for="ingredientAmount">Amount of ingredient:</label>
                             </div>
-                            <div class="col s12 l4">
+                            <div class="col s12 l3 offset-l2 section">
+                                <br>
                                 <a id="addIngredient" class="btn">Add Ingredient</a>
                                 <!-- <label for="addIngredient">Click to add</label> -->
                             </div>
