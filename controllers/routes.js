@@ -55,11 +55,14 @@ module.exports = (app,address) => {
         res.render("ingredients/main",{});
     });
 
+    app.get("/ingredients/add",(req,res) => {
+        res.render("ingredients/add",{});
+    })
+
     app.post("/ingredients",(req,res) => {
         console.log(req.body);
         Imports.Mongo.addIngredient(req,res);
-        //res.render("ingredients/main",{});
-    })
+    });
 
     /*
 
@@ -78,7 +81,6 @@ module.exports = (app,address) => {
     */
 
     app.get("/api/recipes",(req,res) => {
-        
         
         if ((Object.keys(req.query)).length < 1){
             // get all
