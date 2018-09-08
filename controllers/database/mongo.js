@@ -31,11 +31,11 @@ function addRecipe(req,res){
             //Processor.jobFailure(jobID);
             console.log(err);
             // console.log("recipe not saved");
-            res.redirect("/recipes");
+            res.redirect(req.path);
             return
         }
         // console.log(`recipe saved`);
-        res.redirect("/recipes");
+        res.redirect(req.path);
         return
     });
 
@@ -81,11 +81,11 @@ function addIngredient(req,res){
     newIngredient.save((err) => {
         if (err) {
             console.log("Ingredient failed to save");
-            res.redirect("/ingredients");
+            res.redirect(req.path);
             throw err;
         }
         console.log("Ingredient saved");
-        res.redirect("/ingredients");
+        res.redirect(req.path);
         return
     });
     return
