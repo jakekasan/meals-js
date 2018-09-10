@@ -10,7 +10,6 @@ const Processor = require("../processor");
 const Imports = require("../imports");
 const fakeData = require("./fake_data");
 
-const Mongoose = require("mongoose");
 
 function getAllRecipes(res){
     res.json(fakeData.recipes);
@@ -59,9 +58,7 @@ function fillMealPlan(mealPlan){
 
 function fillRecipe(recipeName){
     let recipe = getRecipeByName(recipeName);
-    console.log("Filling recipe...");
-    console.log(recipe);
-    //let ingredients = recipe.ingredients    //getGroceries(recipe);
+    
     return recipe
 }
 
@@ -69,8 +66,8 @@ function getRawGroceries(mealPlan){
     if (mealPlan == {}){
         return []
     }
-    console.log("Getting groceries from meal plan...")
-    console.log(mealPlan);
+    //console.log("Getting groceries from meal plan...")
+    //console.log(mealPlan);
     let result = (Object.keys(mealPlan))
             .map(key => mealPlan[key])
             .map(item => item.ingredients)
@@ -78,7 +75,7 @@ function getRawGroceries(mealPlan){
                 return ingredients.concat(item)
             },[])
             .reduce((rawGroceries,item) => {
-                console.log(item);
+                //console.log(item);
                 if(rawGroceries[item.name]){
                     rawGroceries[item.name] += item.quantity;
                 } else {
@@ -136,31 +133,6 @@ function fillGrocery(rawGrocery){
     }
 
 }
-
-// function getMealPlan(req,res,userSession){
-//     userSession.mealPlan
-//     let mealPlanPromises = Object.keys(userSession.mealPlan).map(key => {
-//         let nameOfRecipe = userSession.mealPlan[key];
-//         if (nameOfRecipe){
-//             return fillMealDay(nameOfRecipe)
-//         } else {
-//             return nameOfRecipe
-//         }
-//     });
-
-//     Processor.main(req,res,userSession);
-// }
-
-// function fillMealDay(data){
-//     // check if data is not null
-//     if (!data){
-//         return
-//     }
-
-//     fetch("https://localhost:8080/api/data/recipe")
-
-
-// }
 
 module.exports = {
     getAllRecipes,
