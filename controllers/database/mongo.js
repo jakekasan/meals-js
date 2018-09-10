@@ -11,7 +11,7 @@ mongoose.connect("mongodb://temp:password1@ds245512.mlab.com:45512/meals",{
 
 mongoose.Promise = global.Promise;
 
-const RecipeModel = mongoose.model("Recipe",Schemas.Recipe);
+const RecipesModel = mongoose.model("Recipe",Schemas.Recipe);
 const IngredientsModel = mongoose.model("Ingredient",Schemas.Ingredient);
 
 function addRecipe(req,res){
@@ -21,7 +21,7 @@ function addRecipe(req,res){
 
     recipe.ingredients = recipe.ingredients.map(item => JSON.parse(item));
 
-    let newRecipe = new RecipeModel(recipe);
+    let newRecipe = new RecipesModel(recipe);
 
     console.log(newRecipe);
 
@@ -38,27 +38,7 @@ function addRecipe(req,res){
         res.redirect(req.path);
         return
     });
-
     return
-
-    // function addRecipeCallback(jobID){
-
-    //     let newRecipe = new RecipeModel(recipe);
-    //     newRecipe.save((err, savedRecipe) => {
-    //         if (err) {
-    //             // model failed to save, ammend job entry
-    //             Processor.jobFailure(jobID);
-    //         }
-    //         // model saved, ammend job entry
-    //         Processor.jobSuccess(jobID);
-    //     });
-    // }
-
-    // console.log("addRecipe");
-
-    // console.log(Processor);
-
-    // Processor.addJob(req,res,"recipes",addRecipeCallback);
 }
 
 function addIngredient(req,res){
@@ -96,11 +76,18 @@ function addIngredient(req,res){
 function getAllIngredients(req,res){
     IngredientsModel.find((err,ingredients) => {
         res.json(ingredients);
-    })
+    });
+}
+
+function getAllRecipes(req,res){
+    RecipesModel.find((err,recipes) => {
+        res.json(recipes);
+    });
 }
 
 module.exports = {
     addRecipe,
     addIngredient,
-    getAllIngredients
+    getAllIngredients,
+    getAllRecipes
 }
