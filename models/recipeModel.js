@@ -1,7 +1,10 @@
 /*
 
-    recipes.js
+    recipeModel.js
 
+    TO-DO:
+        - add function to check if ingredients in recipe are in ingredients
+        - add CRUD
 */
 
 const RecipeSchema = require("./schemas/recipeSchema");
