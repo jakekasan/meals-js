@@ -38,6 +38,10 @@ module.exports = (app,address) => {
        
     });
 
+    app.get("/nutrition",(req,res) => {
+        res.render("nutrition");
+    })
+
     // recipes
 
     app.get("/recipes",(req,res) => {
