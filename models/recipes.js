@@ -15,7 +15,10 @@ const Recipe = Mongoose.model("Recipe",RecipeSchema);
 
 function checkRecipe(recipe){
     /*
-        check that the recipe object is valid
+        - Check that the recipe object is valid.
+
+        - Also check that all the ingredients are
+        in the database already.
     */
    return true
 }
