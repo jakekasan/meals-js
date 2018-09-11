@@ -7,7 +7,7 @@
         - add CRUD
 */
 
-const RecipeSchema = require("./schemas/recipeSchema");
+
 const Mongoose = require("mongoose");
 
 Mongoose.connect("mongodb://temp:password1@ds245512.mlab.com:45512/meals",{
@@ -53,6 +53,15 @@ function addRecipe(req,res){
 
 function getRecipe(req,res){
     Recipe.findOne()
+}
+
+
+const RecipeSchema = require("./schemas/recipeSchema");
+const BaseModel = require("./baseModel");
+
+module.exports = function(mongoose){
+    let model = mongoose.Model("Recipes",RecipeSchema);
+    return (new BaseModel(model));
 }
 
 
