@@ -64,4 +64,10 @@ module.exports = function(mongoose){
     return (new BaseModel(model));
 }
 
+module.exports.prototype = BaseModel.extends({
+    setMongo:function(mongo){
+        this.setModel(mongo.model("Recipe",RecipesSchema));
+    }
+})
+
 
