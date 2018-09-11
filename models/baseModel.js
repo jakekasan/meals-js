@@ -1,6 +1,6 @@
 const _ = require("underscore");
 
-function callbackHandler(err,data){
+function callbackHandler(err,data,callback){
     if (err) {
         return callback(err,data)
     } else {
@@ -20,15 +20,15 @@ module.exports.prototype = {
         return _.extends({},this,child)
     },
     create: function(data,callback){
-        this.model.save(data,callbackHandler(err,data));
+        this.model.save(data,callbackHandler(err,data,callback));
     },
     retrieve: function(data,callback){
-        this.model.find((data || {}),callbackHandler(err,data));
+        this.model.find((data || {}),callbackHandler(err,data,callback));
     },
     update: function(data,callback){
-        this.model.update(data,callbackHandler(err,data));
+        this.model.update(data,callbackHandler(err,data,callback));
     },
     delete: function(data,callback){
-        this.model.delete(data,callbackHandler(err,data));
+        this.model.delete(data,callbackHandler(err,data,callback));
     }
 }
