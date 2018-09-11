@@ -8,27 +8,20 @@
 */
 
 const Mongoose = require("mongoose");
+
+Mongoose.Promise = global.Promise;
+
+Mongoose.connect("mongodb://temp:password1@ds245512.mlab.com:45512/meals",{
+    useNewUrlParser:true
+});
+
 const IngredientSchema = require("./schemas/ingredientSchema");
-const IngredientModel = Mongoose.model("Ingredient",IngredientSchema);
+//const IngredientModel = Mongoose.model("Ingredient",IngredientSchema);
 
-// CRUD
+const baseModel = require("./baseModel");
 
-function addIngredient(ingredient){
-
+module.exports = function(mongoose){
+    let model = new mongoose.model("Ingredients",IngredientSchema);
+    return (new baseModel(model))
 }
 
-function updateIngredient(ingredient){
-
-}
-
-function replaceIngredient(oldIngredient,newIngredient){
-
-}
-
-function deleteIngredient(ingredient){
-
-}
-
-function ingredientExists(ingredient){
-
-}
