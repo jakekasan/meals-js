@@ -7,34 +7,38 @@ module.exports = baseController.extend({
     recipeModel: recipeModel,
     ingredientModel: ingredientModel,
     run: function(req,res,next){
+        const self = this;
         this.recipeModel.setMongo(req.mongo);
         this.ingredientModel.setMongo(req.mongo);
         if (!Object.keys(this.routes).includes(req.path)){
             return res.sendStatus(404);
         }
-        this.routes[req.path][req.method];
+        if (!Object.keys(this.routes[req.path]).includes(req.method)){
+            return res.sendStatus(400);
+        }
+        this.routes[req.path][req.method](req,res,next,self);
     },
     routes:{
         "/api/ingredients": {
-            GET: function (req,res,next) {
-                this.ingredientModel.retrieve((req.query || {}),(err,data) => {
+            GET: function (req,res,next,self) {
+                self.ingredientModel.retrieve((req.query || {}),(err,data) => {
                     if (err) {
                         return res.sendStatus(500)
                     }
                     return res.json(data);
                 })
             },
-            POST: function (req,res,next) {
+            POST: function (req,res,next,self) {
                 // post data to model
                 if (!(req.body || req.body.name)){
                     return res.sendStatus(400)
                 }
-                this.ingredientModel.retrieve({name:req.body.name},(err,data) => {
+                self.ingredientModel.retrieve({name:req.body.name},(err,data) => {
                     if (err){
                         return res.sendStatus(500)
                     }
                     if (data){
-                        this.ingredientModel.update(data,req.body,(err) => {
+                        self.ingredientModel.update(data,req.body,(err) => {
                             if (err){
                                 return res.sendStatus(400)
                             }
@@ -46,25 +50,25 @@ module.exports = baseController.extend({
             }
         },
         "/api/recipes": {
-            get: function (req,res,next) {
-                this.recipeModel.retrieve((req.query || {}),(err,data) => {
+            get: function (req,res,next,self) {
+                self.recipeModel.retrieve((req.query || {}),(err,data) => {
                     if (err) {
                         return res.sendStatus(500)
                     }
                     return res.json(data);
                 })
             },
-            post: function (req,res,next) {
+            post: function (req,res,next,self) {
                 // post data to model
                 if (!(req.body || req.body.name)){
                     return res.sendStatus(400)
                 }
-                this.recipeModel.retrieve({name:req.body.name},(err,data) => {
+                self.recipeModel.retrieve({name:req.body.name},(err,data) => {
                     if (err){
                         return res.sendStatus(500)
                     }
                     if (data){
-                        recipeModel.update(data,req.body,(err) => {
+                        self.recipeModel.update(data,req.body,(err) => {
                             if (err){
                                 return res.sendStatus(400)
                             }
