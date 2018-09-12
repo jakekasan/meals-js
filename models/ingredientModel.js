@@ -21,7 +21,7 @@ const IngredientSchema = require("./schemas/ingredientSchema");
 const baseModel = require("./baseModel");
 
 module.exports = function(mongoose){
-    let model = new mongoose.model("Ingredients",IngredientSchema);
+    let model = mongoose.model("Ingredients",IngredientSchema);
     return (new baseModel(model))
 }
 
