@@ -1,10 +1,12 @@
 let config = {
     development:{
+        mode:"development",
         hostname:"http://localhost",
         port:"8000",
         mongoDB:"mongodb://temp:password1@ds245512.mlab.com:45512/meals"
     },
     production:{
+        mode:"development",
         hostname:"http://mealplan.io",
         port:"80",
         mongoDB:"mongodb://temp:password1@ds245512.mlab.com:45512/meals"
