@@ -57,17 +57,19 @@ function getRecipe(req,res){
 
 
 const RecipeSchema = require("./schemas/recipeSchema");
-const BaseModel = require("./baseModel");
+const BaseModel = new (require("./baseModel"))();
 
-module.exports = function(mongoose){
-    let model = mongoose.Model("Recipes",RecipeSchema);
-    return (new BaseModel(model));
-}
+// module.exports = function(mongoose){
+//     let model = mongoose.Model("Recipes",RecipeSchema);
+//     return (new BaseModel(model));
+// }
 
-module.exports.prototype = BaseModel.extends({
+const recipeModel = BaseModel.extends({
     setMongo:function(mongo){
-        this.setModel(mongo.model("Recipe",RecipesSchema));
+        this.setModel(mongo.model("Recipe",RecipeSchema));
     }
-})
+});
+
+module.exports = recipeModel;
 
 
