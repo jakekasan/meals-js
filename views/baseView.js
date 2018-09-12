@@ -5,7 +5,7 @@ module.exports = function(response,templateName){
 
 module.exports.prototype = {
     render: function(data){
-        if (this.response || this.templateName){
+        if (this.response && this.templateName){
             this.response.render(this.templateName,data);
         }
     }
