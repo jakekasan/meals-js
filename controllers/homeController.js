@@ -6,8 +6,6 @@
 
 var userSessionModel = require("./../models/userSessionModel")();
 
-
-
 module.exports = {
     name:"Home",
     content:null,
@@ -15,16 +13,28 @@ module.exports = {
     recipeModel:null,
     ingredientsModel:null,
     run: function(req,res,next){
-        userSessionModel.setMongo(req.mongo);
-        recipeModel.setMongo(req.mongo)
+        recipeModel.setMongo(req.mongo);
+        var self = this;
+        self.getContent((err,data) => {
+            if (err) {
+                throw err;
+            }
+            self.content.mealPlan = Object.entries(req.userSessionModel.mealPlan)
+                .reduce((acc,[key,item]) => {
+                    acc[key] = data.filter(elem => elem.name == item).pop();
+            },{})
+            
+            // now load view
+            
+        })
         
     },
-    getContent: function(callback){
+    getContent: function(req,callback){
         var self = this;
-        this.userSessionModel.retrieve(null,(err,data) => {
-            self.content = data;
-            this.recipeModel
-        })
+        let recipes = Object.values(req.userSessionModel.mealPlan);
+        this.recipeModel.retrieve({name:{$in:recipes}},(err,data) => {
+            callback(err,data);
+        });
     },
 
 }
