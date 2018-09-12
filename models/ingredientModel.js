@@ -25,7 +25,7 @@ const BaseModel = new (require("./baseModel"))();
 //     return (new baseModel(model))
 // }
 
-const ingredientModel = BaseModel.extends({
+const ingredientModel = BaseModel.extend({
     setMongo: function(mongo){
         this.setModel(mongo.model("Ingredients",IngredientSchema));
     }
