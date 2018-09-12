@@ -5,6 +5,8 @@
 */
 
 var userSessionModel = require("./../models/userSessionModel")();
+var recipeModel = require("./../models/recipeModel");
+var baseView = require("./../views/baseView");
 
 module.exports = {
     name:"Home",
@@ -25,7 +27,9 @@ module.exports = {
             },{})
             
             // now load view
-            
+
+            let view = new baseView(res,"home");
+            view.render(self.content);
         })
         
     },
