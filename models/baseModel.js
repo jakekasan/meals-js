@@ -13,7 +13,7 @@ module.exports = function(model){
 }
 
 module.exports.prototype = {
-    setMongoose: function(mongoose){
+    setModel:function(model){
         this.model = model;
     },
     extends: function(child){
