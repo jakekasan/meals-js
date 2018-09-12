@@ -4,11 +4,11 @@
         - extends baseController
 */
 
-var userSessionModel = require("./../models/userSessionModel")();
 var recipeModel = require("./../models/recipeModel");
 var baseView = require("./../views/baseView");
+var baseController = require("./baseController");
 
-module.exports = {
+module.exports = baseController.extend({
     name:"Home",
     content:null,
     userSessionModel:null,
@@ -41,4 +41,4 @@ module.exports = {
         });
     },
 
-}
+})
