@@ -1,4 +1,4 @@
-const Cookies = require("./../controllers/imports").Cookies;
+const Cookies = require("../controllers/imports").Cookies;
 
 function test_noCookie(){
     console.log("Testing noCookie...")

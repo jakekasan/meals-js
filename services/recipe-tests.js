@@ -4,7 +4,7 @@
 
 */
 
-const Recipes = require("./../controllers/imports").Recipes;
+const Recipes = require("../controllers/imports").Recipes;
 
 function test_recipesMiddleware(){
     let test_req = {

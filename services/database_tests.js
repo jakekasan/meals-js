@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const Mongo = require("./../controllers/imports").Mongo;
+const Mongo = require("../controllers/imports").Mongo;
 
 class ResponseObject{
     constructor(){
