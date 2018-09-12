@@ -3,7 +3,7 @@ const expect = require("chai").expect;
 const should = require("chai").should();
 
 const mongoose = require("mongoose");
-const config = require("./../../config/index")("development");
+const config = require("../../config")("development");
 
 describe("MongoDB Connection",() => {
     it("MongoDB connection error is null",() => {
