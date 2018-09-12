@@ -29,6 +29,9 @@ describe("Api Controller",() => {
             return callback(true)
         };
         this.retrieve = function(query,callback){
+            if (!this.mongo){
+                return callback(true,null)
+            }
             if (query){
                 return callback(null,true);
             }
@@ -76,9 +79,28 @@ describe("Api Controller",() => {
                 ApiController.routes["/api/ingredients"].should.have.property("POST");
             });
 
-            it("should return a sendStatus(200) if a valid object is sent",() => {
-                let tempController = ApiController;
+            it("should handle a GET -> ingredients with empty query",(done) => {
+                let tempController = require("./../../controllers/apiController");
                 tempController.recipeModel = new fakeModel();
+                tempController.ingredientModel = new fakeModel();
+                let req = new fakeReq(true,false,"/api/ingredients","GET",true);
+                let res = new fakeRes((data) => {
+                    data.should.equal(true);
+                    done();
+                });
+                tempController.run(req,res,null);
+            });
+
+            it("should return 500 to GET -> ingredients with empty query and bad DB",(done) => {
+                let tempController = require("./../../controllers/apiController");
+                tempController.recipeModel = new fakeModel();
+                tempController.ingredientModel = new fakeModel();
+                let req = new fakeReq(true,false,"/api/ingredients","GET",false);
+                let res = new fakeRes((code) => {
+                    code.should.equal(500);
+                    done();
+                });
+                tempController.run(req,res,null);
             })
         })
     })
