@@ -8,16 +8,17 @@ function callbackHandler(err,data,callback){
     }
 }
 
-module.exports = function(model){
-    this.model = model;
+module.exports = function(){
+    return
 }
+
 
 module.exports.prototype = {
     setModel:function(model){
         this.model = model;
     },
-    extends: function(child){
-        return _.extends({},this,child)
+    extend: function(child){
+        return _.extend({},this,child)
     },
     create: function(data,callback){
         this.model.save(data,callbackHandler(err,data,callback));
