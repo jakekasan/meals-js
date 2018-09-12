@@ -6,34 +6,34 @@ const Imports = require("./controllers/imports");
 
 const routes = require("./controllers/routes.js");
 
-app.use(cookieParser());
+//app.use(cookieParser());
 
 // globals
 
-const address = "http://localhost:8000"
+// const address = "http://localhost:8000"
 
-app.set("view engine","ejs");
+// app.set("view engine","ejs");
 
-app.use(express.static("public"));
+// app.use(express.static("public"));
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({
+//     extended: true
+// }));
+// app.use(bodyParser.json());
 
-app.use(Imports.Cookies.cookieMiddleware);
+// app.use(Imports.Cookies.cookieMiddleware);
 
-app.use(Imports.Recipes.recipesMiddleware);
+// app.use(Imports.Recipes.recipesMiddleware);
 
-app.use(Imports.Processor.checkJob);
+// app.use(Imports.Processor.checkJob);
 
-routes(app,address);
+// routes(app,address);
 
-app.listen(8000,() => {
-    console.log("Meals up and running.\nListening at 8000");
+// app.listen(8000,() => {
+//     console.log("Meals up and running.\nListening at 8000");
 
-    //Imports.Cookies.printAllRecords();
-});
+//     //Imports.Cookies.printAllRecords();
+// });
 
 // alternative application
 
@@ -64,7 +64,11 @@ mongoose.connect(config.mongo,(err,db) => {
     }
 
     app.all("/",dbMiddleware,(req,res,next) => {
+        homeController.run(req,res,next);
+    });
 
-    })
+    app.all("/api",dbMiddleware,(req,res,next) => {
+        
+    });
 
 })
