@@ -8,16 +8,18 @@
 //     useNewUrlParser:true
 // });
 
-const BaseModel = require("./baseModel");
+const BaseModel = new (require("./baseModel"))();
 const userSessionSchema = require("./schemas/userSessionSchema");
 
-module.exports = function(mongoose){
-    let model = mongoose.model("userSession",userSessionSchema);
-    return (new BaseModel(model))
-}
+// module.exports = function(mongoose){
+//     let model = mongoose.model("userSession",userSessionSchema);
+//     return (new BaseModel(model))
+// }
 
-module.exports.prototype = BaseModel.extends({
+const userSessionModel = BaseModel.extend({
     setMongo: function(mongo){
         this.setModel(mongo.model("userSession",userSessionSchema)); 
     }
 })
+
+module.exports = userSessionModel;
