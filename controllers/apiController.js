@@ -2,11 +2,13 @@ const baseController = require("./baseController");
 const recipeModel = require("./../models/recipeModel");
 const ingredientModel = require("./../models/ingredientModel");
 
-module.exports = baseController.extends({
+module.exports = baseController.extend({
     name:"API",
+    recipeModel: recipeModel,
+    ingredientModel: ingredientModel,
     run: function(req,res,next){
-        recipeModel.setMongo(req.mongo);
-        ingredientModel.setMongo(req.mongo);
+        this.recipeModel.setMongo(req.mongo);
+        this.ingredientModel.setMongo(req.mongo);
         if (!Object.keys(this.routes).includes(req.path)){
             return res.sendStatus(404);
         }
@@ -15,7 +17,7 @@ module.exports = baseController.extends({
     routes:{
         "/api/ingredients": {
             GET: function (req,res,next) {
-                ingredientModel.retrieve((req.query || {}),(err,data) => {
+                this.ingredientModel.retrieve((req.query || {}),(err,data) => {
                     if (err) {
                         return res.sendStatus(500)
                     }
@@ -27,12 +29,12 @@ module.exports = baseController.extends({
                 if (!(req.body || req.body.name)){
                     return res.sendStatus(400)
                 }
-                ingredientModel.retrieve({name:req.body.name},(err,data) => {
+                this.ingredientModel.retrieve({name:req.body.name},(err,data) => {
                     if (err){
                         return res.sendStatus(500)
                     }
                     if (data){
-                        ingredientModel.update(data,req.body,(err) => {
+                        this.ingredientModel.update(data,req.body,(err) => {
                             if (err){
                                 return res.sendStatus(400)
                             }
@@ -45,7 +47,7 @@ module.exports = baseController.extends({
         },
         "/api/recipes": {
             get: function (req,res,next) {
-                recipeModel.retrieve((req.query || {}),(err,data) => {
+                this.recipeModel.retrieve((req.query || {}),(err,data) => {
                     if (err) {
                         return res.sendStatus(500)
                     }
@@ -57,7 +59,7 @@ module.exports = baseController.extends({
                 if (!(req.body || req.body.name)){
                     return res.sendStatus(400)
                 }
-                recipeModel.retrieve({name:req.body.name},(err,data) => {
+                this.recipeModel.retrieve({name:req.body.name},(err,data) => {
                     if (err){
                         return res.sendStatus(500)
                     }
