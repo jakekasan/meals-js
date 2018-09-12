@@ -45,6 +45,7 @@ const config = require("./config/index")("development");
 const mongoose = require("mongoose");
 
 const homeController = require("./controllers/homeController");
+const apiController = require("./controllers/apiController");
 
 mongoose.connect(config.mongo,(err,db) => {
     if (err) throw err;
@@ -61,6 +62,7 @@ mongoose.connect(config.mongo,(err,db) => {
 
     var dbMiddleware = function(req,res,next){
         req.mongo = db;
+        next();
     }
 
     app.all("/",dbMiddleware,(req,res,next) => {
@@ -68,7 +70,7 @@ mongoose.connect(config.mongo,(err,db) => {
     });
 
     app.all("/api",dbMiddleware,(req,res,next) => {
-        
+        apiController.run(req,res,next);
     });
 
 })
