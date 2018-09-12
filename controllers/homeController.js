@@ -36,7 +36,7 @@ module.exports = {
     getContent: function(req,callback){
         var self = this;
         let recipes = Object.values(req.userSessionModel.mealPlan);
-        this.recipeModel.retrieve({name:{$in:recipes}},(err,data) => {
+        recipeModel.retrieve({name:{$in:recipes}},(err,data) => {
             callback(err,data);
         });
     },
