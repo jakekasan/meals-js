@@ -90,7 +90,13 @@
     }
 </script>
 
-<%- include("groceries",{groceries:data.groceries}) %>
+
+
+<%- include("groceries",{ groceries: Object.values(data.mealPlan)
+                                        .reduce((acc,elem) => {
+                                            return [].concat(acc,elem.ingredients)
+                                        },[])
+    }) %>
 
 <% include nutritional %>
 
