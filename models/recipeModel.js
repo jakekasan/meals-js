@@ -66,7 +66,13 @@ const BaseModel = new (require("./baseModel"))();
 
 const recipeModel = BaseModel.extend({
     setMongo:function(mongo){
-        this.setModel(mongo.model("Recipe",RecipeSchema));
+        //this.setModel(mongo.model("Recipe",RecipeSchema));
+        try {
+            this.setModel(mongo.model("Recipe"));
+        } catch (err) {
+            this.setModel(mongo.model("Recipe",RecipeSchema));
+        }
+        
     }
 });
 
