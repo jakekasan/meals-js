@@ -8,6 +8,8 @@ var recipeModel = require("./../models/recipeModel");
 var baseView = require("./../views/baseView");
 var baseController = require("./baseController");
 
+
+
 module.exports = baseController.extend({
     name:"Home",
     content:null,
@@ -43,12 +45,12 @@ module.exports = baseController.extend({
     },
     getContent: function(req,callback){
         if ((!req.userSession) || (!req.userSession.mealPlan)){
-            callback();
+            return callback();
         }
         var self = this;
-        let recipes = Object.values(req.userSessionModel.mealPlan);
+        let recipes = Object.values(req.userSession.mealPlan);
         recipeModel.retrieve({name:{$in:recipes}},(err,data) => {
-            callback(err,data);
+            return callback(err,data);
         });
     },
 
