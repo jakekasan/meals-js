@@ -21,7 +21,8 @@ module.exports.prototype = {
         return _.extend({},this,child)
     },
     create: function(data,callback){
-        this.model.save(data,callbackHandler(err,data,callback));
+        let newObject = this.model(data);
+        newObject.save(data,callbackHandler(err,data,callback));
     },
     retrieve: function(data,callback){
         this.model.find((data || {}),callbackHandler(err,data,callback));
