@@ -18,7 +18,12 @@ const userSessionSchema = require("./schemas/userSessionSchema");
 
 const userSessionModel = BaseModel.extend({
     setMongo: function(mongo){
-        this.setModel(mongo.model("userSession",userSessionSchema)); 
+        try {
+            this.setModel(mongo.model("UserSession"));    
+        } catch (error) {
+            this.setModel(mongo.model("UserSession",userSessionSchema));
+        }
+        
     }
 })
 
