@@ -51,7 +51,8 @@ const userSessionController = require("./controllers/userSessionController");
 //const modelsInit = require("./models/modelsInit");
 
 mongoose.connect(config.databases.mongoDB,{
-    useNewUrlParser:true
+    useNewUrlParser:true,
+    poolSize:20
 },(err,db) => {
     if (err) throw err;
     
