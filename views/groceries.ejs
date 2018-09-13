@@ -18,8 +18,10 @@
                                     <th>Item</th>
                                     <th>Quantity</th>
                                     <th>Cost</th>
-                                    <th>Food waste</th>
-                                    <th>Financial waste</th>
+                                    <th>Protein</th>
+                                    <th>Fat</th>
+                                    <th>Carbs</th>
+                                    <th>Calories</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -28,8 +30,10 @@
                                     <th><%= item.name %></th>
                                     <th><%= item.amount %>g</th>
                                     <th>£<%= (item.cost/100).toFixed(2) %></th>
-                                    <th><%= item.foodOver %>g</th>
-                                    <th>£<%= (item.costOver/100).toFixed(2)%></th>
+                                    <th><%= item.protein %>g</th>
+                                    <th><%= item.fat %></th>
+                                    <th><%= item.carbs %></th>
+                                    <th><%= item.calories %></th>
                                 </tr>
                                 
                                 
@@ -44,8 +48,10 @@
                                     <th></th>
                                     <th></th>
                                     <th>Cost</th>
-                                    <th>Food waste</th>
-                                    <th>Money Waste</th>
+                                    <th>Protein</th>
+                                    <th>Fat</th>
+                                    <th>Carbs</th>
+                                    <th>Calories</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -53,8 +59,10 @@
                                     <th>Totals :</th>
                                     <th></th>
                                     <th><%= groceries.map(item => item.cost).reduce((acc,ele) => (acc+ele),0) %></th>
-                                    <th><%= groceries.map(item => item.foodOver).reduce((acc,ele) => (acc+ele),0) %></th>
-                                    <th><%= groceries.map(item => item.costOver).reduce((acc,ele) => (acc+ele),0) %></th>
+                                    <th><%= groceries.map(item => item.protein).reduce((acc,ele) => (acc+ele),0) %></th>
+                                    <th><%= groceries.map(item => item.fat).reduce((acc,ele) => (acc+ele),0) %></th>
+                                    <th><%= groceries.map(item => item.carbs).reduce((acc,ele) => (acc+ele),0) %></th>
+                                    <th><%= groceries.map(item => item.calories).reduce((acc,ele) => (acc+ele),0) %></th>
                                 </tr>
                             </tbody>
                         </table>
