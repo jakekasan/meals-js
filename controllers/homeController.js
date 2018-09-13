@@ -17,14 +17,22 @@ module.exports = baseController.extend({
     run: function(req,res,next){
         recipeModel.setMongo(req.mongo);
         var self = this;
-        self.getContent((err,data) => {
+        self.getContent(req,(err,data) => {
             if (err) {
                 throw err;
             }
-            self.content.mealPlan = Object.entries(req.userSessionModel.mealPlan)
-                .reduce((acc,[key,item]) => {
-                    acc[key] = data.filter(elem => elem.name == item).pop();
-            },{})
+            if (!data){
+                self.content = {
+                    mealPlan:{}
+                };
+            } else {
+                self.content = {
+                    mealPlan: Object.entries(req.userSession.mealPlan)
+                    .reduce((acc,[key,item]) => {
+                        acc[key] = data.filter(elem => elem.name == item).pop();
+                    },{})
+                };
+            }
             
             // now load view
 
@@ -34,6 +42,9 @@ module.exports = baseController.extend({
         
     },
     getContent: function(req,callback){
+        if ((!req.userSession) || (!req.userSession.mealPlan)){
+            callback();
+        }
         var self = this;
         let recipes = Object.values(req.userSessionModel.mealPlan);
         recipeModel.retrieve({name:{$in:recipes}},(err,data) => {
