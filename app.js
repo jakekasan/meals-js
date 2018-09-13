@@ -109,7 +109,9 @@ mongoose.connect(config.databases.mongoDB,{
         homeController.run(req,res,next);
     });
 
-    app.all("/api",dbMiddleware,userSessionController,(req,res,next) => {
+    app.all("/api/*",dbMiddleware,userSessionController,(req,res,next) => {
+        console.log(`${req.method} request to ${req.path}`);
+        apiController.debug = true;
         apiController.run(req,res,next);
     });
 
