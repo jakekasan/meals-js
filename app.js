@@ -41,13 +41,18 @@ const routes = require("./controllers/routes.js");
 // const app = express();
 // const cookieParser = require("cookie-parser");
 // const bodyParser = require("body-parser");
-const config = require("./config/index")("development");
+const config = (require("./config/index"))("development");
 const mongoose = require("mongoose");
 
 const homeController = require("./controllers/homeController");
 const apiController = require("./controllers/apiController");
+const userSessionController = require("./controllers/userSessionController");
 
-mongoose.connect(config.mongo,(err,db) => {
+//const modelsInit = require("./models/modelsInit");
+
+mongoose.connect(config.databases.mongoDB,{
+    useNewUrlParser:true
+},(err,db) => {
     if (err) throw err;
     
     app.set("view engine","ejs");
@@ -60,17 +65,55 @@ mongoose.connect(config.mongo,(err,db) => {
 
     app.use(bodyParser.json());
 
+    //db = modelsInit(db);
+
+    // var collectionList = Object.keys(db.collections);
+
+    // console.log(collectionList);
+
+    // if (!collectionList.includes("ingredients")){
+    //     db.model("Ingredient",ingredientSchema);
+    //     console.log("Ingredient schema registered");
+    // } else {
+    //     console.log("Ingredient schema already registered");
+    // }
+
+    // if (!collectionList.includes("recipes")){
+    //     db.model("Recipe",recipeSchema);
+    //     console.log("Recipe schema registered");
+    // } else {
+    //     console.log("Recipe schema already registered");
+    // }
+
+    // if (!collectionList.includes("userSessions")) {
+    //     let usModel = db.model("UserSession",userSessionSchema);
+    //     let newModel = usModel({username:"admin",passwordHash:"password"});
+    //     newModel.save((err) => {
+    //         if (err) {
+    //             throw err
+    //         }
+    //     });
+    //     console.log("UserSession schema registered");
+
+    // } else {
+    //     console.log("UserSession schema already registered");
+    // }
+
+
     var dbMiddleware = function(req,res,next){
         req.mongo = db;
         next();
     }
 
-    app.all("/",dbMiddleware,(req,res,next) => {
+    app.all("/",dbMiddleware,userSessionController,(req,res,next) => {
         homeController.run(req,res,next);
     });
 
-    app.all("/api",dbMiddleware,(req,res,next) => {
+    app.all("/api",dbMiddleware,userSessionController,(req,res,next) => {
         apiController.run(req,res,next);
     });
 
+    app.listen(config.server.port,() => {
+        console.log(`App running on port ${config.server.port}, in ${config.mode} mode`);
+    })
 })
