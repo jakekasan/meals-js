@@ -6,17 +6,21 @@ module.exports = baseController.extend({
     name:"API",
     recipeModel: recipeModel,
     ingredientModel: ingredientModel,
+    debug: false,
     run: function(req,res,next){
         const self = this;
+        (self.debug) ? console.log(`${req.method} request for ${req.path} `) : null;
         this.recipeModel.setMongo(req.mongo);
         this.ingredientModel.setMongo(req.mongo);
-        if (!Object.keys(this.routes).includes(req.path)){
+        if (!Object.keys(self.routes).includes(req.path)){
+            (self.debug) ? console.log(`Request route ${req.path} not available in ${Object.keys(self.routes)} `) : null;
             return res.sendStatus(404);
         }
-        if (!Object.keys(this.routes[req.path]).includes(req.method)){
+        if (!Object.keys(self.routes[req.path]).includes(req.method)){
+            (self.debug) ? console.log(`Request method ${req.method} not available in ${Object.keys(self.routes[req.path])} `) : null;
             return res.sendStatus(400);
         }
-        this.routes[req.path][req.method](req,res,next,self);
+        self.routes[req.path][req.method](req,res,next,self);
     },
     routes:{
         "/api/ingredients": {
@@ -50,7 +54,7 @@ module.exports = baseController.extend({
             }
         },
         "/api/recipes": {
-            get: function (req,res,next,self) {
+            GET: function (req,res,next,self) {
                 self.recipeModel.retrieve((req.query || {}),(err,data) => {
                     if (err) {
                         return res.sendStatus(500)
@@ -58,7 +62,7 @@ module.exports = baseController.extend({
                     return res.json(data);
                 })
             },
-            post: function (req,res,next,self) {
+            POST: function (req,res,next,self) {
                 // post data to model
                 if (!(req.body || req.body.name)){
                     return res.sendStatus(400)
