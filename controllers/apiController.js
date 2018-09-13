@@ -1,6 +1,7 @@
 const baseController = require("./baseController");
 const recipeModel = require("./../models/recipeModel");
 const ingredientModel = require("./../models/ingredientModel");
+const userSessionModel = require("./../models/userSessionModel");
 
 module.exports = baseController.extend({
     name:"API",
@@ -81,6 +82,31 @@ module.exports = baseController.extend({
                     }
 
                 })
+            }
+        },
+        "/api/users":{
+            GET: function(req,res,next,self){
+                
+            },
+            POST: function(req,res,next,self){
+                /*
+                    Take a 
+
+                */
+                if (!(req.body)){
+                    return res.sendStatus(400)
+                }
+                self.userSessionModel.update({id:req.body.id},{ /*  find a way to acccess mealDay     */ },(err,data) => {
+                    if (err) {
+                        return res.sendStatus(400)
+                    }
+                    return res.sendStatus(200);
+                })
+            },
+            _support: {
+                validateUserSession: function(userSession,self){
+                    return true
+                }
             }
         }
     }
