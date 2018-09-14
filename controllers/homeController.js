@@ -13,6 +13,7 @@ var baseController = require("./baseController");
 module.exports = baseController.extend({
     name:"Home",
     content:null,
+    debug:false,
     userSessionModel:null,
     recipeModel:null,
     ingredientsModel:null,
@@ -21,6 +22,7 @@ module.exports = baseController.extend({
         var self = this;
         self.getContent(req,(err,data) => {
             if (err) {
+                (self.debug) ? console.log("Problem in callback of getContent") : null;
                 throw err;
             }
             if (!data){
@@ -48,8 +50,15 @@ module.exports = baseController.extend({
             return callback();
         }
         var self = this;
-        let recipes = Object.values(req.userSession.mealPlan);
-        recipeModel.retrieve({name:{$in:recipes}},(err,data) => {
+        (self.debug) ? console.log(req.userSession.mealPlan) : null;
+        let recipes = req.userSession.mealPlan.map(item => item.name);
+        (self.debug) ? console.log(recipes) : null;
+        if (recipes.length == 0) return callback()
+        recipeModel.retrieve({name:{$in:{recipes}}},(err,data) => {
+            if (err) {
+                console.log("Problemo")
+                throw err
+            }
             return callback(err,data);
         });
     },
