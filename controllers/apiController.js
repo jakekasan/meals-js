@@ -7,6 +7,7 @@ module.exports = baseController.extend({
     name:"API",
     recipeModel: recipeModel,
     ingredientModel: ingredientModel,
+    userSessionModel: userSessionModel,
     debug: false,
     run: function(req,res,next){
         const self = this;
@@ -96,7 +97,7 @@ module.exports = baseController.extend({
                 if (!(req.body)){
                     return res.sendStatus(400)
                 }
-                self.userSessionModel.update({id:req.body.id},{ /*  find a way to acccess mealDay     */ },(err,data) => {
+                self.userSessionModel.update({id:req.session.id},{ /*  find a way to acccess mealDay     */ },(err,data) => {
                     if (err) {
                         return res.sendStatus(400)
                     }
