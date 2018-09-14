@@ -5,11 +5,11 @@
 */
 
 const Schema = require("mongoose").Schema;
-const Recipe = require("./recipeSchema");
+//const Recipe = require("./recipeSchema");
 
 var MealDaySchema = new Schema({
     day:String,
-    recipe:Recipe,
+    name:String,
     people:Number
 });
 
