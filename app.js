@@ -43,6 +43,7 @@ const routes = require("./controllers/routes.js");
 // const bodyParser = require("body-parser");
 const config = (require("./config/index"))("development");
 const mongoose = require("mongoose");
+const session = require("express-session");
 
 const homeController = require("./controllers/homeController");
 const apiController = require("./controllers/apiController");
@@ -66,40 +67,12 @@ mongoose.connect(config.databases.mongoDB,{
 
     app.use(bodyParser.json());
 
-    //db = modelsInit(db);
-
-    // var collectionList = Object.keys(db.collections);
-
-    // console.log(collectionList);
-
-    // if (!collectionList.includes("ingredients")){
-    //     db.model("Ingredient",ingredientSchema);
-    //     console.log("Ingredient schema registered");
-    // } else {
-    //     console.log("Ingredient schema already registered");
-    // }
-
-    // if (!collectionList.includes("recipes")){
-    //     db.model("Recipe",recipeSchema);
-    //     console.log("Recipe schema registered");
-    // } else {
-    //     console.log("Recipe schema already registered");
-    // }
-
-    // if (!collectionList.includes("userSessions")) {
-    //     let usModel = db.model("UserSession",userSessionSchema);
-    //     let newModel = usModel({username:"admin",passwordHash:"password"});
-    //     newModel.save((err) => {
-    //         if (err) {
-    //             throw err
-    //         }
-    //     });
-    //     console.log("UserSession schema registered");
-
-    // } else {
-    //     console.log("UserSession schema already registered");
-    // }
-
+    app.use(session({
+        secret:"My first goat",
+        cookie:{
+            maxAge:20
+        }
+    }))
 
     var dbMiddleware = function(req,res,next){
         req.mongo = db;
@@ -107,6 +80,7 @@ mongoose.connect(config.databases.mongoDB,{
     }
 
     app.all("/",dbMiddleware,userSessionController,(req,res,next) => {
+        homeController.debug = true;
         homeController.run(req,res,next);
     });
 
