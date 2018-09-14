@@ -18,7 +18,7 @@ function selectNewRecipe(element){
                     console.log(item.name);
                     console.log(document.cookie);
 
-                    fetch("http://localhost:8000/api/user",{
+                    fetch("http://localhost:8000/api/users",{
                         method:"POST",
                         mode: "same-origin",
                         cache: "no-cache",
