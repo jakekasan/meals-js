@@ -2,6 +2,7 @@ const baseController = require("./baseController");
 const recipeModel = require("./../models/recipeModel");
 const ingredientModel = require("./../models/ingredientModel");
 const userSessionModel = require("./../models/userSessionModel");
+const mealPlanService = require("./../services/mealPlan.services");
 
 module.exports = baseController.extend({
     name:"API",
@@ -97,12 +98,13 @@ module.exports = baseController.extend({
                 if (!(req.body)){
                     return res.sendStatus(400)
                 }
-                self.userSessionModel.update({id:req.session.id},{ /*  find a way to acccess mealDay     */ },(err,data) => {
-                    if (err) {
-                        return res.sendStatus(400)
-                    }
-                    return res.sendStatus(200);
-                })
+                mealPlanService.mealPlanChangeDay(req,res,next);
+                // self.userSessionModel.update({id:req.session.id},{ /*  find a way to acccess mealDay     */ },(err,data) => {
+                //     if (err) {
+                //         return res.sendStatus(400)
+                //     }
+                //     return res.sendStatus(200);
+                // })
             },
             _support: {
                 validateUserSession: function(userSession,self){
