@@ -14,5 +14,6 @@ module.exports = BaseModel.extend({
         } catch (error) {
             this.setModel(mongo.model("MealDay"));
         }
+        return this.model;
     }
 })
