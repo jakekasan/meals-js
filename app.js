@@ -61,6 +61,8 @@ mongoose.connect(config.databases.mongoDB,{
 
     app.use(express.static("public"));
 
+    app.use(cookieParser());
+
     app.use(bodyParser.urlencoded({
         extended: true
     }));
