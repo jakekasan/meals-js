@@ -12,7 +12,11 @@ var UserSession = new Schema({
     username:String,
     passwordHash:String,
     email:String,
-    mealPlan:[MealDay]
+    mealPlan:[{
+        day:String,
+        name:String,
+        people:Number
+    }]
 });
 
 module.exports = UserSession;
