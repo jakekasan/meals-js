@@ -6,35 +6,55 @@
 
 const userSessionModel = require("./../models/userSessionModel");
 const mealDayModel = require("./../models/mealDayModel");
+const mealDaySchema = require("./../models/schemas/mealDaySchema");
 const recipeModel = require("./../models/recipeModel");
 
 
 module.exports = {
-    name:"userSession Services",
+    name:"mealPlan Services",
     debug: false,
     mealPlanChangeDay: function (req,res,next) {
         // get mealPlans
         var self = this;
-        (self.debug) ? console.log(req.session) : null;
-        userSessionModel.retrieve({_id:req.session.id},(err,data) => {
-            if (err) return res.sendStatus(400);
-            console.log(`Updating ${data.mealPlan} with ${data.mealPlan} `)
-            data.mealPlan.filter(item => {
-                return !(item.day == req.body.day)
-            });
-            data.mealPlan.push(new mealDayModel({
-                day: req.body.day,
-                recipe: req.body.recipe,
-                people: 1
-            }));
-            userSessionModel.update({_id:data._id},data,(err,data) => {
-                if (err) {
-                    return res.sendStatus(400)
-                }
-                return res.sendStatus(200)
-            })
+        (self.debug) ? console.log("Logging cookies") : null;
+        (self.debug) ? console.log(req.cookies) : null;
+        (self.debug) ? console.log(req.userSession) : null;
+
+        if (!req.userSession.mealPlan) {
+            req.userSession.mealPlan = [];
+        }
+
+        req.userSession.mealPlan.filter(item => {
+            return !(item.day == req.body.day)
+        });
+
+        // let newMealDay = new (mealDayModel.model)({
+        //     day: req.body.day,
+        //     recipe: req.body.recipe,
+        //     people: 1
+        // });
+
+        if (self.debug) console.log("MealDay to add:",req.body);
+
+        // req.userSession.mealPlan.push(newMealDay);
+        req.userSession.mealPlan.push({
+            day: req.body.day,
+            name: req.body.recipe,
+            people: 1
+        });
+
+        if (self.debug) console.log("Updated userSession:",req.userSession);
+
+        userSessionModel.update({_id:req.userSession._id},req.userSession,(err,data) => {
+            if (err) {
+                if (self.debug) console.log("Failed to update");
+                return res.sendStatus(400)
+            }
+            if (self.debug) console.log("Successfully updated",data);
+            return res.sendStatus(200)
         });
     },
+
     mealPlanFillRecipes: function(req,res,next){
         if (req.userSession.mealPlan && req.userSession.mealPlan.length && (req.userSession.mealPlan.length > 0)){
             let promises = req.userSession.mealPlan.map(item => {
