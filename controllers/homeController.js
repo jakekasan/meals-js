@@ -21,6 +21,7 @@ module.exports = baseController.extend({
         recipeModel.setMongo(req.mongo);
         var self = this;
         self.getContent(req,(err,data) => {
+            if (self.debug) console.log("Logging mealPlan: ",req.userSession.mealPlan[0]);
             if (err) {
                 (self.debug) ? console.log("Problem in callback of getContent") : null;
                 throw err;
@@ -31,14 +32,17 @@ module.exports = baseController.extend({
                 };
             } else {
                 self.content = {
-                    mealPlan: Object.entries(req.userSession.mealPlan)
-                    .reduce((acc,[key,item]) => {
-                        acc[key] = data.filter(elem => elem.name == item).pop();
-                    },{})
+                    mealPlan: (req.userSession.mealPlan
+                                    .reduce((acc,item) => {
+                                        acc[item.day] = (data.filter(elem => { return (elem.name == item.name)})).pop();
+                                        return acc
+                                    },{}))
                 };
             }
             
             // now load view
+
+            if (self.debug) console.log(self.content);
 
             let view = new baseView(res,"home");
             view.render(self.content);
@@ -54,9 +58,10 @@ module.exports = baseController.extend({
         let recipes = req.userSession.mealPlan.map(item => item.name);
         (self.debug) ? console.log(recipes) : null;
         if (recipes.length == 0) return callback()
-        recipeModel.retrieve({name:{$in:{recipes}}},(err,data) => {
+        recipeModel.retrieve({"name":{$in:recipes}},(err,data) => {
             if (err) {
-                console.log("Problemo")
+                if (self.debug) console.log("Problem retrieving recipes");
+                console.log(err);
                 throw err
             }
             return callback(err,data);
