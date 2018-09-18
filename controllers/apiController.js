@@ -12,6 +12,9 @@ module.exports = baseController.extend({
     debug: false,
     run: function(req,res,next){
         const self = this;
+
+        mealPlanService.debug = self.debug;
+
         (self.debug) ? console.log(`${req.method} request for ${req.path} `) : null;
         this.recipeModel.setMongo(req.mongo);
         this.ingredientModel.setMongo(req.mongo);
@@ -95,16 +98,13 @@ module.exports = baseController.extend({
                     Take a 
 
                 */
+
+                (self.debug) ? console.log(req.cookies,req.body) : null;
+
                 if (!(req.body)){
                     return res.sendStatus(400)
                 }
                 mealPlanService.mealPlanChangeDay(req,res,next);
-                // self.userSessionModel.update({id:req.session.id},{ /*  find a way to acccess mealDay     */ },(err,data) => {
-                //     if (err) {
-                //         return res.sendStatus(400)
-                //     }
-                //     return res.sendStatus(200);
-                // })
             },
             _support: {
                 validateUserSession: function(userSession,self){
