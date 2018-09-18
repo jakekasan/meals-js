@@ -17,6 +17,9 @@ module.exports.prototype = {
     setModel:function(model){
         this.model = model;
     },
+    getModel:function(){
+        return this.model
+    },
     extend: function(child){
         return _.extend({},this,child)
     },
@@ -27,8 +30,8 @@ module.exports.prototype = {
     retrieve: function(data,callback){
         this.model.find((data || {}),(err,res) => callbackHandler(err,res,callback));
     },
-    update: function(data,callback){
-        this.model.update(data,(err,res) => callbackHandler(err,res,callback));
+    update: function(toUpdate,data,callback){
+        this.model.update(toUpdate,data,(err,res) => callbackHandler(err,res,callback));
     },
     delete: function(data,callback){
         this.model.delete(data,(err,res) => callbackHandler(err,res,callback));
