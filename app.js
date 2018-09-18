@@ -70,7 +70,9 @@ mongoose.connect(config.databases.mongoDB,{
     app.use(session({
         secret:"My first goat",
         cookie:{
-            maxAge:20
+            maxAge:20,
+            httpOnly:false,
+            secure:false
         }
     }))
 
