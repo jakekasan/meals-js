@@ -13,4 +13,4 @@ describe("Base Controller",() => {
     it("Should have run property be a function",() => {
         BaseController["run"].should.be.a("function");
     });
-})
+});

@@ -5,7 +5,7 @@
 */
 
 const Schema = require("mongoose").Schema;
-const MealDay = require("./mealDaySchema");
+const MealDay = require("./mealDay.schema");
 
 var UserSession = new Schema({
     id:Schema.Types.ObjectId,

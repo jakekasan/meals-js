@@ -56,8 +56,8 @@
 // }
 
 
-const RecipeSchema = require("./schemas/recipeSchema");
-const BaseModel = new (require("./baseModel"))();
+const RecipeSchema = require("./schemas/recipe.schema");
+const BaseModel = new (require("./base.model"))();
 
 // module.exports = function(mongoose){
 //     let model = mongoose.Model("Recipes",RecipeSchema);

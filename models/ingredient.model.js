@@ -15,10 +15,10 @@
 //     useNewUrlParser:true
 // });
 
-const IngredientSchema = require("./schemas/ingredientSchema");
+const IngredientSchema = require("./schemas/ingredient.schema");
 //const IngredientModel = Mongoose.model("Ingredient",IngredientSchema);
 
-const BaseModel = new (require("./baseModel"))();
+const BaseModel = new (require("./base.model"))();
 
 // module.exports = function(mongoose){
 //     let model = mongoose.model("Ingredients",IngredientSchema);

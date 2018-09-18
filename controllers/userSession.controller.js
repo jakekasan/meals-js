@@ -11,7 +11,7 @@
 
 */
 
-const userSessionModel = require("./../models/userSessionModel");
+const userSessionModel = require("../models/userSession.model");
 
 module.exports = function(req,res,next){
     userSessionModel.setMongo(req.mongo);

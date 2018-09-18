@@ -8,8 +8,8 @@
 //     useNewUrlParser:true
 // });
 
-const BaseModel = new (require("./baseModel"))();
-const userSessionSchema = require("./schemas/userSessionSchema");
+const BaseModel = new (require("./base.model"))();
+const userSessionSchema = require("./schemas/userSession.schema");
 
 // module.exports = function(mongoose){
 //     let model = mongoose.model("userSession",userSessionSchema);

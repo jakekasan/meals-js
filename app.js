@@ -45,9 +45,9 @@ const config = (require("./config/index"))("development");
 const mongoose = require("mongoose");
 const session = require("express-session");
 
-const homeController = require("./controllers/homeController");
-const apiController = require("./controllers/apiController");
-const userSessionController = require("./controllers/userSessionController");
+const homeController = require("./controllers/home.controller");
+const apiController = require("./controllers/api.controller");
+const userSessionController = require("./controllers/userSession.controller");
 
 //const modelsInit = require("./models/modelsInit");
 

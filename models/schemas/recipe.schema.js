@@ -5,7 +5,7 @@
 */
 
 const Schema = require("mongoose").Schema;
-const Ingredient = require("./ingredientSchema");
+const Ingredient = require("./ingredient.schema");
 
 var Recipe = new Schema({
     id:Schema.Types.ObjectId,

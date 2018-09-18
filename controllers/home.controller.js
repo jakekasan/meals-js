@@ -4,9 +4,9 @@
         - extends baseController
 */
 
-var recipeModel = require("./../models/recipeModel");
-var baseView = require("./../views/baseView");
-var baseController = require("./baseController");
+var recipeModel = require("../models/recipe.model");
+var baseView = require("../views/baseView");
+var baseController = require("./base.controller");
 
 
 

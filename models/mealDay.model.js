@@ -4,8 +4,8 @@
 
 */
 
-const mealDaySchema = require("./schemas/mealDaySchema");
-const BaseModel = new (require("./baseModel"))();
+const mealDaySchema = require("./schemas/mealDay.schema");
+const BaseModel = new (require("./base.model"))();
 
 module.exports = BaseModel.extend({
     setMongo: function (mongo) {

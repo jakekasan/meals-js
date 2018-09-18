@@ -4,10 +4,10 @@
 
 */
 
-const userSessionModel = require("./../models/userSessionModel");
-const mealDayModel = require("./../models/mealDayModel");
-const mealDaySchema = require("./../models/schemas/mealDaySchema");
-const recipeModel = require("./../models/recipeModel");
+const userSessionModel = require("../models/userSession.model");
+const mealDayModel = require("../models/mealDay.model");
+const mealDaySchema = require("../models/schemas/mealDay.schema");
+const recipeModel = require("../models/recipe.model");
 
 
 module.exports = {

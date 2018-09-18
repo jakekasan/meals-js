@@ -1,8 +1,8 @@
-const baseController = require("./baseController");
-const recipeModel = require("./../models/recipeModel");
-const ingredientModel = require("./../models/ingredientModel");
-const userSessionModel = require("./../models/userSessionModel");
-const mealPlanService = require("./../services/mealPlan.services");
+const baseController = require("./base.controller");
+const recipeModel = require("../models/recipe.model");
+const ingredientModel = require("../models/ingredient.model");
+const userSessionModel = require("../models/userSession.model");
+const mealPlanService = require("../services/mealPlan.services");
 
 module.exports = baseController.extend({
     name:"API",
