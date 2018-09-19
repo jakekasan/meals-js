@@ -48,6 +48,8 @@ const session = require("express-session");
 const homeController = require("./controllers/home.controller");
 const apiController = require("./controllers/api.controller");
 const userSessionController = require("./controllers/userSession.controller");
+const ingredientsController = require("./controllers/ingredients.controller");
+const recipesController = require("./controllers/recipes.controller");
 
 //const modelsInit = require("./models/modelsInit");
 
@@ -86,6 +88,16 @@ mongoose.connect(config.databases.mongoDB,{
     app.all("/",dbMiddleware,userSessionController,(req,res,next) => {
         homeController.debug = true;
         homeController.run(req,res,next);
+    });
+
+    app.all("/ingredients*",dbMiddleware,userSessionController,(req,res,next) => {
+        ingredientsController.debug = true;
+        ingredientsController.run(req,res,next);
+    });
+
+    app.all("/recipes*",dbMiddleware,userSessionController,(req,res,next) => {
+        recipesController.debug = true;
+        recipesController.run(req,res,next);
     });
 
     app.all("/api/*",dbMiddleware,userSessionController,(req,res,next) => {
