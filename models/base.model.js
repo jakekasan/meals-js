@@ -9,11 +9,12 @@ function callbackHandler(err,data,callback){
 }
 
 module.exports = function(){
-    return
+    return this
 }
 
 
 module.exports.prototype = {
+    name:"Base Model",
     setModel:function(model){
         this.model = model;
     },
