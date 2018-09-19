@@ -3,6 +3,40 @@ const expect = require("chai").expect;
 const should = require("chai").should();
 const baseModel = require("./../../models/base.model");
 
+const fakeMongoose = function(){
+    return this
+}
+
+fakeMongoose.prototype = {
+    create: function(data,callback){
+        if (!data){
+            return callback(true,false)
+        } else {
+            return callback(false,true)
+        }
+    },
+    find: function(data,callback){
+        if (!data) {
+            return callback(true,null)
+        }
+        return callback(null,true)
+    },
+    update: function(original,updated,callback){
+        if ((!original) || (!updated)) {
+            return callback(true,null)
+        }
+        return callback(null,true)
+    },
+    delete: function(data,callback){
+        if (!data) {
+            return callback(true,null)
+        }
+        return callback(null,true)
+    }
+}
+
+
+
 describe("baseModel",() => {
 
     describe("Basic parameters",() => {
@@ -30,14 +64,55 @@ describe("baseModel",() => {
     });
 
     describe("Test fake objects and whatnot",() => {
+        // object should be a function
 
-        it("fakeMongoose should have a property 'save'",() => {
-            fakeMongoose.should.have.property("save");
+        // SAVE
+
+        it("fakeMongoose should have a property 'create'",() => {
+            fM = new fakeMongoose();
+            fM.should.have.property("create");
         });
 
-        it("fakeMongoose.save should be a function",() => {
-            fakeMongoose.save.should.be.a("function");
-        })
+        it("fakeMongoose.create should be a function",() => {
+            fM = new fakeMongoose();
+            fM.create.should.be.a("function");
+        });
+
+        // FIND
+
+        it("fakeMongoose should have a property 'find'",() => {
+            fM = new fakeMongoose();
+            fM.should.have.property("find");
+        });
+
+        it("fakeMongoose.find should be a function",() => {
+            fM = new fakeMongoose();
+            fM.find.should.be.a("function");
+        });
+
+        // UPDATE
+
+        it("fakeMongoose should have a property 'update'",() => {
+            fM = new fakeMongoose();
+            fM.should.have.property("update");
+        });
+
+        it("fakeMongoose.update should be a function",() => {
+            fM = new fakeMongoose();
+            fM.update.should.be.a("function");
+        });
+
+        // DELETE
+
+        it("fakeMongoose should have a property 'delete'",() => {
+            fM = new fakeMongoose();
+            fM.should.have.property("delete");
+        });
+
+        it("fakeMongoose.delete should be a function",() => {
+            fM = new fakeMongoose();
+            fM.delete.should.be.a("function");
+        });
     })
 
     describe("Model functions",() => {
@@ -54,6 +129,8 @@ describe("baseModel",() => {
             newMongooseModel.should.equal(mongooseModel);
         });
 
+        // CREATE
+
         it("Should have create property",() => {
             let model = new (require("./../../models/base.model"))();
 
@@ -66,11 +143,219 @@ describe("baseModel",() => {
             (model.create).should.be.a("function");
         });
 
-        it("this.model should return an object with a 'save' property",() => {
+        it("getModel should return an object with a 'create' property",() => {
             let model = new (require("./../../models/base.model"))();
 
-            
-        })
+            let mongo = new fakeMongoose();
+            model.setModel(mongo)
+
+            let mongo2 = model.getModel();
+            (mongo2).should.have.property("create");
+        });
+
+        it("this.model.create should be a function",() => {
+            let model = new (require("./../../models/base.model"))();
+
+            let mongo = new fakeMongoose();
+            model.setModel(mongo)
+
+            let mongo2 = model.getModel();
+            (mongo2)["create"].should.be.a("function");
+        });
+
+        it("this.model.create should return an error which is true if data is false", () => {
+            let model = new (require("./../../models/base.model"))();
+
+            let mongo = new fakeMongoose();
+            model.setModel(mongo)
+
+            let mongo2 = model.getModel();
+
+            mongo2["create"](false,(err,res) => {
+                assert(err === true);
+            });
+        });
+
+        it("this.model.create should return an error which is false if data is true", () => {
+            let model = new (require("./../../models/base.model"))();
+
+            let mongo = new fakeMongoose();
+            model.setModel(mongo)
+
+            let mongo2 = model.getModel();
+
+            (mongo2)["create"](true,(err,res) => {
+                assert(err === false);
+            });
+        });
+
+        
+
+        // RETRIEVE
+
+        it("Should have retrieve property",() => {
+            let model = new (require("./../../models/base.model"))();
+
+            model.should.have.property("retrieve");
+        });
+
+        it("Retrieve property should be a function",() => {
+            let model = new (require("./../../models/base.model"))();
+
+            (model.retrieve).should.be.a("function");
+        });
+
+        it("getModel should return an object with a 'find' property",() => {
+            let model = new (require("./../../models/base.model"))();
+
+            let mongo = new fakeMongoose();
+            model.setModel(mongo)
+
+            let mongo2 = model.getModel();
+            (mongo2).should.have.property("find");
+        });
+
+        it("this.model.retrieve should be a function",() => {
+            let model = new (require("./../../models/base.model"))();
+
+            let mongo = new fakeMongoose();
+            model.setModel(mongo)
+
+            let mongo2 = model.getModel();
+            (mongo2)["retrieve"].should.be.a("function");
+        });
+
+        it("this.model.retrieve should return an error which is true if data is false", () => {
+            let model = new (require("./../../models/base.model"))();
+
+            let mongo = new fakeMongoose();
+            model.setModel(mongo)
+
+            (model.getModel())["retrieve"](false,(err,res) => {
+                //err.should.be(true);
+                assert(err === true);
+            });
+        });
+
+        it("this.model.retrieve should return an error which is false if data is true", () => {
+            let model = new (require("./../../models/base.model"))();
+
+            let mongo = new fakeMongoose();
+            model.setModel(mongo)
+
+            (model.getModel())["retrieve"](true,(err,res) => {
+                //err.should.be(false);
+                assert(err === false);
+            });
+        });
+
+        // UPDATE
+
+        it("Should have update property",() => {
+            let model = new (require("./../../models/base.model"))();
+
+            model.should.have.property("update");
+        });
+
+        it("update property should be a function",() => {
+            let model = new (require("./../../models/base.model"))();
+
+            (model.update).should.be.a("function");
+        });
+
+        it("getModel should return an object with a 'find' property",() => {
+            let model = new (require("./../../models/base.model"))();
+
+            let mongo = new fakeMongoose();
+            model.setModel(mongo)
+
+            (model.getModel).should.have.property("update");
+        });
+
+        it("this.model.update should be a function",() => {
+            let model = new (require("./../../models/base.model"))();
+
+            let mongo = new fakeMongoose();
+            model.setModel(mongo)
+
+            (model.getModel())["update"].should.be.a("function");
+        });
+
+        it("this.model.update should return an error which is true if data is false", () => {
+            let model = new (require("./../../models/base.model"))();
+
+            let mongo = new fakeMongoose();
+            model.setModel(mongo)
+
+            (model.getModel())["update"](false,false,(err,res) => {
+                err.should.be(true);
+            });
+        });
+
+        it("this.model.update should return an error which is false if data is true", () => {
+            let model = new (require("./../../models/base.model"))();
+
+            let mongo = new fakeMongoose();
+            model.setModel(mongo)
+
+            (model.getModel())["update"](true,true,(err,res) => {
+                err.should.be(false);
+            });
+        });
+
+        // DELETE
+
+        it("Should have delete property",() => {
+            let model = new (require("./../../models/base.model"))();
+
+            model.should.have.property("delete");
+        });
+
+        it("delete property should be a function",() => {
+            let model = new (require("./../../models/base.model"))();
+
+            (model.update).should.be.a("function");
+        });
+
+        it("getModel should return an object with a 'delete' property",() => {
+            let model = new (require("./../../models/base.model"))();
+
+            let mongo = new fakeMongoose();
+            model.setModel(mongo)
+
+            (model.getModel).should.have.property("delete");
+        });
+
+        it("this.model.delete should be a function",() => {
+            let model = new (require("./../../models/base.model"))();
+
+            let mongo = new fakeMongoose();
+            model.setModel(mongo)
+
+            (model.getModel())["delete"].should.be.a("function");
+        });
+
+        it("this.model.delete should return an error which is true if data is false", () => {
+            let model = new (require("./../../models/base.model"))();
+
+            let mongo = new fakeMongoose();
+            model.setModel(mongo)
+
+            (model.getModel())["delete"](false,false,(err,res) => {
+                err.should.be(true);
+            });
+        });
+
+        it("this.model.delete should return an error which is false if data is true", () => {
+            let model = new (require("./../../models/base.model"))();
+
+            let mongo = new fakeMongoose();
+            model.setModel(mongo)
+
+            (model.getModel())["delete"](true,true,(err,res) => {
+                err.should.be(false);
+            });
+        });
     });
 });
 
@@ -81,17 +366,17 @@ describe("baseModel",() => {
 
 */
 
-const fakeMongoose = {
-    save: function(data,callback){
-        return null
-    },
-    find: function(data,callback){
-        return null
-    },
-    update: function(original,updated,callback){
-        return null
-    },
-    delete: function(data,callback){
-        return null
-    }
-}
+// const fakeMongoose = function(data){
+//     this.data = data;
+//     return {
+//         data:data,
+//         save:function(callback){
+//             if (!this.data){
+//                 return callback(true)
+//             } else {
+//                 return callback(false)
+//             }
+//         }
+//     }
+// }
+
