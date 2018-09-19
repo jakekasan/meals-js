@@ -31,12 +31,14 @@ module.exports = baseController.extend({
         var self = this;
         recipeModel.setMongo(req.mongo);
 
+        if (self.debug) console.log(`${req.method} to ${req.path}`);
+
+        //self["/"](req,res,next,self);
         if (Object.keys(self).includes(req.path)){
             self[req.path](req,res,next,self);
         } else {
             res.redirect("/");
         }
-        
     },
     getContent: function(req,self,callback){
         if ((!req.userSession) || (!req.userSession.mealPlan)){
@@ -86,21 +88,11 @@ module.exports = baseController.extend({
             view.render(self.content);
         })
     },
-    "/ingredients": {
-        GET:function(req,res,next,self){
-            
-        },
-        POST: function(req,res,next,self){
-
-        }
+    "/ingredients": function(req,res,next,self){
+        res.redirect("/ingredients/home");
     },
-    "/recipes": {
-        GET:function(req,res,next,self){
-
-        },
-        POST: function(req,res,next,self){
-            
-        }
+    "/recipes": function(req,res,next,self){
+        res.redirect("/recipes/home");
     }
 
 })
