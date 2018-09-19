@@ -9,6 +9,20 @@ const config = (require("./../config/index"))("development");
 
 
 describe("Config test",() => {
+    describe("Initialization",() => {
+        it("module with no parameter should return a config",() => {
+            let config = (require("./../config/index"))();
+
+            config.should.have.property("mode");
+        });
+
+        it("module with no parameter should return development config",() => {
+            let config = (require("./../config/index"))();
+
+            config["mode"].should.equal("development");
+        });
+    });
+
     describe("Development environment",() => {
         it("config should have 'mode' property",() => {
             let config = (require("./../config/index"))("development");
@@ -48,6 +62,37 @@ describe("Config test",() => {
             
             config["databases"].should.have.property("mongoDB");
         });
-    })
+
+        it("config should have a 'usda' property",() => {
+            let config = (require("./../config/index"))("development");
+            
+            config.should.have.property("usda");
+        });
+
+        it("config['usda] should have a 'apiKey' property",() => {
+            let config = (require("./../config/index"))("development");
+            
+            config["usda"].should.have.property("apiKey");
+        });
+
+        it("config['usda'] should have a 'address' property",() => {
+            let config = (require("./../config/index"))("development");
+            
+            config["usda"].should.have.property("address");
+        });
+        
+        it("config.usda.address should have a 'search' property",() => {
+            let config = (require("./../config/index"))("development");
+            
+            config.usda.address.should.have.property("search");
+        });
+        
+        it("config.usda.address should have a 'search' property",() => {
+            let config = (require("./../config/index"))("development");
+            
+            config.usda.address.should.have.property("nutrition");
+        });
+
+    });
     
 })
