@@ -36,5 +36,14 @@ describe("Base Controller",() => {
         let bC2 = bC.extend({});
 
         bC.should.not.equal(bC2);
-    })
+    });
+
+    it("Extended controller be able to modify base properties",() => {
+        let bC = require("./../../controllers/base.controller");
+        let bC2 = bC.extend({
+            name:"Not base controller"
+        });
+
+        bC.name.should.not.equal(bC2.name);
+    });
 });
