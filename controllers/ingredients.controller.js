@@ -42,5 +42,15 @@ module.exports = baseController.extend({
             let view = new baseView(res,"ingredients/add");
             view.render({});
         }
+    },
+    "/ingredients/alt":{
+        GET: function(req,res,next,self){
+            let view = new baseView(res,"ingredients/alt");
+            view.render({});
+        },
+        POST: function(req,res,next,self){
+            let view = new baseView(res,"ingredients/alt");
+            view.render({});
+        }
     }
 })
