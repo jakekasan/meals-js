@@ -2,6 +2,16 @@
 
     homeController.js
         - extends baseController
+        - routes served:
+            '/','/index'
+                - home page, get content from userSession
+            '/ingredients'
+                - page to add ingredients
+                TO-DO:
+                    - add hookup to federal food database
+            '/recipes'
+                - page to add recipes
+                - links to ingredients and only allows for ingredients already in system
 */
 
 var recipeModel = require("../models/recipe.model");
@@ -18,9 +28,37 @@ module.exports = baseController.extend({
     recipeModel:null,
     ingredientsModel:null,
     run: function(req,res,next){
-        recipeModel.setMongo(req.mongo);
         var self = this;
-        self.getContent(req,(err,data) => {
+        recipeModel.setMongo(req.mongo);
+
+        if (Object.keys(self).includes(req.path)){
+            self[req.path](req,res,next,self);
+        } else {
+            res.redirect("/");
+        }
+        
+    },
+    getContent: function(req,self,callback){
+        if ((!req.userSession) || (!req.userSession.mealPlan)){
+            return callback();
+        }
+        (self.debug) ? console.log(req.userSession.mealPlan) : null;
+        let recipes = req.userSession.mealPlan.map(item => item.name);
+        (self.debug) ? console.log(recipes) : null;
+        if (recipes.length == 0) return callback()
+        recipeModel.retrieve({"name":{$in:recipes}},(err,data) => {
+            if (err) {
+                if (self.debug) console.log("Problem retrieving recipes");
+                console.log(err);
+                throw err
+            }
+            return callback(err,data);
+        });
+    },
+    "/": function(req,res,next,self){
+        
+        
+        self.getContent(req,self,(err,data) => {
             if (self.debug) console.log("Logging mealPlan: ",req.userSession.mealPlan[0]);
             if (err) {
                 (self.debug) ? console.log("Problem in callback of getContent") : null;
@@ -47,25 +85,22 @@ module.exports = baseController.extend({
             let view = new baseView(res,"home");
             view.render(self.content);
         })
-        
     },
-    getContent: function(req,callback){
-        if ((!req.userSession) || (!req.userSession.mealPlan)){
-            return callback();
+    "/ingredients": {
+        GET:function(req,res,next,self){
+            
+        },
+        POST: function(req,res,next,self){
+
         }
-        var self = this;
-        (self.debug) ? console.log(req.userSession.mealPlan) : null;
-        let recipes = req.userSession.mealPlan.map(item => item.name);
-        (self.debug) ? console.log(recipes) : null;
-        if (recipes.length == 0) return callback()
-        recipeModel.retrieve({"name":{$in:recipes}},(err,data) => {
-            if (err) {
-                if (self.debug) console.log("Problem retrieving recipes");
-                console.log(err);
-                throw err
-            }
-            return callback(err,data);
-        });
     },
+    "/recipes": {
+        GET:function(req,res,next,self){
+
+        },
+        POST: function(req,res,next,self){
+            
+        }
+    }
 
 })
