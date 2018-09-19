@@ -1,7 +1,7 @@
 const assert = require("chai").assert;
 const expect = require("chai").expect;
 const should = require("chai").should();
-const config = require("./../config/index")("development");
+const config = require("../config")("development");
 
 const fetch = require("node-fetch");
 const URL = require("url");
