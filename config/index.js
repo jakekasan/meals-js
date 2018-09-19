@@ -7,16 +7,17 @@ let config = {
         },
         databases:{
             mongoDB:"mongodb://temp:password1@ds245512.mlab.com:45512/meals"
+        },
+        usda:{
+            address:{
+                search:"https://api.nal.usda.gov/ndb/search/",
+                nutrition:"https://api.nal.usda.gov/ndb/nutrients/"
+            },
+            apiKey:"SmiNNMcfzCRfPXR6mJtiDaUm7Be7VnLaiNigGiKT"
         }
-    },
-    production:{
-        mode:"development",
-        hostname:"http://mealplan.io",
-        port:"80",
-        mongoDB:"mongodb://temp:password1@ds245512.mlab.com:45512/meals"
     }
 }
 
 module.exports = function(env){
-    return config[(env || process.argv[2] || "development")]
+    return config[(env || "development")]
 }
