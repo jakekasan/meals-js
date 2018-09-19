@@ -1,7 +1,7 @@
 const assert = require("chai").assert;
 const expect = require("chai").expect;
 const should = require("chai").should();
-const ApiController = require("./../../controllers/apiController");
+const ApiController = require("./../../controllers/api.controller");
 
 describe("Api Controller",() => {
     it("Should have a name of 'Base",() => {
@@ -80,7 +80,7 @@ describe("Api Controller",() => {
             });
 
             it("should handle a GET -> ingredients with empty query",(done) => {
-                let tempController = require("./../../controllers/apiController");
+                let tempController = require("./../../controllers/api.controller");
                 tempController.recipeModel = new fakeModel();
                 tempController.ingredientModel = new fakeModel();
                 let req = new fakeReq(true,false,"/api/ingredients","GET",true);
@@ -92,7 +92,7 @@ describe("Api Controller",() => {
             });
 
             it("should return 500 to GET -> ingredients with empty query and bad DB",(done) => {
-                let tempController = require("./../../controllers/apiController");
+                let tempController = require("./../../controllers/api.controller");
                 tempController.recipeModel = new fakeModel();
                 tempController.ingredientModel = new fakeModel();
                 let req = new fakeReq(true,false,"/api/ingredients","GET",false);

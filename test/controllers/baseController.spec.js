@@ -1,7 +1,7 @@
 const assert = require("chai").assert;
 const expect = require("chai").expect;
 const should = require("chai").should();
-const BaseController = require("./../../controllers/baseController");
+const BaseController = require("./../../controllers/base.controller");
 
 describe("Base Controller",() => {
     it("Should have a name of 'Base",() => {
