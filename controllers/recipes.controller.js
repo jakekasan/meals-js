@@ -42,7 +42,7 @@ module.exports = baseController.extend({
             view.render({});
         }
     },
-    "/recipes/add/alt":{
+    "/recipes/alt":{
         GET: function(req,res,next,self){
             let view = new baseView(res,"recipes/alt");
             view.render({});
