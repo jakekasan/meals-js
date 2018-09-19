@@ -3,6 +3,9 @@ const recipeModel = require("../models/recipe.model");
 const ingredientModel = require("../models/ingredient.model");
 const userSessionModel = require("../models/userSession.model");
 const mealPlanService = require("../services/mealPlan.services");
+const usdaService = require("../services/usda.service");
+
+const config = (require("./../config/index"))();
 
 module.exports = baseController.extend({
     name:"API",
@@ -16,8 +19,12 @@ module.exports = baseController.extend({
         mealPlanService.debug = self.debug;
 
         (self.debug) ? console.log(`${req.method} request for ${req.path} `) : null;
+        
+        // set mongo instance
         this.recipeModel.setMongo(req.mongo);
         this.ingredientModel.setMongo(req.mongo);
+
+
         if (!Object.keys(self.routes).includes(req.path)){
             (self.debug) ? console.log(`Request route ${req.path} not available in ${Object.keys(self.routes)} `) : null;
             return res.sendStatus(404);
@@ -110,6 +117,22 @@ module.exports = baseController.extend({
                 validateUserSession: function(userSession,self){
                     return true
                 }
+            }
+        },
+        "/api/usda/search":{
+            GET: function(req,res,next,self){
+                usdaService.search(req,res,next);
+            },
+            POST: function(req,res,next,self){
+                res.sendStatus(400);
+            }
+        },
+        "/api/usda/nutrition":{
+            GET: function(req,res,next,self){
+                usdaService.nutrition(req,res,next);
+            },
+            POST: function(req,res,next,self){
+                res.sendStatus(400);
             }
         }
     }
