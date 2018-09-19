@@ -105,7 +105,7 @@ describe("USDA API tests",() => {
             response["list"].should.have.property("item");
         });
 
-        it("should return object with 'error' value if api_key missing",async () => {
+        it("should return object with 'error' value if api_key missing", async () => {
             // should return object
             
             let url = URL.parse(config.usda.address.search);
@@ -125,13 +125,30 @@ describe("USDA API tests",() => {
                 //     done();
                 // })
             response.should.have.property("error");
-        });
-
-        
+        });        
     })
 
     describe("/nutrition",() => {
-        // to be done...
+        
+        it("Should return nutrition object with same name as query", async () => {
+            // to be implemented...
+
+            let url = URL.parse(config.usda.address.nutrition);
+            url.query = {
+                q:"beef",
+                api_key:config.usda.apiKey
+            }
+
+            url = URL.format(url);
+
+            let response = await fetch(url)
+                .then(data => data.json())
+                .then(data => {
+                    return data
+                });
+
+
+        })
     })
 })
 
