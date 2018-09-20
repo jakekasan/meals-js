@@ -95,7 +95,32 @@ describe("nutrition.model tests",() => {
             assert(result === desiredResult);
         });
 
+        it("model should have a getRetrieveWhereConditions property",() => {
+            let nutritionModel = new (require("./../../models/nutrition.model"))();
 
+            nutritionModel.should.have.property("getRetrieveWhereConditions");
+        });
+
+        it("model.getRetrieveWhereConditions should be a function",() => {
+            let nutritionModel = new (require("./../../models/nutrition.model"))();
+
+            (nutritionModel.getRetrieveWhereConditions).should.be.a("function");
+        });
+
+        it("model.getRetrieveWhereConditions should correctly craft where conditions",() => {
+            let nutritionModel = new (require("./../../models/nutrition.model"))();
+
+            let testObject = {
+                name:"Test",
+                type:"Object"
+            };
+
+            let desiredResult = "name=Test AND type=Object";
+
+            let result = nutritionModel.getRetrieveWhereConditions(testObject);
+
+            assert(result === desiredResult);
+        })
 
     })
 })
