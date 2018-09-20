@@ -11,6 +11,12 @@ module.exports = {
     debug:false,
     search: function(req,res,next){
         let query = req.query;
+
+        if (this.debug) console.log(`USDA search query: ${req.query} `);
+
+        if (!query instanceof String) return res.sendStatus(400)
+
+
         fetch(config.usda.address.search,{
             method:"post",
             body:{
