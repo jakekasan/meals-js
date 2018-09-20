@@ -38,6 +38,7 @@ module.exports = baseController.extend({
     routes:{
         "/api/ingredients": {
             GET: function (req,res,next,self) {
+                if(self.debug) console.log(`${req.method} request to ${req.path}`);
                 self.ingredientModel.retrieve((req.query || {}),(err,data) => {
                     if (err) {
                         return res.sendStatus(500)
@@ -46,6 +47,10 @@ module.exports = baseController.extend({
                 })
             },
             POST: function (req,res,next,self) {
+
+                if(self.debug) console.log(`${req.method} request to ${req.path}`);
+                if(self.debug) console.log(req.body);
+
                 // post data to model
                 if (!(req.body || req.body.name)){
                     return res.sendStatus(400)
@@ -60,6 +65,13 @@ module.exports = baseController.extend({
                                 return res.sendStatus(400)
                             }
                             return res.sendStatus(200)
+                        })
+                    } else {
+                        self.ingredientModel.create(req.body,(err,data) => {
+                            if (err) {
+                                return res.sendStatus(400);
+                            }
+                            return res.sendStatus(200);
                         })
                     }
 
@@ -121,6 +133,8 @@ module.exports = baseController.extend({
         },
         "/api/usda/search":{
             GET: function(req,res,next,self){
+                if(self.debug) console.log(`${req.method} request to ${req.path}`);
+                if(self.debug) console.log(req.body);
                 usdaService.search(req,res,next);
             },
             POST: function(req,res,next,self){
