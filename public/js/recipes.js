@@ -17,13 +17,16 @@ document.addEventListener("DOMContentLoaded",() => {
 
     const submitIngredient = document.getElementById("addIngredient");
     const submitIngredientClass = submitIngredient.className;
-    submitIngredient.className = submitIngredient.className + " disabled";
+    //submitIngredient.className = submitIngredient.className + " disabled";
 
     // ingredients
 
     fetch("http://localhost:8000/api/ingredients")
         .then(data => data.json())
         .then(data => {
+
+            console.log(data);
+
             // autocomplete data to cycle through
             let autocomplete = data.reduce((acc,elem) => {
                 acc[elem.name] = null;
@@ -48,7 +51,7 @@ document.addEventListener("DOMContentLoaded",() => {
                 // if the value is equal to any of the ingredients in the list, remove the disabled value from the form button
                 let value = ingredientNameInput.value;
 
-                if ((data.map(item => item.name)).includes(value)){
+                if (value != ""){
                     submitIngredient.className = submitIngredientClass;
                 } else {
                     submitIngredient.className = submitIngredientClass + " disabled";
