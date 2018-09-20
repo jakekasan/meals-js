@@ -64,7 +64,7 @@ module.exports.prototype = {
     retrieve: function(data,callback){
         let sql = `SELECT * FROM ${this.tableName} WHERE ${this.getRetrieveWhereConditions(data)}`;
 
-        this.db.all(sql,,(err,data) => {
+        this.db.all(sql,[],(err,data) => {
             if (err) throw err;
             callback(err,data);
         })
@@ -75,5 +75,13 @@ module.exports.prototype = {
     },
     delete: function(data,callback){
         return
+    },
+    listIngredients: function(size,callback){
+        let sql = `SELECT name FROM ${this.tableName}`;
+
+        this.db.all(sql,[],(err,rows) => {
+            if (err) throw err;
+            callback(rows);
+        });
     }
 }
