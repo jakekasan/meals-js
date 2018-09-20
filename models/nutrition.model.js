@@ -49,11 +49,25 @@ module.exports.prototype = {
             return acc.slice(0,-1) + ( (i == (arr.length - 1)) ? elem : `${elem},` ) + acc.slice(-1)
         },"()");
     },
+    getRetrieveWhereConditions: function(data){
+        return (Object.entries(data))
+            .reduce((acc,[key,item],i,arr) => {
+                return acc + ( (i == (arr.length-1)) ? `${key}=${item}` : `${key}=${item} AND ` )
+            },"");
+    },
     create: function(data,callback){
         let sql = `INSERT INTO ${this.tableName} ${this.getColNames(data)}
         VALUES ${this.getColValues(data)};`;
+
+        this.db.run(sql,(err) => callback(err));
     },
     retrieve: function(data,callback){
+        let sql = `SELECT * FROM ${this.tableName} WHERE ${this.getRetrieveWhereConditions(data)}`;
+
+        this.db.all(sql,,(err,data) => {
+            if (err) throw err;
+            callback(err,data);
+        })
         return
     },
     update: function(oldData,newData,callback){
