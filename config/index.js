@@ -6,12 +6,14 @@ let config = {
             port:"8000"
         },
         databases:{
-            mongoDB:"mongodb://temp:password1@ds245512.mlab.com:45512/meals"
+            mongoDB:"mongodb://temp:password1@ds245512.mlab.com:45512/meals",
+            nutrition:"./db/nutrition.db"
         },
         usda:{
             address:{
                 search:"https://api.nal.usda.gov/ndb/search/",
-                nutrition:"https://api.nal.usda.gov/ndb/nutrients/"
+                nutrition: "https://api.nal.usda.gov/ndb/V2/reports",
+                nutrition2:"https://api.nal.usda.gov/ndb/nutrients/"
             },
             apiKey:"SmiNNMcfzCRfPXR6mJtiDaUm7Be7VnLaiNigGiKT"
         }
