@@ -17,21 +17,21 @@ fakeMongoose.prototype = {
     },
     find: function(data,callback){
         if (!data) {
-            return callback(true,null)
+            return callback(true,false)
         }
-        return callback(null,true)
+        return callback(false,true)
     },
     update: function(original,updated,callback){
         if ((!original) || (!updated)) {
-            return callback(true,null)
+            return callback(true,false)
         }
-        return callback(null,true)
+        return callback(false,true)
     },
     delete: function(data,callback){
         if (!data) {
-            return callback(true,null)
+            return callback(true,false)
         }
-        return callback(null,true)
+        return callback(false,true)
     }
 }
 
@@ -215,35 +215,39 @@ describe("baseModel",() => {
             (mongo2).should.have.property("find");
         });
 
-        it("this.model.retrieve should be a function",() => {
+        it("this.model.find should be a function",() => {
             let model = new (require("./../../models/base.model"))();
 
             let mongo = new fakeMongoose();
             model.setModel(mongo)
 
             let mongo2 = model.getModel();
-            (mongo2)["retrieve"].should.be.a("function");
+            (mongo2)["find"].should.be.a("function");
         });
 
-        it("this.model.retrieve should return an error which is true if data is false", () => {
+        it("this.model.find should return an error which is true if data is false", () => {
             let model = new (require("./../../models/base.model"))();
 
             let mongo = new fakeMongoose();
             model.setModel(mongo)
 
-            (model.getModel())["retrieve"](false,(err,res) => {
+            let mongo2 = model.getModel();
+
+            (mongo2)["find"](false,(err,res) => {
                 //err.should.be(true);
                 assert(err === true);
             });
         });
 
-        it("this.model.retrieve should return an error which is false if data is true", () => {
+        it("this.model.find should return an error which is false if data is true", () => {
             let model = new (require("./../../models/base.model"))();
 
             let mongo = new fakeMongoose();
             model.setModel(mongo)
 
-            (model.getModel())["retrieve"](true,(err,res) => {
+            let mongo2 = model.getModel();
+
+            (mongo2)["find"](true,(err,res) => {
                 //err.should.be(false);
                 assert(err === false);
             });
@@ -263,13 +267,14 @@ describe("baseModel",() => {
             (model.update).should.be.a("function");
         });
 
-        it("getModel should return an object with a 'find' property",() => {
+        it("getModel should return an object with a 'update' property",() => {
             let model = new (require("./../../models/base.model"))();
 
             let mongo = new fakeMongoose();
             model.setModel(mongo)
 
-            (model.getModel).should.have.property("update");
+            let mongo2 = model.getModel();
+            (mongo2).should.have.property("update");
         });
 
         it("this.model.update should be a function",() => {
@@ -278,7 +283,8 @@ describe("baseModel",() => {
             let mongo = new fakeMongoose();
             model.setModel(mongo)
 
-            (model.getModel())["update"].should.be.a("function");
+            let mongo2 = model.getModel();
+            (mongo2)["update"].should.be.a("function");
         });
 
         it("this.model.update should return an error which is true if data is false", () => {
@@ -287,8 +293,9 @@ describe("baseModel",() => {
             let mongo = new fakeMongoose();
             model.setModel(mongo)
 
-            (model.getModel())["update"](false,false,(err,res) => {
-                err.should.be(true);
+            let mongo2 = model.getModel();
+            (mongo2)["update"](false,false,(err,res) => {
+                assert(err === true)
             });
         });
 
@@ -298,8 +305,10 @@ describe("baseModel",() => {
             let mongo = new fakeMongoose();
             model.setModel(mongo)
 
-            (model.getModel())["update"](true,true,(err,res) => {
-                err.should.be(false);
+            let mongo2 = model.getModel();
+
+            (mongo2)["update"](true,true,(err,res) => {
+                assert(err === false);
             });
         });
 
@@ -323,7 +332,9 @@ describe("baseModel",() => {
             let mongo = new fakeMongoose();
             model.setModel(mongo)
 
-            (model.getModel).should.have.property("delete");
+            let mongo2 = model.getModel();
+
+            (mongo2).should.have.property("delete");
         });
 
         it("this.model.delete should be a function",() => {
@@ -332,7 +343,9 @@ describe("baseModel",() => {
             let mongo = new fakeMongoose();
             model.setModel(mongo)
 
-            (model.getModel())["delete"].should.be.a("function");
+            let mongo2 = model.getModel();
+
+            (mongo2)["delete"].should.be.a("function");
         });
 
         it("this.model.delete should return an error which is true if data is false", () => {
@@ -341,8 +354,10 @@ describe("baseModel",() => {
             let mongo = new fakeMongoose();
             model.setModel(mongo)
 
-            (model.getModel())["delete"](false,false,(err,res) => {
-                err.should.be(true);
+            let mongo2 = model.getModel();
+
+            (mongo2)["delete"](false,(err,res) => {
+                assert(err === true);
             });
         });
 
@@ -352,8 +367,10 @@ describe("baseModel",() => {
             let mongo = new fakeMongoose();
             model.setModel(mongo)
 
-            (model.getModel())["delete"](true,true,(err,res) => {
-                err.should.be(false);
+            let mongo2 = model.getModel();
+
+            (mongo2)["delete"](true,(err,res) => {
+                assert(err === false);
             });
         });
     });
