@@ -21,8 +21,7 @@ describe("nutrition.model tests",() => {
         it("should connect to the database without an error",(done) => {
             let nutritionModel = new (require("./../../models/nutrition.model"))();
 
-            nutritionModel.loadDB((db,err) => {
-                console.log(err);
+            nutritionModel.run(`SELECT * FROM nutrition`,(err) => {
                 assert(err === null);
                 done();
             });
@@ -31,9 +30,9 @@ describe("nutrition.model tests",() => {
         it("database should have a table called 'nutrition'",(done) => {
             let nutritionModel = new (require("./../../models/nutrition.model"))();
 
-            let sql = `SELECT * FROM table_list`;
+            let sql = `SELECT * FROM nutrition`;
 
-            nutritionModel.db.all(sql,(err,row) => {
+            nutritionModel.db.get(sql,(err,row) => {
                 assert(err === null);
                 done();
             })
@@ -46,7 +45,57 @@ describe("nutrition.model tests",() => {
             let nutritionModel = new (require("./../../models/nutrition.model"))();
 
             nutritionModel.should.have.property("getColNames");
-        })
+        });
+
+        it("model.getColNames should be a function",() => {
+            let nutritionModel = new (require("./../../models/nutrition.model"))();
+
+            nutritionModel.getColNames.should.be.a("function");
+        });
+
+        it("model.getColName should properly format objects",() => {
+            let nutritionModel = new (require("./../../models/nutrition.model"))();
+
+            let testObject = {
+                name:"Test",
+                type:"Object"
+            };
+
+            let desiredResult = "(name,type)";
+
+            let result = nutritionModel.getColNames(testObject);
+
+            assert(result === desiredResult);
+        });
+
+        it("model should have 'getColValues' property",() => {
+            let nutritionModel = new (require("./../../models/nutrition.model"))();
+
+            nutritionModel.should.have.property("getColValues");
+        });
+
+        it("model.getColValues should be a function",() => {
+            let nutritionModel = new (require("./../../models/nutrition.model"))();
+
+            nutritionModel.getColValues.should.be.a("function");
+        });
+
+        it("model.getColValues should properly format objects",() => {
+            let nutritionModel = new (require("./../../models/nutrition.model"))();
+
+            let testObject = {
+                name:"Test",
+                type:"Object"
+            };
+
+            let desiredResult = "(Test,Object)";
+
+            let result = nutritionModel.getColValues(testObject);
+
+            assert(result === desiredResult);
+        });
+
+
 
     })
 })
