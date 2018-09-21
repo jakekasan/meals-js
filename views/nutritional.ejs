@@ -13,9 +13,45 @@
         }
         </style>
         
-        <svg width="960" height="500"></svg>
+        <svg width="960" height="500" data-groceries="<%=JSON.stringify(data)%>" ></svg>
         <script src="https://d3js.org/d3.v4.min.js"></script>
         <script>
+
+        var groceries = JSON.parse((document.getElementsByTagName("svg")[0]).dataset.groceries);
+
+        console.log(groceries);
+
+        /*
+        
+            mealPlan: {
+                monday
+            }
+        
+        */
+
+        var data2 = (Object.values(groceries.mealPlan));
+
+        console.log(data2);
+
+        let ingredients = data2.reduce((acc,elem) => {
+            return acc.concat(elem.ingredients)
+        },[])
+
+        console.log(ingredients);
+
+        let nutrientTypes = ["proteins","fats","carbohydrates"]
+
+        let nutrientData = nutrientTypes.reduce((acc,type) => {
+            acc.push({
+                amount:ingredients.reduce((acc,elem) => {
+                    return acc + elem.nutrition[type]
+                },0),
+                name:type
+            });
+            return acc
+        },[]);
+
+        console.log(nutrientData);
 
         var data = [{
             population:2704659,
@@ -55,17 +91,9 @@
         
             var color = d3.scaleOrdinal(["#98abc5","#8a89a6","#7b6888","#6b486b","#a05d56","#d0743c","#ff8c00"]);
 
-//                 <5,2704659
-// 5-13,4499890
-// 14-17,2159981
-// 18-24,3853788
-// 25-44,14106543
-// 45-64,8819342
-// ≥65,612463
-
             var pie = d3.pie()
                 .sort(null)
-                .value((d) => d.population);
+                .value((d) => d.amount);
 
             var path = d3.arc()
                 .outerRadius(radius - 10)
@@ -76,20 +104,20 @@
                 .innerRadius(radius - 40);
 
             var arc = g.selectAll(".arc")
-                .data(pie(data))
+                .data(pie(nutrientData))
                 .enter().append("g")
                     .attr("class","arc");
 
             arc.append("path")
                 .attr("d",path)
                 .attr("fill", (d) => {
-                    return color(d.data.age);
+                    return color(d.data.name);
                 });
 
             arc.append("text")
                 .attr("transform", (d) => { return "translate(" + label.centroid(d) + ")"; })
                 .attr("dy","0.35em")
-                .text((d) => { return d.data.age; })
+                .text((d) => { return d.data.name; })
 
         </script>
     </div>
