@@ -59,10 +59,10 @@
                                     <th>Totals :</th>
                                     <th></th>
                                     <th><%= groceries.map(item => item.cost).reduce((acc,ele) => (acc+ele),0) %></th>
-                                    <th><%= groceries.map(item => item.protein).reduce((acc,ele) => (acc+ele),0) %></th>
-                                    <th><%= groceries.map(item => item.fat).reduce((acc,ele) => (acc+ele),0) %></th>
-                                    <th><%= groceries.map(item => item.carbs).reduce((acc,ele) => (acc+ele),0) %></th>
-                                    <th><%= groceries.map(item => item.calories).reduce((acc,ele) => (acc+ele),0) %></th>
+                                    <th><%= groceries.map(item => item.nutrition.proteins).reduce((acc,ele) => (acc+ele),0) %></th>
+                                    <th><%= groceries.map(item => item.nutrition.fats).reduce((acc,ele) => (acc+ele),0) %></th>
+                                    <th><%= groceries.map(item => item.nutrition.carbohydrates).reduce((acc,ele) => (acc+ele),0) %></th>
+                                    <th><%= groceries.map(item => item.nutrition.calories).reduce((acc,ele) => (acc+ele),0) %></th>
                                 </tr>
                             </tbody>
                         </table>
