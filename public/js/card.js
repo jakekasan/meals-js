@@ -47,6 +47,10 @@ function selectNewRecipe(element){
 }
 
 function loadModal(content){
+    /*
+        Creates a modal and puts the content passed inside it.
+        On close, modal is destroyed.
+    */
 
     // overall container
 
@@ -90,7 +94,7 @@ function clearRecipe(element){
 
     let day = element.value;
 
-    let url = new URL("http://localhost:8000/api/user");
+    let url = new URL("http://localhost:8000/api/users");
     fetch(url,{
         method:"POST",
         mode:"cors",
