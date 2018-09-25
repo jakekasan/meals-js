@@ -126,7 +126,7 @@ describe("USDA API tests",() => {
                 // })
             response.should.have.property("error");
         });        
-    })
+    });
 
     describe("/nutrition",() => {
         
