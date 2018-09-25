@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="section">
+    <div class="section row">
 
         <style>
 
@@ -13,7 +13,10 @@
         }
         </style>
         
-        <svg width="960" height="500" data-groceries="<%=JSON.stringify(data)%>" ></svg>
+        <div class="col s8 m8 l8">
+            <svg width="300" height="300" data-groceries="<%=JSON.stringify(data)%>" class="col s8"></svg>
+        </div>
+        <div class="col s4 m4 l4"></div>
         <script src="https://d3js.org/d3.v4.min.js"></script>
         <script>
 
