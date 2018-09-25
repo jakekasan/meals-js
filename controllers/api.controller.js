@@ -114,8 +114,7 @@ module.exports = baseController.extend({
             },
             POST: function(req,res,next,self){
                 /*
-                    Take a 
-
+                    This passes user mealPlan changes to the mealPlan service
                 */
 
                 (self.debug) ? console.log(req.cookies,req.body) : null;
