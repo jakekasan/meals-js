@@ -28,21 +28,17 @@ module.exports = {
             return !(item.day == req.body.day)
         });
 
-        // let newMealDay = new (mealDayModel.model)({
-        //     day: req.body.day,
-        //     recipe: req.body.recipe,
-        //     people: 1
-        // });
-
         if (self.debug) console.log("MealDay to add:",req.body);
 
-        // req.userSession.mealPlan.push(newMealDay);
-        req.userSession.mealPlan.push({
-            day: req.body.day,
-            name: req.body.recipe,
-            people: 1
-        });
-
+        // if the new mealDay has "" for a name, don't add a new one
+        if (req.body && req.body.recipe && !(req.body.recipe === "")){
+            req.userSession.mealPlan.push({
+                day: req.body.day,
+                name: req.body.recipe,
+                people: 1
+            });
+        }
+        
         if (self.debug) console.log("Updated userSession:",req.userSession);
 
         userSessionModel.update({_id:req.userSession._id},req.userSession,(err,data) => {
