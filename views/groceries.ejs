@@ -25,15 +25,34 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% for (let item of groceries){ %>
+                                <%
+                                    let tableGroceries = groceries.reduce((acc,grocery) => {
+                                        if ((acc.map(item => item.name)).includes(grocery.name)){
+                                            acc.map(item => {
+                                                if (item.name == grocery.name){
+                                                    item.nutrition.proteins += grocery.nutrition.proteins;
+                                                    item.nutrition.fats += grocery.nutrition.fats;
+                                                    item.nutrition.carbohydrates += grocery.nutrition.carbohydrates;
+                                                    item.nutrition.calories += grocery.nutrition.calories;
+                                                }
+                                            })
+                                        } else {
+                                            acc.push(grocery);
+                                        }
+                                        return acc
+                                    },[])
+
+
+                                %>
+                                <% for (let item of tableGroceries){ %>
                                 <tr>
                                     <th><%= item.name %></th>
                                     <th><%= item.amount %>g</th>
                                     <th>£<%= (item.cost/100).toFixed(2) %></th>
-                                    <th><%= item.protein %>g</th>
-                                    <th><%= item.fat %></th>
-                                    <th><%= item.carbs %></th>
-                                    <th><%= item.calories %></th>
+                                    <th><%= item.nutrition.proteins %>g</th>
+                                    <th><%= item.nutrition.fats %></th>
+                                    <th><%= item.nutrition.carbohydrates %></th>
+                                    <th><%= item.nutrition.calories %></th>
                                 </tr>
                                 
                                 
