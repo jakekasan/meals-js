@@ -5,12 +5,19 @@ document.addEventListener("DOMContentLoaded",() => {
         M.textareaAutoResize(element);
     }
 
-    M.Autocomplete.init((document.querySelectorAll(".autocomplete")),{
-        data:{
-            "Egg":null,
-            "Beef":null
-        }
-    });
+    let elements = document.querySelectorAll(".autocomplete");
+
+    M.Autocomplete.init(elements);
+
+    elements.forEach(item => {
+        item.addEventListener("keyup",() => {
+            if (item.value != ""){
+                M.Autocomplete.getInstance(item).open();
+            } else {
+                M.Autocomplete.getInstance(item).close();
+            }
+        })
+    })
 
     //console.log(document.querySelectorAll(".dropdown-content"));
 
@@ -18,6 +25,16 @@ document.addEventListener("DOMContentLoaded",() => {
     const submitIngredient = document.getElementById("addIngredient");
     const submitIngredientClass = submitIngredient.className;
     //submitIngredient.className = submitIngredient.className + " disabled";
+
+    submitIngredient.addEventListener("click",() => {
+        let name = (document.getElementById("ingredientName")).value;
+        
+        if (name == "") return
+
+        let selected = submitIngredient.dataset.ingredients.filter(item => (item.name == name)).pop();
+        
+        addIngredientToList(selected);
+    });
 
     // ingredients
 
@@ -37,15 +54,6 @@ document.addEventListener("DOMContentLoaded",() => {
             let ingredientNameInput = document.getElementById("ingredientName");
             let autocompleteInstance = M.Autocomplete.getInstance(ingredientNameInput);
             autocompleteInstance.updateData(autocomplete);
-            
-            submitIngredient.addEventListener("click",() => {
-                let name = (document.getElementById("ingredientName")).value;
-                if (name == "") return
-
-                let selected = data.filter(item => (item.name == name)).pop();
-                
-                addIngredientToList(selected);
-            });
 
             ingredientNameInput.addEventListener("keyup",() => {
                 // if the value is equal to any of the ingredients in the list, remove the disabled value from the form button
@@ -56,6 +64,27 @@ document.addEventListener("DOMContentLoaded",() => {
                 } else {
                     submitIngredient.className = submitIngredientClass + " disabled";
                 }
+
+                let url = new URL("http://localhost:8000/api/usda/search");
+                url.search = new URLSearchParams({
+                    q:value
+                });
+                fetch(url)
+                    .then(data => data.json())
+                    .then(data => {
+                        let autoCompleteData = data.reduce((acc,elem) => {
+                            if (!acc[elem.name]){
+                                acc[elem.name] = null
+                            }
+                            return acc
+                        },{});
+                        M.Autocomplete.getInstance(item).updateData(autoCompleteData);
+
+                        const submitIngredient = document.getElementById("addIngredient");
+
+                        submitIngredient.dataset.ingredients = data;
+
+                    })
             });
         })
 });
