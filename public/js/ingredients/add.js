@@ -20,10 +20,13 @@ document.addEventListener("DOMContentLoaded",() => {
             } else {
                 (M.Autocomplete.getInstance(item)).close();
             }
+
             let url = new URL("http://localhost:8000/api/usda/search");
+            
             url.search = new URLSearchParams({
                 q:item.value
             });
+
             fetch(url)
                 .then(data => data.json())
                 .then(data => {
@@ -54,10 +57,6 @@ document.addEventListener("DOMContentLoaded",() => {
                                 })
                                 .then(data => {
                                     location.reload();
-                                    // console.log(data);
-                                    // setTimeout(() => {
-                                    //     location.reload();
-                                    // },10000);
                                 })
                                 .catch(e => console.log(e));
                         });
