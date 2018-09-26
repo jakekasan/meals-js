@@ -24,7 +24,7 @@ module.exports = {
             req.userSession.mealPlan = [];
         }
 
-        req.userSession.mealPlan.filter(item => {
+        req.userSession.mealPlan = req.userSession.mealPlan.filter(item => {
             return !(item.day == req.body.day)
         });
 
