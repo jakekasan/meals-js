@@ -130,6 +130,15 @@ module.exports = baseController.extend({
                 }
             }
         },
+        "api/users/groceries":{
+            GET: function(req,res,next,self){
+                res.setHeader('Content-disposition', 'attachment; filename=file.txt');
+                res.sendFile();
+            },
+            POST: function(req,res,next,self){
+                return res.sendStatus(400)
+            }
+        },
         "/api/usda/search":{
             GET: function(req,res,next,self){
                 if(self.debug) console.log(`${req.method} request to ${req.path}`);
