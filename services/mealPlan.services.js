@@ -91,7 +91,48 @@ module.exports = {
         } else {
             return next();
         }
+    },
+    downloadGroceryList: function(req,res,next) {
+        /*
+            ingredients schema:
+            {
+                id,
+                name,
+                nutrition {
+                    protein, etc...
+                },
+                description,
+                cost,
+                quantity
+            }
 
-        
+            quantity and cost are unused, as is grams in the nutrition object
+
+        */
+        let mealPlan = req.userSession.mealPlan;
+
+        let ingredients = (Object.keys(mealPlan)).map(item => {
+            let day = mealPlan[item];
+            return day.ingredients;
+        });
+
+        ingredients
+            .reduce((acc,cur) => {
+                return acc+cur
+        },[])
+            .reduce((acc,cur) => {
+                if ((Object.keys(acc))
+                        .map(item => acc[item])
+                        .map(item => item.name)
+                        .includes(cur.name)) {
+                    acc[cur.name].quantity += cur.quantity;
+                } else {
+                    acc[cur.name] = cur;
+                }
+            })
+
+        req.userSession.groceryList = ingredients;
+
+        return next()
     }
 }
