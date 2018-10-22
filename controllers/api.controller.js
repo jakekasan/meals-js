@@ -130,10 +130,30 @@ module.exports = baseController.extend({
                 }
             }
         },
-        "api/users/groceries":{
+        "/api/users/groceries":{
             GET: function(req,res,next,self){
-                res.setHeader('Content-disposition', 'attachment; filename=file.txt');
-                res.sendFile();
+                /*
+                    Endpoint for downloading file.
+                    assembles text from user data and sends it
+                */
+
+                let recipes = req.userSession.mealPlan.map(item => item.name);
+                
+                if (recipes.length == 0) {
+                    // return empty data
+                }
+                self.recipeModel.retrieve({"name":{$in:recipes}},(err,data) => {
+                    if (err) {
+                        if (self.debug) console.log("Problem retrieving recipes");
+                        console.log(err);
+                        throw err
+                    }
+                    // now assemble text document and send
+                    let content = JSON.stringify(data); // get content text here
+                    res.contentType("text/plain");
+                    res.set({'Content-disposition': 'attachment: filename=grocery_list.txt'});
+                    res.send(content);
+                });
             },
             POST: function(req,res,next,self){
                 return res.sendStatus(400)
