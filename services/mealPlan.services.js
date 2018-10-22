@@ -62,8 +62,7 @@ module.exports = {
                         item.recipe = data;
                         return resolve(item)
                     })
-                }))
-                
+                }))  
             })
 
             Promise.all(promises)
@@ -107,6 +106,8 @@ module.exports = {
             }
 
             quantity and cost are unused, as is grams in the nutrition object
+
+            
 
         */
         let mealPlan = req.userSession.mealPlan;

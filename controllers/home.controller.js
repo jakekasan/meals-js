@@ -58,8 +58,6 @@ module.exports = baseController.extend({
         });
     },
     "/": function(req,res,next,self){
-        
-        
         self.getContent(req,self,(err,data) => {
             if (self.debug) console.log("Logging mealPlan: ",req.userSession.mealPlan[0]);
             if (err) {
