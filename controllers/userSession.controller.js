@@ -27,29 +27,32 @@ module.exports = function(req,res,next){
             }
             req.userSession = data[0];
             console.log("Retrieved userSession");
-            console.log(data[0]);
+            //console.log(data[0]);
+            console.log(req.userSession);
+            console.log(req.userSession.mealPlan);
+            
+            // let ingredients = req.userSession.mealPlan.map(item => {
+            //     return item.ingredients;
+            // });
+    
+            // console.log(ingredients);
 
-            let ingredients = (Object.keys(req.userSession.mealPlan)).map(item => {
-                let day = req.userSession.mealPlan[item];
-                return day.ingredients;
-            });
+            // ingredients
+            //     .reduce((acc,cur) => {
+            //         return acc+cur
+            // },[])
+            //     .reduce((acc,cur) => {
+            //         if ((Object.keys(acc))
+            //                 .map(item => acc[item])
+            //                 .map(item => item.name)
+            //                 .includes(cur.name)) {
+            //             acc[cur.name].quantity += cur.quantity;
+            //         } else {
+            //             acc[cur.name] = cur;
+            //         }
+            //     })
     
-            ingredients
-                .reduce((acc,cur) => {
-                    return acc+cur
-            },[])
-                .reduce((acc,cur) => {
-                    if ((Object.keys(acc))
-                            .map(item => acc[item])
-                            .map(item => item.name)
-                            .includes(cur.name)) {
-                        acc[cur.name].quantity += cur.quantity;
-                    } else {
-                        acc[cur.name] = cur;
-                    }
-                })
-    
-            req.userSession.groceryList = ingredients;
+            // req.userSession.groceryList = ingredients;
 
             next();
         });
