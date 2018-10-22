@@ -120,7 +120,11 @@
             arc.append("text")
                 .attr("transform", (d) => { return "translate(" + label.centroid(d) + ")"; })
                 .attr("dy","0.35em")
-                .text((d) => { return d.data.name; })
+                .text((d) => {
+                    let name = d.data.name;
+                    name[0] = name[0].toUpperCase();
+                    return name
+                })
 
         </script>
     </div>
